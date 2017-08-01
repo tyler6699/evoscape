@@ -39,18 +39,10 @@ public class Chunk {
         
             if(chunk_row != null && chunk_row.size() > col && col >= 0){
                 tile = chunk_row.get(col);
-                return get_tile_code(tile);   
+                return tile.is_grass() ? "1" : "0";
             }
         }
         return null;
-    }
-
-    public static String get_tile_code(Tile tile){
-        if(tile != null && tile.is_grass()){
-            return "1";
-        } else {
-            return "0";
-        }
     }
 
 }
