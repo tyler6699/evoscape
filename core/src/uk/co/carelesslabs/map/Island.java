@@ -17,17 +17,14 @@ public class Island {
     Texture water_01, water_02, water_03, water_04;
     Texture cliff, water;
     
-    int tile_size = 8;
-    int tiles_x, tiles_y;
     Tile centre_tile;
     Tile clicked_tile;
     
     // CHUNKS TODO: Add multiple chunks
-    // int number_chunks = 0;
-    // public Map<Integer, ArrayList<ArrayList<Tile>>> chunks = new HashMap<Integer, ArrayList<ArrayList<Tile>>>();
+    // public Map<Integer, ArrayList<Chunk> chunks = new Map<Integer, ArrayList<Chunk>();
     
     // ONE CHUNK
-    public ArrayList<ArrayList<Tile>> chunk = new ArrayList<ArrayList<Tile>>();
+    public Chunk chunk;
     ArrayList<Entity> entities = new ArrayList<Entity>();
     
     // TRACK CLICK
@@ -51,16 +48,14 @@ public class Island {
     }
     
     private void setup_tiles(){
-        // Hard code island size
-        tiles_x = 33;
-        tiles_y = 33;
+        chunk = new Chunk(33,33, 8);
         
         int current_row = 0;
         int rng_w = MathUtils.random(5,8);
         int rng_h = MathUtils.random(5,8);
         
-        int centre_tile_row = tiles_y / 2;
-        int centre_tile_col = tiles_x /2;
+        int centre_tile_row = chunk.number_rows / 2;
+        int centre_tile_col = chunk.number_cols /2;
         int first_tile_row = centre_tile_row - (rng_h);
         
         int max_row = centre_tile_row + rng_h;
@@ -74,10 +69,10 @@ public class Island {
         // If number of tiles is needed.
         // int num_tiles = ((max_col - min_col)-1) * ((max_row - min_row)-1);
 
-        for(int row = 0; row < tiles_y; row ++){
-            for(int col = 0; col < tiles_x; col ++){
+        for(int row = 0; row < chunk.number_rows; row ++){
+            for(int col = 0; col < chunk.number_cols; col ++){
                 // Create TILE
-                Tile tile = new Tile(col, row, tile_size, TILETYPE.WATER, random_water());
+                Tile tile = new Tile(col, row, chunk.tile_size, TILETYPE.WATER, random_water());
                 
                 // Make a small island
                 if(row > min_row && row < max_row && col > min_col && col < max_col){
@@ -98,15 +93,15 @@ public class Island {
                     chunk_row.add(tile);
                     
                     // Last row and column?
-                    if (row == tiles_y - 1 && col == tiles_x - 1){
-                        chunk.add(chunk_row);
+                    if (row == chunk.number_rows - 1 && col == chunk.number_cols - 1){
+                        chunk.tiles.add(chunk_row);
                     }
                 } else { 
                     // New row
                     current_row = row;
                     
                     // Add row to chunk
-                    chunk.add(chunk_row);
+                    chunk.tiles.add(chunk_row);
                     
                     // Clear chunk row
                     chunk_row = new ArrayList<Tile>();
@@ -118,7 +113,7 @@ public class Island {
         }  
         
         // Set centre tile for camera positioning
-        centre_tile = Chunk.get_tile(chunk, centre_tile_row, centre_tile_col);
+        centre_tile = chunk.get_tile(centre_tile_row, centre_tile_col);
     }
     
     private void update_image(Tile tile) {
@@ -185,7 +180,7 @@ public class Island {
         // Loop all tiles and set the initial code
      
         // 1 CHUNK ONLY ATM
-        for(ArrayList<Tile> row : chunk){
+        for(ArrayList<Tile> row : chunk.tiles){
             for(Tile tile : row){ 
                 // Check all surrounding tiles and set 1 for pass 0 for non pass
                 // 0 0 0
@@ -197,7 +192,7 @@ public class Island {
                 
                 for(int r: rows){
                     for(int c: cols){
-                        tile.code += Chunk.get_tile_code(chunk, tile.row + r, tile.col + c);
+                        tile.code += chunk.get_tile_code(tile.row + r, tile.col + c);
                         update_image(tile);
                     }
                 }    

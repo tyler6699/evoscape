@@ -78,7 +78,7 @@ public class gameclass extends ApplicationAdapter {
         
         batch.begin();
         // Draw all tiles in the chunk / chunk rows
-        for(ArrayList<Tile> row : island.chunk){
+        for(ArrayList<Tile> row : island.chunk.tiles){
             for(Tile tile : row){
                 batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);
                 if (tile.secondary_texture != null) batch.draw(tile.secondary_texture, tile.pos.x, tile.pos.y, tile.size, tile.size);
