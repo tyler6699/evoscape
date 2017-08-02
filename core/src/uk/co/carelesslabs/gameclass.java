@@ -20,12 +20,8 @@ public class gameclass extends ApplicationAdapter {
     private int displayW;
     private int displayH;
 
-    // Temp x and y co-ords
-    int x, y;
-
-    // For Movement
-    int direction_x, direction_y;
-    int speed = 1;
+    // Hero
+    Hero hero;
     
     // Island
     Island island;
@@ -52,6 +48,9 @@ public class gameclass extends ApplicationAdapter {
         Gdx.input.setInputProcessor(control);
         
         island = new Island();
+        
+        // Hero
+        hero = new Hero(island.centre_tile.pos);
     }
 
     @Override
@@ -60,17 +59,10 @@ public class gameclass extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         // GAME LOGIC
-        // Reset the direction values
-        direction_x=0;
-        direction_y=0;
+        hero.update(control);
             
-        if(control.down)  direction_y = -1 ;
-        if(control.up)    direction_y = 1 ;
-        if(control.left)  direction_x = -1;
-        if(control.right) direction_x = 1;
-            
-        camera.position.x += direction_x * speed;
-        camera.position.y += direction_y * speed;
+        camera.position.x = hero.get_camera_x();
+        camera.position.y = hero.get_camera_y();
         camera.update();
         
         // GAME DRAW
@@ -85,6 +77,7 @@ public class gameclass extends ApplicationAdapter {
                 if (tile.secondary_texture != null) batch.draw(tile.secondary_texture, tile.pos.x, tile.pos.y, tile.size, tile.size);
             }
         }
+        hero.draw(batch);
         batch.end();
     }
 	

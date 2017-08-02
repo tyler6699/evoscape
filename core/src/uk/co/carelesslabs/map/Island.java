@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Island {  
-    Tile centre_tile;
+    public Tile centre_tile;
     Tile clicked_tile;
     
     // CHUNKS TODO: Add multiple chunks

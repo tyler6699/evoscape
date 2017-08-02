@@ -13,7 +13,13 @@ public class Media {
     public static Texture water_01, water_02, water_03, water_04;
     public static Texture cliff, water;
     
+    // HERO
+    public static Texture hero;
+    
     public static void load_assets(){
+        // HERO
+        hero  = new Texture("entities/hero/hero.png");
+        
         // Source https://opengameart.org/content/micro-tileset-overworld-and-dungeon
         // Example Map: http://opengameart.org/sites/default/files/styles/watermarked/public/Render_0.png
         grass_01 = new Texture("8x8/grass/grass_01.png");
@@ -36,6 +42,7 @@ public class Media {
         water_03 = new Texture("8x8/water/water_03.png");
         water_04 = new Texture("8x8/water/water_04.png");
         cliff    = new Texture(Gdx.files.internal("8x8/cliff.png"));
+
     }
     
     public void dispose(){

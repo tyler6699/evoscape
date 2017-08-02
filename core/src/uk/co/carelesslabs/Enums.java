@@ -7,5 +7,9 @@ public class Enums {
         WATER,
         CLIFF
     }
+    
+    public enum ENTITYTYPE {
+        HERO
+    }
 
 }
