@@ -1,7 +1,6 @@
 package uk.co.carelesslabs;
 
 import uk.co.carelesslabs.Enums.ENTITYTYPE;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
