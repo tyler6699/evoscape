@@ -4,19 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import uk.co.carelesslabs.Enums.TILETYPE;
 import uk.co.carelesslabs.Entity;
-import com.badlogic.gdx.Gdx;
+import uk.co.carelesslabs.Media;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Island {
-    // TILES
-    Texture grass_01, grass_02, grass_03, grass_04;
-    Texture grass_left, grass_right;
-    Texture grass_left_upper_edge, grass_right_upper_edge;
-    Texture grass_top, grass_top_right, grass_top_left;
-    Texture water_01, water_02, water_03, water_04;
-    Texture cliff, water;
-    
+public class Island {  
     Tile centre_tile;
     Tile clicked_tile;
     
@@ -42,7 +34,6 @@ public class Island {
     String[] a_grass_top_left = {"000000001"};
     
     public Island(){
-        setup_images();
         setup_tiles();
         code_tiles();
     }
@@ -80,7 +71,7 @@ public class Island {
                     tile.type = TILETYPE.GRASS;
                     
                     if(row == first_tile_row + 1){
-                        tile.texture = cliff;
+                        tile.texture = Media.cliff;
                         tile.type = TILETYPE.CLIFF;
                     } else {
                         // Chance to add trees etc
@@ -120,19 +111,19 @@ public class Island {
         // Secondary Texture is to add edges to tiles
         // TODO: Add array of textures per tile
         if(Arrays.asList(a_grass_left).contains(tile.code)){
-            tile.secondary_texture = grass_left;
+            tile.secondary_texture = Media.grass_left;
         } else if(Arrays.asList(a_grass_right).contains(tile.code)){
-            tile.secondary_texture = grass_right;
+            tile.secondary_texture = Media.grass_right;
         } else if(Arrays.asList(a_grass_r_end).contains(tile.code)){
-            tile.secondary_texture = grass_left_upper_edge;
+            tile.secondary_texture = Media.grass_left_upper_edge;
         } else if(Arrays.asList(a_grass_l_end).contains(tile.code)){
-            tile.secondary_texture = grass_right_upper_edge;
+            tile.secondary_texture = Media.grass_right_upper_edge;
         } else if(Arrays.asList(a_grass_top).contains(tile.code)){
-            tile.secondary_texture = grass_top;
+            tile.secondary_texture = Media.grass_top;
         } else if(Arrays.asList(a_grass_top_right).contains(tile.code)){
-            tile.secondary_texture = grass_top_right;
+            tile.secondary_texture = Media.grass_top_right;
         } else if(Arrays.asList(a_grass_top_left).contains(tile.code)){
-            tile.secondary_texture = grass_top_left;
+            tile.secondary_texture = Media.grass_top_left;
         }        
     }
     
@@ -141,15 +132,15 @@ public class Island {
 
         int tile = MathUtils.random(20);
         switch (tile) {
-            case 1:  grass = grass_01;
+            case 1:  grass = Media.grass_01;
                      break;
-            case 2:  grass = grass_02;
+            case 2:  grass = Media.grass_02;
                      break;
-            case 3:  grass = grass_03;
+            case 3:  grass = Media.grass_03;
                      break;
-            case 4:  grass = grass_04;
+            case 4:  grass = Media.grass_04;
                      break;
-            default: grass = grass_01;
+            default: grass = Media.grass_01;
                      break;        
         }
         
@@ -161,15 +152,15 @@ public class Island {
 
         int tile = MathUtils.random(20);
         switch (tile) {
-            case 1:  water = water_01;
+            case 1:  water = Media.water_01;
                      break;
-            case 2:  water = water_02;
+            case 2:  water = Media.water_02;
                      break;
-            case 3:  water = water_03;
+            case 3:  water = Media.water_03;
                      break;
-            case 4:  water = water_04;
+            case 4:  water = Media.water_04;
                      break;
-            default: water = water_01;
+            default: water = Media.water_01;
                      break;        
         }
         
@@ -200,48 +191,7 @@ public class Island {
         }
     }
 
-    private void setup_images(){
-        // Source https://opengameart.org/content/micro-tileset-overworld-and-dungeon
-        // Example
-        // http://opengameart.org/sites/default/files/styles/watermarked/public/Render_0.png
-        grass_01 = new Texture("8x8/grass/grass_01.png");
-        grass_02 = new Texture("8x8/grass/grass_02.png");
-        grass_03 = new Texture("8x8/grass/grass_03.png");
-        grass_04 = new Texture("8x8/grass/grass_04.png");
-        
-        grass_left = new Texture("8x8/grass/right_grass_edge.png");
-        grass_right = new Texture("8x8/grass/left_grass_edge.png");
-        
-        grass_left_upper_edge = new Texture("8x8/grass/left_upper_edge.png");
-        grass_right_upper_edge = new Texture("8x8/grass/right_upper_edge.png");
-        
-        grass_top = new Texture("8x8/grass/top.png");
-        grass_top_right = new Texture("8x8/grass/top_right.png");
-        grass_top_left = new Texture("8x8/grass/top_left.png");
-        
-        water_01 = new Texture("8x8/water/water_01.png");
-        water_02 = new Texture("8x8/water/water_02.png");
-        water_03 = new Texture("8x8/water/water_03.png");
-        water_04 = new Texture("8x8/water/water_04.png");
-        cliff    = new Texture(Gdx.files.internal("8x8/cliff.png"));
-    }
-
     public void dispose() {
-        grass_01.dispose();
-        grass_02.dispose();
-        grass_03.dispose();  
-        grass_04.dispose();
-        grass_left.dispose();  
-        grass_right.dispose();  
-        grass_left_upper_edge.dispose();  
-        grass_right_upper_edge.dispose();  
-        grass_top.dispose();  
-        grass_top_right.dispose();  
-        grass_top_left.dispose();  
-        water_01.dispose();  
-        water_02.dispose();  
-        water_03.dispose();  
-        water_04.dispose();  
-        cliff.dispose();  
+        
     }
 }

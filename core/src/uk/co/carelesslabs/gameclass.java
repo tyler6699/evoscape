@@ -32,6 +32,7 @@ public class gameclass extends ApplicationAdapter {
 
     @Override
     public void create () {
+        Media.load_assets();
         batch = new SpriteBatch();
         img = new Texture("badlogic.jpg");
         
