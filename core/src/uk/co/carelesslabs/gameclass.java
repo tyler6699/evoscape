@@ -1,14 +1,17 @@
 package uk.co.carelesslabs;
 
 import java.util.ArrayList;
+
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
@@ -60,9 +63,8 @@ public class gameclass extends ApplicationAdapter {
         
         // GAME LOGIC
         hero.update(control);
-            
-        camera.position.x = hero.get_camera_x();
-        camera.position.y = hero.get_camera_y();
+        
+        camera.position.lerp(hero.pos3, .1f);
         camera.update();
         
         // GAME DRAW

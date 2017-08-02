@@ -11,6 +11,8 @@ public class Hero extends Entity{
         height = 8;
         this.pos.x = pos.x;
         this.pos.y = pos.y;
+        this.pos3.x = pos.x;
+        this.pos3.y = pos.y;
         texture = Media.hero;
         speed = 1;
     }
@@ -26,6 +28,9 @@ public class Hero extends Entity{
         
         pos.x += dir_x * speed;
         pos.y += dir_y * speed;
+        
+        pos3.x = pos.x;
+        pos3.y = pos.y;
     }
 
     public float get_camera_x() {
