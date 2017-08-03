@@ -5,4 +5,6 @@ LIBGDX Tutorial - Rogue like survival game
 
 [02 - Entity, Chunk, Tile and basic Island](https://github.com/tyler6699/evoscape/tree/tutorial_002)
 
-[02 - Loading Media refactored](https://github.com/tyler6699/evoscape/tree/tutorial_003)
+[03 - Loading Media refactored](https://github.com/tyler6699/evoscape/tree/tutorial_003)
+
+[04 - Adding a Hero](https://github.com/tyler6699/evoscape/tree/tutorial_004)
