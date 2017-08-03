@@ -25,13 +25,13 @@ public class Island {
     int currentRow;
     
     // Arrays for mapping code to texture
-    String[] a_grass_left = {"001001001","001001001", "001001000", "000001001"};
-    String[] a_grass_right = {"100100100","100100000","000100100"};
-    String[] a_grass_r_end = {"100000000"};
-    String[] a_grass_l_end = {"001000000"};
-    String[] a_grass_top = {"000000111", "000000011","000000110"};
-    String[] a_grass_top_right = {"000000100"};
-    String[] a_grass_top_left = {"000000001"};
+    String[] aGrassLeft = {"001001001","001001001", "001001000", "000001001"};
+    String[] aGrassRight = {"100100100","100100000","000100100"};
+    String[] aGrassREnd = {"100000000"};
+    String[] aGrassLEnd = {"001000000"};
+    String[] aGrassTop = {"000000111", "000000011","000000110"};
+    String[] aGrassTopRight = {"000000100"};
+    String[] aGrassTopLeft = {"000000001"};
     
     public Island(){
         setupTiles();
@@ -41,21 +41,21 @@ public class Island {
     private void setupTiles(){
         chunk = new Chunk(33,33, 8);
         
-        int current_row = 0;
-        int rng_w = MathUtils.random(5,8);
-        int rng_h = MathUtils.random(5,8);
+        int currentRow = 0;
+        int rngW = MathUtils.random(5,8);
+        int rngH = MathUtils.random(5,8);
         
-        int centre_tile_row = chunk.numberRows / 2;
-        int centre_tile_col = chunk.numberCols /2;
-        int first_tile_row = centre_tile_row - (rng_h);
+        int centreTileRow = chunk.numberRows / 2;
+        int centreTileCol = chunk.numberCols /2;
+        int firstTileRow = centreTileRow - (rngH);
         
-        int max_row = centre_tile_row + rng_h;
-        int min_row = centre_tile_row - rng_h;
-        int max_col = centre_tile_col + rng_w;
-        int min_col = centre_tile_col - rng_w;
+        int maxRow = centreTileRow + rngH;
+        int minRow = centreTileRow - rngH;
+        int maxCol = centreTileCol + rngW;
+        int minCol = centreTileCol - rngW;
         
         // CHUNK ROW
-        ArrayList<Tile> chunk_row = new ArrayList<Tile>();
+        ArrayList<Tile> chunkRow = new ArrayList<Tile>();
         
         // If number of tiles is needed.
         // int num_tiles = ((max_col - min_col)-1) * ((max_row - min_row)-1);
@@ -66,11 +66,11 @@ public class Island {
                 Tile tile = new Tile(col, row, chunk.tileSize, TileType.WATER, randomWater());
                 
                 // Make a small island
-                if(row > min_row && row < max_row && col > min_col && col < max_col){
+                if(row > minRow && row < maxRow && col > minCol && col < maxCol){
                     tile.texture = randomGrass();
                     tile.type = TileType.GRASS;
                     
-                    if(row == first_tile_row + 1){
+                    if(row == firstTileRow + 1){
                         tile.texture = Media.cliff;
                         tile.type = TileType.CLIFF;
                     } else {
@@ -79,50 +79,50 @@ public class Island {
                 } 
                 
                 // ADD TILE TO CHUNK
-                if(current_row == row){
+                if(currentRow == row){
                     // Add tile to current row
-                    chunk_row.add(tile);
+                    chunkRow.add(tile);
                     
                     // Last row and column?
                     if (row == chunk.numberRows - 1 && col == chunk.numberCols - 1){
-                        chunk.tiles.add(chunk_row);
+                        chunk.tiles.add(chunkRow);
                     }
                 } else { 
                     // New row
-                    current_row = row;
+                    currentRow = row;
                     
                     // Add row to chunk
-                    chunk.tiles.add(chunk_row);
+                    chunk.tiles.add(chunkRow);
                     
                     // Clear chunk row
-                    chunk_row = new ArrayList<Tile>();
+                    chunkRow = new ArrayList<Tile>();
                     
                     // Add first tile to the new row
-                    chunk_row.add(tile);
+                    chunkRow.add(tile);
                 }
             }
         }  
         
         // Set centre tile for camera positioning
-        centreTile = chunk.getTile(centre_tile_row, centre_tile_col);
+        centreTile = chunk.getTile(centreTileRow, centreTileCol);
     }
     
     private void updateImage(Tile tile) {
         // Secondary Texture is to add edges to tiles
         // TODO: Add array of textures per tile
-        if(Arrays.asList(a_grass_left).contains(tile.code)){
+        if(Arrays.asList(aGrassLeft).contains(tile.code)){
             tile.secondaryTexture = Media.grassLeft;
-        } else if(Arrays.asList(a_grass_right).contains(tile.code)){
+        } else if(Arrays.asList(aGrassRight).contains(tile.code)){
             tile.secondaryTexture = Media.grassRight;
-        } else if(Arrays.asList(a_grass_r_end).contains(tile.code)){
+        } else if(Arrays.asList(aGrassREnd).contains(tile.code)){
             tile.secondaryTexture = Media.grassLeftUpperEdge;
-        } else if(Arrays.asList(a_grass_l_end).contains(tile.code)){
+        } else if(Arrays.asList(aGrassLEnd).contains(tile.code)){
             tile.secondaryTexture = Media.grassRightUpperEdge;
-        } else if(Arrays.asList(a_grass_top).contains(tile.code)){
+        } else if(Arrays.asList(aGrassTop).contains(tile.code)){
             tile.secondaryTexture = Media.grassTop;
-        } else if(Arrays.asList(a_grass_top_right).contains(tile.code)){
+        } else if(Arrays.asList(aGrassTopRight).contains(tile.code)){
             tile.secondaryTexture = Media.grassTopRight;
-        } else if(Arrays.asList(a_grass_top_left).contains(tile.code)){
+        } else if(Arrays.asList(aGrassTopLeft).contains(tile.code)){
             tile.secondaryTexture = Media.grassTopLeft;
         }        
     }
