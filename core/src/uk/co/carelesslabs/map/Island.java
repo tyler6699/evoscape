@@ -2,15 +2,15 @@ package uk.co.carelesslabs.map;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import uk.co.carelesslabs.Enums.TILETYPE;
+import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Entity;
 import uk.co.carelesslabs.Media;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Island {  
-    public Tile centre_tile;
-    Tile clicked_tile;
+    public Tile centreTile;
+    Tile clickedTile;
     
     // CHUNKS TODO: Add multiple chunks
     // public Map<Integer, ArrayList<Chunk> chunks = new Map<Integer, ArrayList<Chunk>();
@@ -20,9 +20,9 @@ public class Island {
     ArrayList<Entity> entities = new ArrayList<Entity>();
     
     // TRACK CLICK
-    int current_tile_no;
-    int current_col;
-    int current_row;
+    int currentTileNo;
+    int currentCol;
+    int currentRow;
     
     // Arrays for mapping code to texture
     String[] a_grass_left = {"001001001","001001001", "001001000", "000001001"};
@@ -34,19 +34,19 @@ public class Island {
     String[] a_grass_top_left = {"000000001"};
     
     public Island(){
-        setup_tiles();
-        code_tiles();
+        setupTiles();
+        codeTiles();
     }
     
-    private void setup_tiles(){
+    private void setupTiles(){
         chunk = new Chunk(33,33, 8);
         
         int current_row = 0;
         int rng_w = MathUtils.random(5,8);
         int rng_h = MathUtils.random(5,8);
         
-        int centre_tile_row = chunk.number_rows / 2;
-        int centre_tile_col = chunk.number_cols /2;
+        int centre_tile_row = chunk.numberRows / 2;
+        int centre_tile_col = chunk.numberCols /2;
         int first_tile_row = centre_tile_row - (rng_h);
         
         int max_row = centre_tile_row + rng_h;
@@ -60,19 +60,19 @@ public class Island {
         // If number of tiles is needed.
         // int num_tiles = ((max_col - min_col)-1) * ((max_row - min_row)-1);
 
-        for(int row = 0; row < chunk.number_rows; row ++){
-            for(int col = 0; col < chunk.number_cols; col ++){
+        for(int row = 0; row < chunk.numberRows; row ++){
+            for(int col = 0; col < chunk.numberCols; col ++){
                 // Create TILE
-                Tile tile = new Tile(col, row, chunk.tile_size, TILETYPE.WATER, random_water());
+                Tile tile = new Tile(col, row, chunk.tileSize, TileType.WATER, randomWater());
                 
                 // Make a small island
                 if(row > min_row && row < max_row && col > min_col && col < max_col){
-                    tile.texture = random_grass();
-                    tile.type = TILETYPE.GRASS;
+                    tile.texture = randomGrass();
+                    tile.type = TileType.GRASS;
                     
                     if(row == first_tile_row + 1){
                         tile.texture = Media.cliff;
-                        tile.type = TILETYPE.CLIFF;
+                        tile.type = TileType.CLIFF;
                     } else {
                         // Chance to add trees etc
                     }
@@ -84,7 +84,7 @@ public class Island {
                     chunk_row.add(tile);
                     
                     // Last row and column?
-                    if (row == chunk.number_rows - 1 && col == chunk.number_cols - 1){
+                    if (row == chunk.numberRows - 1 && col == chunk.numberCols - 1){
                         chunk.tiles.add(chunk_row);
                     }
                 } else { 
@@ -104,70 +104,70 @@ public class Island {
         }  
         
         // Set centre tile for camera positioning
-        centre_tile = chunk.get_tile(centre_tile_row, centre_tile_col);
+        centreTile = chunk.getTile(centre_tile_row, centre_tile_col);
     }
     
-    private void update_image(Tile tile) {
+    private void updateImage(Tile tile) {
         // Secondary Texture is to add edges to tiles
         // TODO: Add array of textures per tile
         if(Arrays.asList(a_grass_left).contains(tile.code)){
-            tile.secondary_texture = Media.grass_left;
+            tile.secondaryTexture = Media.grassLeft;
         } else if(Arrays.asList(a_grass_right).contains(tile.code)){
-            tile.secondary_texture = Media.grass_right;
+            tile.secondaryTexture = Media.grassRight;
         } else if(Arrays.asList(a_grass_r_end).contains(tile.code)){
-            tile.secondary_texture = Media.grass_left_upper_edge;
+            tile.secondaryTexture = Media.grassLeftUpperEdge;
         } else if(Arrays.asList(a_grass_l_end).contains(tile.code)){
-            tile.secondary_texture = Media.grass_right_upper_edge;
+            tile.secondaryTexture = Media.grassRightUpperEdge;
         } else if(Arrays.asList(a_grass_top).contains(tile.code)){
-            tile.secondary_texture = Media.grass_top;
+            tile.secondaryTexture = Media.grassTop;
         } else if(Arrays.asList(a_grass_top_right).contains(tile.code)){
-            tile.secondary_texture = Media.grass_top_right;
+            tile.secondaryTexture = Media.grassTopRight;
         } else if(Arrays.asList(a_grass_top_left).contains(tile.code)){
-            tile.secondary_texture = Media.grass_top_left;
+            tile.secondaryTexture = Media.grassTopLeft;
         }        
     }
     
-    private Texture random_grass(){
+    private Texture randomGrass(){
         Texture grass;
 
         int tile = MathUtils.random(20);
         switch (tile) {
-            case 1:  grass = Media.grass_01;
+            case 1:  grass = Media.grass01;
                      break;
-            case 2:  grass = Media.grass_02;
+            case 2:  grass = Media.grass02;
                      break;
-            case 3:  grass = Media.grass_03;
+            case 3:  grass = Media.grass03;
                      break;
-            case 4:  grass = Media.grass_04;
+            case 4:  grass = Media.grass04;
                      break;
-            default: grass = Media.grass_01;
+            default: grass = Media.grass01;
                      break;        
         }
         
         return grass;
     }
 
-    private Texture random_water(){
+    private Texture randomWater(){
         Texture water;
 
         int tile = MathUtils.random(20);
         switch (tile) {
-            case 1:  water = Media.water_01;
+            case 1:  water = Media.water01;
                      break;
-            case 2:  water = Media.water_02;
+            case 2:  water = Media.water02;
                      break;
-            case 3:  water = Media.water_03;
+            case 3:  water = Media.water03;
                      break;
-            case 4:  water = Media.water_04;
+            case 4:  water = Media.water04;
                      break;
-            default: water = Media.water_01;
+            default: water = Media.water01;
                      break;        
         }
         
         return water;
     }
     
-    private void code_tiles() {
+    private void codeTiles() {
         // Loop all tiles and set the initial code
      
         // 1 CHUNK ONLY ATM
@@ -183,8 +183,8 @@ public class Island {
                 
                 for(int r: rows){
                     for(int c: cols){
-                        tile.code += chunk.get_tile_code(tile.row + r, tile.col + c);
-                        update_image(tile);
+                        tile.code += chunk.getTileCode(tile.row + r, tile.col + c);
+                        updateImage(tile);
                     }
                 }    
             }

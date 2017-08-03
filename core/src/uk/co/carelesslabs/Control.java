@@ -19,40 +19,40 @@ public class Control extends InputAdapter implements InputProcessor {
     public boolean right;
 
     // MOUSE
-    public boolean  LMB;
-    public boolean  RMB;
-    public boolean  processed_click;
-    public Vector2  mouse_click_pos = new Vector2();
-    public Vector2  map_click_pos = new Vector2();
+    public boolean  leftMouseBtn;
+    public boolean  rightMouseBtn;
+    public boolean  processedClick;
+    public Vector2  mouseClickPos = new Vector2();
+    public Vector2  mapClickPos = new Vector2();
     
     // DEBUG
     public boolean debug;
     
     // SCREEN
-    int screen_width;
-    int screen_height;
+    int screenWidth;
+    int screenHeight;
 
-    public Control(int screen_width, int screen_height, OrthographicCamera camera){
+    public Control(int screenWidth, int screenHeight, OrthographicCamera camera){
         this.camera = camera;
-        this.screen_width = screen_width;
-        this.screen_height = screen_height;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     private void setMouseClickedPos(int screenX, int screenY){
         // Set mouse position (flip screen Y)
-        mouse_click_pos.set(screenX, screen_height - screenY);
-        map_click_pos.set(get_map_coords(mouse_click_pos));
+        mouseClickPos.set(screenX, screenHeight - screenY);
+        mapClickPos.set(get_map_coords(mouseClickPos));
     }
         
-    public Vector2 get_map_coords(Vector2 mouse_coords){
-        Vector3 v3 = new Vector3(mouse_coords.x, screen_height - mouse_coords.y, 0);
+    public Vector2 get_map_coords(Vector2 mouseCoords){
+        Vector3 v3 = new Vector3(mouseCoords.x, screenHeight - mouseCoords.y, 0);
         this.camera.unproject(v3);
         return new Vector2(v3.x,v3.y);
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        switch (keycode) {
+    public boolean keyDown(int keyCode) {
+        switch (keyCode) {
             case Keys.DOWN:
                 down = true;
                 break;
@@ -126,9 +126,9 @@ public class Control extends InputAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(pointer == 0 && button == 0){
-            LMB = true; 
+            leftMouseBtn = true; 
         } else if (pointer == 0 && button == 0){
-            RMB = true; 
+            rightMouseBtn = true; 
         }
     
         setMouseClickedPos(screenX, screenY);
@@ -138,10 +138,10 @@ public class Control extends InputAdapter implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(pointer == 0 && button == 0){
-            LMB = false; 
-            processed_click = false;
+            leftMouseBtn = false; 
+            processedClick = false;
         } else if (pointer == 0 && button == 0){
-            RMB = false; 
+            rightMouseBtn = false; 
         }
     
         setMouseClickedPos(screenX, screenY);

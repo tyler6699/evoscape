@@ -1,26 +1,23 @@
 package uk.co.carelesslabs;
 
-import uk.co.carelesslabs.Enums.ENTITYTYPE;
+import uk.co.carelesslabs.Enums.EntityType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class Entity {
-    public Vector2 pos;
-    public Vector3 pos3;
+    public Vector3 pos;
     public Texture texture;
     public float width;
     public float height;
-    public ENTITYTYPE type;
+    public EntityType type;
     public float speed;
     
-    float dir_x = 0;
-    float dir_y = 0;
+    float dirX = 0;
+    float dirY = 0;
     
     public Entity(){
-        pos = new Vector2();
-        pos3 = new Vector3();
+        pos = new Vector3();
     }
     
     public void draw(SpriteBatch batch){

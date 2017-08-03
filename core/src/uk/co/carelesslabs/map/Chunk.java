@@ -3,21 +3,20 @@ package uk.co.carelesslabs.map;
 import java.util.ArrayList;
 
 public class Chunk {
-     
-    int number_rows;
-    int number_cols;
-    int tile_size;
+    int numberRows;
+    int numberCols;
+    int tileSize;
     // Tiles are split into arrays of rows
     public ArrayList<ArrayList<Tile>> tiles = new ArrayList<ArrayList<Tile>>();
     
     public Chunk(int number_rows, int number_cols, int tile_size ){
         tiles = new ArrayList<ArrayList<Tile>>();
-        this.number_rows = number_rows;
-        this.number_cols = number_cols;
-        this.tile_size = tile_size;
+        this.numberRows = number_rows;
+        this.numberCols = number_cols;
+        this.tileSize = tile_size;
     }
     
-    public Tile get_tile(int row, int col){
+    public Tile getTile(int row, int col){
         System.out.println("Row: " + row + " Col: " + col);
         ArrayList<Tile> chunk_row;
         if(tiles.size() > row && row >= 0){
@@ -30,7 +29,7 @@ public class Chunk {
         return null;
     }
 
-    public String get_tile_code(int row, int col){
+    public String getTileCode(int row, int col){
         Tile tile;
 
         ArrayList<Tile> chunk_row;
@@ -39,7 +38,7 @@ public class Chunk {
         
             if(chunk_row != null && chunk_row.size() > col && col >= 0){
                 tile = chunk_row.get(col);
-                return tile.is_grass() ? "1" : "0";
+                return tile.isGrass() ? "1" : "0";
             }
         }
         return null;

@@ -2,13 +2,13 @@ package uk.co.carelesslabs;
 
 public class Enums {
     
-    public enum TILETYPE {
+    public enum TileType {
         GRASS,
         WATER,
         CLIFF
     }
     
-    public enum ENTITYTYPE {
+    public enum EntityType {
         HERO
     }
 

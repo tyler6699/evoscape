@@ -1,21 +1,18 @@
 package uk.co.carelesslabs;
 
 import java.util.ArrayList;
-
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
     Control control;
     SpriteBatch batch;
-    Texture img;
 
     // Display Size
     private int displayW;
@@ -28,10 +25,9 @@ public class gameclass extends ApplicationAdapter {
     Island island;
 
     @Override
-    public void create () {
+    public void create() {
         Media.load_assets();
         batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
         
         // CAMERA
         displayW = Gdx.graphics.getWidth();
@@ -51,7 +47,7 @@ public class gameclass extends ApplicationAdapter {
         island = new Island();
         
         // Hero
-        hero = new Hero(island.centre_tile.pos);
+        hero = new Hero(island.centreTile.pos);
     }
 
     @Override
@@ -62,7 +58,7 @@ public class gameclass extends ApplicationAdapter {
         // GAME LOGIC
         hero.update(control);
         
-        camera.position.lerp(hero.pos3, .1f);
+        camera.position.lerp(hero.pos, .1f);
         camera.update();
         
         // GAME DRAW
@@ -74,7 +70,7 @@ public class gameclass extends ApplicationAdapter {
         for(ArrayList<Tile> row : island.chunk.tiles){
             for(Tile tile : row){
                 batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);
-                if (tile.secondary_texture != null) batch.draw(tile.secondary_texture, tile.pos.x, tile.pos.y, tile.size, tile.size);
+                if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
             }
         }
         hero.draw(batch);
@@ -84,6 +80,5 @@ public class gameclass extends ApplicationAdapter {
     @Override
     public void dispose () {
         batch.dispose();
-        img.dispose();
     }
 }
