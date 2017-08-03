@@ -41,7 +41,7 @@ public class Chunk {
                 return tile.isGrass() ? "1" : "0";
             }
         }
-        return null;
+        return "0";
     }
 
 }

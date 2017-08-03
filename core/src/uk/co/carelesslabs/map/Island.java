@@ -5,8 +5,11 @@ import java.util.Arrays;
 import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Entity;
 import uk.co.carelesslabs.Media;
+import uk.co.carelesslabs.box2d.Box2DHelper;
+import uk.co.carelesslabs.box2d.Box2DWorld;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Island {  
     public Tile centreTile;
@@ -33,12 +36,25 @@ public class Island {
     String[] aGrassTopRight = {"000000100"};
     String[] aGrassTopLeft = {"000000001"};
     
-    public Island(){
+    public Island(Box2DWorld box2D){
         setupTiles();
         codeTiles();
+        generateHitboxes(box2D);
     }
     
-    private void setupTiles(){
+    private void generateHitboxes(Box2DWorld box2D) {
+    	for(ArrayList<Tile> row : chunk.tiles){
+    		for(Tile tile : row){ 
+    			if(tile.isNotPassable() && tile.notIsAllWater()){
+    				System.out.println(tile.code);
+    				Box2DHelper.createBox(box2D.world, chunk.tileSize, chunk.tileSize, tile.pos, BodyType.StaticBody);
+    			}
+            }
+    	}
+    	
+	}
+
+	private void setupTiles(){
         chunk = new Chunk(33,33, 8);
         
         int currentRow = 0;

@@ -1,8 +1,11 @@
 package uk.co.carelesslabs;
 
 import java.util.ArrayList;
+
+import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +16,7 @@ public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
     Control control;
     SpriteBatch batch;
+    Box2DWorld box2D;
 
     // Display Size
     private int displayW;
@@ -23,7 +27,7 @@ public class gameclass extends ApplicationAdapter {
     
     // Island
     Island island;
-
+    
     @Override
     public void create() {
         Media.load_assets();
@@ -44,7 +48,11 @@ public class gameclass extends ApplicationAdapter {
         control = new Control(displayW, displayH, camera);
         Gdx.input.setInputProcessor(control);
         
-        island = new Island();
+        // Box2D
+        box2D = new Box2DWorld();
+        
+        // Island
+        island = new Island(box2D);
         
         // Hero
         hero = new Hero(island.centreTile.pos);
@@ -75,6 +83,8 @@ public class gameclass extends ApplicationAdapter {
         }
         hero.draw(batch);
         batch.end();
+        
+        box2D.tick(camera, control);
     }
 	
     @Override
