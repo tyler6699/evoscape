@@ -55,7 +55,7 @@ public class gameclass extends ApplicationAdapter {
         island = new Island(box2D);
         
         // Hero
-        hero = new Hero(island.centreTile.pos);
+        hero = new Hero(island.centreTile.pos, box2D);
     }
 
     @Override

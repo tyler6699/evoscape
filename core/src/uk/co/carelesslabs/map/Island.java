@@ -46,8 +46,7 @@ public class Island {
     	for(ArrayList<Tile> row : chunk.tiles){
     		for(Tile tile : row){ 
     			if(tile.isNotPassable() && tile.notIsAllWater()){
-    				System.out.println(tile.code);
-    				Box2DHelper.createBox(box2D.world, chunk.tileSize, chunk.tileSize, tile.pos, BodyType.StaticBody);
+    				Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, tile.pos, BodyType.StaticBody);
     			}
             }
     	}

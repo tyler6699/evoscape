@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Box2DHelper {
     
-    public static Body createBox(World world, float width, float height, Vector3 pos, BodyDef.BodyType type) {
+    public static Body createBody(World world, float width, float height, Vector3 pos, BodyDef.BodyType type) {
         Body body;
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(pos.x + width/2, pos.y + height/2);

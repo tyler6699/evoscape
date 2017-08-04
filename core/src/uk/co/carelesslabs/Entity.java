@@ -1,9 +1,11 @@
 package uk.co.carelesslabs;
 
 import uk.co.carelesslabs.Enums.EntityType;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class Entity {
     public Vector3 pos;
@@ -12,6 +14,7 @@ public class Entity {
     public float height;
     public EntityType type;
     public float speed;
+    public Body body;
     
     float dirX = 0;
     float dirY = 0;
