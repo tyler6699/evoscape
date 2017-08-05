@@ -1,5 +1,6 @@
 # Evoscape
 LIBGDX Tutorial - Rogue like survival game
+[Code Commentary/Tutorial](https://carelesslabs.wordpress.com/)
 
 [01 - Keyboard controls and 2D Camera](https://github.com/tyler6699/evoscape/tree/tutorial_001)
 
@@ -10,3 +11,5 @@ LIBGDX Tutorial - Rogue like survival game
 [04 - Adding a Hero](https://github.com/tyler6699/evoscape/tree/tutorial_004)
 
 [05 - Upating variable / method names to camelCase](https://github.com/tyler6699/evoscape/tree/tutorial_005)
+
+[06 - Box2D Collisions](https://github.com/tyler6699/evoscape/tree/tutorial_006)
