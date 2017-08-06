@@ -1,7 +1,6 @@
 package uk.co.carelesslabs.box2d;
 
 import uk.co.carelesslabs.Control;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;

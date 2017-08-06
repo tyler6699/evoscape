@@ -2,13 +2,11 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
