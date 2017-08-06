@@ -1,4 +1,4 @@
-package uk.co.carelesslans.entity;
+package uk.co.carelesslabs.entity;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;

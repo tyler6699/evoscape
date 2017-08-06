@@ -1,4 +1,4 @@
-package uk.co.carelesslans.entity;
+package uk.co.carelesslabs.entity;
 
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.Media;
