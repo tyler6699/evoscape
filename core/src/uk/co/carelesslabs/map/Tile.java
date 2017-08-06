@@ -1,7 +1,7 @@
 package uk.co.carelesslabs.map;
 
 import uk.co.carelesslabs.Enums.TileType;
-import uk.co.carelesslabs.Entity;
+import uk.co.carelesslans.entity.Entity;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Tile extends Entity {

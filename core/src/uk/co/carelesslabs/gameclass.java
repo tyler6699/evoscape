@@ -1,10 +1,12 @@
 package uk.co.carelesslabs;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
+import uk.co.carelesslans.entity.Entity;
+import uk.co.carelesslans.entity.Hero;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -55,6 +57,7 @@ public class gameclass extends ApplicationAdapter {
         
         // Hero
         hero = new Hero(island.centreTile.pos, box2D);
+        island.entities.add(hero);
     }
 
     @Override
@@ -63,10 +66,18 @@ public class gameclass extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         // GAME LOGIC
+        if(control.reset){
+            island.reset(box2D);
+            hero.reset(box2D,island.getCentrePosition());
+            island.entities.add(hero);
+            control.reset = false;
+        }
+        
         hero.update(control);
         
         camera.position.lerp(hero.pos, .1f);
         camera.update();
+        Collections.sort(island.entities);
         
         // GAME DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -80,7 +91,11 @@ public class gameclass extends ApplicationAdapter {
                 if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
             }
         }
-        hero.draw(batch);
+        
+        // Draw all entities
+        for(Entity e: island.entities){
+            e.draw(batch);
+        }
         batch.end();
         
         box2D.tick(camera, control);

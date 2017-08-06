@@ -9,7 +9,8 @@ public class Enums {
     }
     
     public enum EntityType {
-        HERO
+        HERO, 
+        TREE
     }
 
 }

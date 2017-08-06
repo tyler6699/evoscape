@@ -15,6 +15,9 @@ public class Media {
     // HERO
     public static Texture hero;
     
+    // Entity
+    public static Texture tree;
+    
     public static void load_assets(){
         // HERO
         hero  = new Texture("entities/hero/hero.png");
@@ -40,8 +43,9 @@ public class Media {
         water02 = new Texture("8x8/water/water_02.png");
         water03 = new Texture("8x8/water/water_03.png");
         water04 = new Texture("8x8/water/water_04.png");
-        cliff    = new Texture(Gdx.files.internal("8x8/cliff.png"));
-
+        cliff   = new Texture(Gdx.files.internal("8x8/cliff.png"));
+        
+        tree    = new Texture("entities/tree.png");
     }
     
     public void dispose(){
@@ -61,5 +65,6 @@ public class Media {
         water03.dispose();  
         water04.dispose();  
         cliff.dispose();  
+        tree.dispose();
     }
 }

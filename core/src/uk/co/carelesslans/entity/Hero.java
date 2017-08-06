@@ -1,7 +1,9 @@
-package uk.co.carelesslabs;
+package uk.co.carelesslans.entity;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import uk.co.carelesslabs.Control;
+import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
@@ -12,11 +14,14 @@ public class Hero extends Entity{
         type = EntityType.HERO;
         width = 8;
         height = 8;
-        this.pos.x = pos.x;
-        this.pos.y = pos.y;
         texture = Media.hero;
         speed = 30;
-        body = Box2DHelper.createBody(box2d.world, width, height/2, pos, BodyType.DynamicBody);
+        reset(box2d, pos);
+    }
+    
+    public void reset(Box2DWorld box2d, Vector3 pos) {
+        this.pos.set(pos);
+        body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyType.DynamicBody);        
     }
 
     public void update(Control control) {
@@ -32,13 +37,5 @@ public class Hero extends Entity{
         pos.x = body.getPosition().x - width/2;
         pos.y = body.getPosition().y - height/4;
     }
-
-    public float getCameraX() {
-        return pos.x + width/2;
-    }
-    
-    public float getCameraY() {
-        return pos.y + height/2;
-    }
-    
+ 
 }

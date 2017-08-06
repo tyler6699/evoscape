@@ -3,12 +3,14 @@ package uk.co.carelesslabs.map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import uk.co.carelesslabs.Enums.TileType;
-import uk.co.carelesslabs.Entity;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
+import uk.co.carelesslans.entity.Entity;
+import uk.co.carelesslans.entity.Tree;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Island {  
@@ -20,7 +22,7 @@ public class Island {
     
     // ONE CHUNK
     public Chunk chunk;
-    ArrayList<Entity> entities = new ArrayList<Entity>();
+    public ArrayList<Entity> entities = new ArrayList<Entity>();
     
     // TRACK CLICK
     int currentTileNo;
@@ -37,16 +39,23 @@ public class Island {
     String[] aGrassTopLeft = {"000000001"};
     
     public Island(Box2DWorld box2D){
+        reset(box2D);
+    }
+    
+    public void reset(Box2DWorld box2D) {
+        entities.clear();
+        box2D.clearAllBodies();
         setupTiles();
         codeTiles();
         generateHitboxes(box2D);
+        addEntities(box2D);
     }
     
     private void generateHitboxes(Box2DWorld box2D) {
     	for(ArrayList<Tile> row : chunk.tiles){
     		for(Tile tile : row){ 
     			if(tile.isNotPassable() && tile.notIsAllWater()){
-    				Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, tile.pos, BodyType.StaticBody);
+    				Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, 0, 0, tile.pos, BodyType.StaticBody);
     			}
             }
     	}
@@ -204,6 +213,23 @@ public class Island {
                 }    
             }
         }
+    }
+    
+    private void addEntities(Box2DWorld box2D) {
+        // Loop all tiles and add random trees
+        for(ArrayList<Tile> row : chunk.tiles){
+            for(Tile tile : row){ 
+                if (tile.isGrass()){
+                    if(MathUtils.random(100) > 90){
+                        entities.add(new Tree(tile.pos, box2D));
+                    }    
+                }
+            }
+        }
+    }
+    
+    public Vector3 getCentrePosition(){
+        return centreTile.pos;
     }
 
     public void dispose() {
