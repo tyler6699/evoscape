@@ -26,12 +26,11 @@ public class Entity implements Comparable<Entity> {
         batch.draw(texture, pos.x, pos.y, width, height);
     }
     
-    @Override
     public int compareTo(Entity e) {
-        float temp_y =  e.pos.y;
-        float compare_y = pos.y;
+        float tempY =  e.pos.y;
+        float compareY = pos.y;
         
-        return (temp_y < compare_y ) ? -1: (temp_y > compare_y) ? 1:0 ;
+        return (tempY < compareY ) ? -1: (tempY > compareY) ? 1:0 ;
     }
 
 }
