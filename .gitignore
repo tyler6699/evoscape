@@ -22,3 +22,13 @@
 hs_err_pid*
 .DS_Store
 desktop/bin/*
+
+.classpath
+.project
+core/.classpath
+core/.project
+desktop/.classpath
+desktop/.project
+.settings/org.eclipse.buildship.core.prefs
+core/.settings/org.eclipse.buildship.core.prefs
+desktop/.settings/org.eclipse.buildship.core.prefs
