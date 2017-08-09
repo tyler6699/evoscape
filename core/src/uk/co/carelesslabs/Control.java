@@ -17,6 +17,9 @@ public class Control extends InputAdapter implements InputProcessor {
     public boolean down;
     public boolean left;
     public boolean right;
+    
+    // ACTIONS
+    public boolean interact;
 
     // MOUSE
     public boolean  leftMouseBtn;
@@ -108,6 +111,9 @@ public class Control extends InputAdapter implements InputProcessor {
                 break;
             case Keys.D:
                 right = false;
+                break;
+            case Keys.E:
+                interact = true;
                 break;
             case Keys.ESCAPE:
                 Gdx.app.exit();

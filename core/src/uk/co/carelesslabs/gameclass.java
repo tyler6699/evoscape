@@ -58,6 +58,9 @@ public class gameclass extends ApplicationAdapter {
         // Hero
         hero = new Hero(island.centreTile.pos, box2D);
         island.entities.add(hero);
+        
+        // HashMap of Entities for collisions
+        box2D.populateEntityMap(island.entities);
     }
 
     @Override
@@ -70,6 +73,7 @@ public class gameclass extends ApplicationAdapter {
             island.reset(box2D);
             hero.reset(box2D,island.getCentrePosition());
             island.entities.add(hero);
+            box2D.populateEntityMap(island.entities);
             control.reset = false;
         }
         
@@ -99,6 +103,7 @@ public class gameclass extends ApplicationAdapter {
         batch.end();
         
         box2D.tick(camera, control);
+        island.clearRemovedEntities(box2D);
     }
 	
     @Override
