@@ -2,6 +2,7 @@ package uk.co.carelesslabs.map;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.box2d.Box2DHelper;
@@ -235,4 +236,18 @@ public class Island {
     public void dispose() {
         
     }
+
+	public void clearRemovedEntities(Box2DWorld box2D) {
+		Iterator<Entity> it = entities.iterator();
+		while(it.hasNext()) {
+			Entity e = it.next();
+	        if(e.remove){
+	        	e.removeBodies(box2D);
+	        	box2D.removeEntityToMap(e);
+	        	
+	        	it.remove();
+	        }
+		}
+	}
+	
 }

@@ -17,6 +17,14 @@ public class Tree extends Entity{
         this.pos = pos;
         texture = Media.tree;
         body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyDef.BodyType.StaticBody);
+        sensor = Box2DHelper.createSensor(box2d.world, width, height*.85f, width/2, height/3, pos, BodyDef.BodyType.DynamicBody);     
+        hashcode = sensor.getFixtureList().get(0).hashCode();
     }
+    
+    @Override
+	public void interact(){
+    	remove = true;	
+    }
+    
 
 }
