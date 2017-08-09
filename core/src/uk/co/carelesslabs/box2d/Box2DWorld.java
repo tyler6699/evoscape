@@ -96,7 +96,7 @@ public class Box2DWorld {
     }
     
     public void removeEntityToMap(Entity entity){
-    	entityMap.remove(entity.hashcode, entity);
+    	entityMap.remove(entity.hashcode);
     }
     
 }
