@@ -33,3 +33,6 @@ desktop/.project
 core/.settings/org.eclipse.buildship.core.prefs
 desktop/.settings/org.eclipse.buildship.core.prefs
 /.gradle/
+core/.settings/
+core/bin/
+desktop/.settings/
