@@ -28,22 +28,21 @@ public class Box2DWorld {
         entityMap = new HashMap<Integer, Entity>();
         
         world.setContactListener(new ContactListener() {
-        	 @Override
-             public void beginContact(Contact contact) {
-        		 
-                 Fixture fixtureA = contact.getFixtureA();
-                 Fixture fixtureB = contact.getFixtureB();
+            @Override
+            public void beginContact(Contact contact) { 
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
                  
-                 process_collisions(fixtureA, fixtureB, true);
-             }
+                process_collisions(fixtureA, fixtureB, true);
+            }
 
-             @Override
-             public void endContact(Contact contact) {
-                 Fixture fixtureA = contact.getFixtureA();
-                 Fixture fixtureB = contact.getFixtureB();
+            @Override
+            public void endContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
                  
-                 process_collisions(fixtureA, fixtureB, false);
-             }
+                process_collisions(fixtureA, fixtureB, false);
+            }
              
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {}

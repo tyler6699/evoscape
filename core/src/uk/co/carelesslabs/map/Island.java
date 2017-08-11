@@ -53,15 +53,14 @@ public class Island {
     }
     
     private void generateHitboxes(Box2DWorld box2D) {
-    	for(ArrayList<Tile> row : chunk.tiles){
-    		for(Tile tile : row){ 
-    			if(tile.isNotPassable() && tile.notIsAllWater()){
-    				Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, 0, 0, tile.pos, BodyType.StaticBody);
-    			}
+        for(ArrayList<Tile> row : chunk.tiles){
+            for(Tile tile : row){ 
+                if(tile.isNotPassable() && tile.notIsAllWater()){
+                    Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, 0, 0, tile.pos, BodyType.StaticBody);
+                }
             }
-    	}
-    	
-	}
+        }	
+    }
 
 	private void setupTiles(){
         chunk = new Chunk(33,33, 8);
@@ -237,17 +236,17 @@ public class Island {
         
     }
 
-	public void clearRemovedEntities(Box2DWorld box2D) {
-		Iterator<Entity> it = entities.iterator();
-		while(it.hasNext()) {
-			Entity e = it.next();
-	        if(e.remove){
-	        	e.removeBodies(box2D);
-	        	box2D.removeEntityToMap(e);
-	        	
-	        	it.remove();
-	        }
-		}
-	}
-	
+    public void clearRemovedEntities(Box2DWorld box2D) {
+        Iterator<Entity> it = entities.iterator();
+        while(it.hasNext()) {
+            Entity e = it.next();
+            if(e.remove){
+                e.removeBodies(box2D);
+                box2D.removeEntityToMap(e);
+       	
+                it.remove();
+            }
+        }
+    }
+
 }

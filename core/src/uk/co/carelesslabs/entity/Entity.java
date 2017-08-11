@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class Entity implements Comparable<Entity> {
-	public int hashcode;
+    public int hashcode;
     public Vector3 pos;
     public Texture texture;
     public float width;
@@ -39,11 +39,11 @@ public class Entity implements Comparable<Entity> {
     
     public void collision(Entity entity, boolean begin){}
 
-	public void interact(){}
+    public void interact(){}
 
-	public void removeBodies(Box2DWorld box2D) {
-		 if(sensor != null) box2D.world.destroyBody(sensor);
-		 if(body != null) box2D.world.destroyBody(body);
+    public void removeBodies(Box2DWorld box2D) {
+        if(sensor != null) box2D.world.destroyBody(sensor);
+        if(body != null) box2D.world.destroyBody(body);
 	}
 
 }
