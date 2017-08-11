@@ -62,7 +62,7 @@ public class Island {
         }	
     }
 
-	private void setupTiles(){
+    private void setupTiles(){
         chunk = new Chunk(33,33, 8);
         
         int currentRow = 0;

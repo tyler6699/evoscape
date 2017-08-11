@@ -44,6 +44,6 @@ public class Entity implements Comparable<Entity> {
     public void removeBodies(Box2DWorld box2D) {
         if(sensor != null) box2D.world.destroyBody(sensor);
         if(body != null) box2D.world.destroyBody(body);
-	}
+    }
 
 }
