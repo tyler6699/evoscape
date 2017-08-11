@@ -36,3 +36,5 @@ desktop/.settings/org.eclipse.buildship.core.prefs
 core/.settings/
 core/bin/
 desktop/.settings/
+/bin/
+/build/

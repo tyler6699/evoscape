@@ -33,7 +33,7 @@ public class Box2DWorld {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
                  
-                process_collisions(fixtureA, fixtureB, true);
+                processCollisions(fixtureA, fixtureB, true);
             }
 
             @Override
@@ -41,7 +41,7 @@ public class Box2DWorld {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
                  
-                process_collisions(fixtureA, fixtureB, false);
+                processCollisions(fixtureA, fixtureB, false);
             }
              
 			@Override
@@ -70,7 +70,7 @@ public class Box2DWorld {
         entityMap.clear();
     }
     
-    private void process_collisions(Fixture aFixture, Fixture bFixture, boolean begin) {	
+    private void processCollisions(Fixture aFixture, Fixture bFixture, boolean begin) {	
     	Entity entityA = entityMap.get(aFixture.hashCode());
 		Entity entityB = entityMap.get(bFixture.hashCode());
 		
