@@ -21,18 +21,18 @@ public class Box2DWorld {
     public World world;
     private Box2DDebugRenderer debugRenderer;
     private HashMap<Integer, Entity> entityMap;
-    
-    public Box2DWorld(){
+
+    public Box2DWorld() {
         world = new World(new Vector2(.0f, .0f), true);
         debugRenderer = new Box2DDebugRenderer();
         entityMap = new HashMap<Integer, Entity>();
-        
+
         world.setContactListener(new ContactListener() {
             @Override
-            public void beginContact(Contact contact) { 
+            public void beginContact(Contact contact) {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
-                 
+
                 processCollisions(fixtureA, fixtureB, true);
             }
 
@@ -40,62 +40,65 @@ public class Box2DWorld {
             public void endContact(Contact contact) {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
-                 
+
                 processCollisions(fixtureA, fixtureB, false);
             }
-             
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {}
 
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {}
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
 
         });
     }
-        
-    public void tick(OrthographicCamera camera, Control control){
-        if (control.debug) debugRenderer.render(world, camera.combined);
-        
+
+    public void tick(OrthographicCamera camera, Control control) {
+        if (control.debug)
+            debugRenderer.render(world, camera.combined);
+
         world.step(Gdx.app.getGraphics().getDeltaTime(), 6, 2);
-        world.clearForces();           
+        world.clearForces();
     }
 
     public void clearAllBodies() {
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
-        for(Body b: bodies){
+        for (Body b : bodies) {
             world.destroyBody(b);
         }
-        
+
         entityMap.clear();
     }
-    
-    private void processCollisions(Fixture aFixture, Fixture bFixture, boolean begin) {	
-    	Entity entityA = entityMap.get(aFixture.hashCode());
-		Entity entityB = entityMap.get(bFixture.hashCode());
-		
-		if(entityA != null && entityB != null){			
-			if(aFixture.isSensor() && !bFixture.isSensor()){
-				entityB.collision(entityA, begin);
-			} else if(bFixture.isSensor() && !aFixture.isSensor()){
-				entityA.collision(entityB, begin);
-			}			
-		}  	
-    }
-    
-    public void populateEntityMap(ArrayList<Entity> entities){
-    	entityMap.clear();
-    	for(Entity e: entities){
-    		entityMap.put(e.hashcode, e);
+
+    private void processCollisions(Fixture aFixture, Fixture bFixture, boolean begin) {
+        Entity entityA = entityMap.get(aFixture.hashCode());
+        Entity entityB = entityMap.get(bFixture.hashCode());
+
+        if (entityA != null && entityB != null) {
+            if (aFixture.isSensor() && !bFixture.isSensor()) {
+                entityB.collision(entityA, begin);
+            } else if (bFixture.isSensor() && !aFixture.isSensor()) {
+                entityA.collision(entityB, begin);
+            }
         }
     }
-    
-    public void addEntityToMap(Entity entity){
-    	entityMap.put(entity.hashcode, entity);
+
+    public void populateEntityMap(ArrayList<Entity> entities) {
+        entityMap.clear();
+        for (Entity e : entities) {
+            entityMap.put(e.hashcode, e);
+        }
     }
-    
-    public void removeEntityToMap(Entity entity){
-    	entityMap.remove(entity.hashcode);
+
+    public void addEntityToMap(Entity entity) {
+        entityMap.put(entity.hashcode, entity);
     }
-    
+
+    public void removeEntityToMap(Entity entity) {
+        entityMap.remove(entity.hashcode);
+    }
+
 }
