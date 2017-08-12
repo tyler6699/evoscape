@@ -22,7 +22,7 @@ public class Tree extends Entity{
     }
     
     @Override
-	public void interact(){
+    public void interact(){
     	remove = true;	
     }
     
