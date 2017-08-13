@@ -3,6 +3,7 @@ package uk.co.carelesslabs.map;
 import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.entity.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Tile extends Entity {
     public int size;
@@ -11,14 +12,18 @@ public class Tile extends Entity {
     public String code;
     public Texture secondaryTexture;
     public Texture texture;
+    public TextureRegion textureR;
     public TileType type;
     
     public Tile(float x, float y, int size, TileType type, Texture texture){
         super();
-        pos.x = x*size;
-        pos.y = y*size;
+        
+        pos.x = x * (size/2) - y * (size/2);
+        pos.y = x * (size/2) + y * (size/2);
+        
         this.size = size;
         this.texture = texture;
+        textureR = new TextureRegion(this.texture);
         this.col = (int) x;
         this.row = (int) y;
         this.type = type;

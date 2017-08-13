@@ -3,13 +3,16 @@ package uk.co.carelesslabs.map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+
 import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Tree;
+
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -47,8 +50,8 @@ public class Island {
         entities.clear();
         box2D.clearAllBodies();
         setupTiles();
-        codeTiles();
-        generateHitboxes(box2D);
+        //codeTiles();
+        //generateHitboxes(box2D);
         addEntities(box2D);
     }
     
@@ -100,6 +103,7 @@ public class Island {
                     } else {
                         // Chance to add trees etc
                     }
+                    tile.textureR = new TextureRegion(tile.texture);
                 } 
                 
                 // ADD TILE TO CHUNK
