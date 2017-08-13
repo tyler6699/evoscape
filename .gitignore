@@ -22,6 +22,7 @@
 hs_err_pid*
 .DS_Store
 desktop/bin/*
+.gradle/
 
 .classpath
 .project

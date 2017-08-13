@@ -88,7 +88,7 @@ public class Island {
             for(int col = 0; col < chunk.numberCols; col ++){
                 // Create TILE
                 Tile tile = new Tile(col, row, chunk.tileSize, TileType.WATER, randomWater());
-                
+
                 // Make a small island
                 if(row > minRow && row < maxRow && col > minCol && col < maxCol){
                     tile.texture = randomGrass();

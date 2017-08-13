@@ -18,6 +18,7 @@ public class Hero extends Entity{
         height = 8;
         texture = Media.hero;
         speed = 30;
+        inventory = new Inventory();
         reset(box2d, pos);
     }
     
@@ -26,6 +27,7 @@ public class Hero extends Entity{
         body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyType.DynamicBody);  
         hashcode = body.getFixtureList().get(0).hashCode();
         interactEntities = new ArrayList<Entity>();
+        inventory.reset();
     }
 
     public void update(Control control) {
@@ -43,7 +45,7 @@ public class Hero extends Entity{
         
         // If interact key pressed and interactEntities present interact with first in list.
         if(control.interact && interactEntities.size() > 0){
-        	interactEntities.get(0).interact();
+        	interactEntities.get(0).interact(this);
         }
         
         // Reset interact

@@ -31,6 +31,7 @@ public class Control extends InputAdapter implements InputProcessor {
     // DEBUG
     public boolean debug;
     public boolean reset;
+    public boolean inventory;
     
     // SCREEN
     int screenWidth;
@@ -123,6 +124,9 @@ public class Control extends InputAdapter implements InputProcessor {
                 break;
             case Keys.R:
                 reset = true;
+                break;
+            case Keys.I:
+                inventory = true;
                 break;
         }
         return false;

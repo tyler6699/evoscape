@@ -28,7 +28,7 @@ public class gameclass extends ApplicationAdapter {
     
     // Island
     Island island;
-    
+        
     @Override
     public void create() {
         Media.load_assets();
@@ -77,12 +77,25 @@ public class gameclass extends ApplicationAdapter {
             control.reset = false;
         }
         
+        if(control.inventory){
+            hero.inventory.print();
+            control.inventory = false;
+        }
+        
         hero.update(control);
         
-        camera.position.lerp(hero.pos, .1f);
-        camera.update();
-        Collections.sort(island.entities);
+        // Hero Position
+        if (Rumble.getRumbleTimeLeft() > 0){
+            Rumble.tick(Gdx.graphics.getDeltaTime());
+            camera.translate(Rumble.getPos());
+        } else {
+            camera.position.lerp(hero.pos, .2f);
+        }
         
+        camera.update();
+        
+        Collections.sort(island.entities);
+                
         // GAME DRAW
         batch.setProjectionMatrix(camera.combined);
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -91,7 +104,7 @@ public class gameclass extends ApplicationAdapter {
         // Draw all tiles in the chunk / chunk rows
         for(ArrayList<Tile> row : island.chunk.tiles){
             for(Tile tile : row){
-                batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);
+                batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);                
                 if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
             }
         }

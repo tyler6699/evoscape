@@ -18,6 +18,7 @@ public class Entity implements Comparable<Entity> {
     public Body body;
     public Body sensor;
     public boolean remove;
+    public Inventory inventory;
     
     float dirX = 0;
     float dirY = 0;
@@ -39,7 +40,7 @@ public class Entity implements Comparable<Entity> {
     
     public void collision(Entity entity, boolean begin){}
 
-    public void interact(){}
+    public void interact(Entity entity){}
 
     public void removeBodies(Box2DWorld box2D) {
         if(sensor != null) box2D.world.destroyBody(sensor);
