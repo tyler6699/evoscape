@@ -1,5 +1,6 @@
 package uk.co.carelesslabs.entity;
 
+import uk.co.carelesslabs.Enums.EnityState;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,14 +12,18 @@ public class Entity implements Comparable<Entity> {
     public int hashcode;
     public Vector3 pos;
     public Texture texture;
+    public Texture shadow;
     public float width;
     public float height;
     public EntityType type;
+    public EnityState state;
     public float speed;
     public Body body;
     public Body sensor;
     public boolean remove;
     public Inventory inventory;
+    public Boolean ticks;
+    public float time;
     
     float dirX = 0;
     float dirY = 0;
@@ -28,7 +33,12 @@ public class Entity implements Comparable<Entity> {
     }
     
     public void draw(SpriteBatch batch){
-        batch.draw(texture, pos.x, pos.y, width, height);
+        if(shadow != null) batch.draw(shadow, pos.x, pos.y, width, height);
+        if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
+    }
+    
+    public void tick(float delta){
+        time += delta;
     }
     
     public int compareTo(Entity e) {

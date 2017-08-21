@@ -2,6 +2,8 @@ package uk.co.carelesslabs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Media {
     // TILES
@@ -17,6 +19,13 @@ public class Media {
     
     // Entity
     public static Texture tree;
+    public static Texture birdWalk, birdFly, birdPeck, birdShadow;
+    
+    // Texture Regions
+    public static TextureRegion[] birdWalkFrames, birdFlyFrames, birdPeckFrames;
+    
+    // Animations
+    public static Animation<TextureRegion> birdWalkAnim, birdPeckAnim, birdFlyAnim;
     
     public static void load_assets(){
         // HERO
@@ -46,6 +55,19 @@ public class Media {
         cliff   = new Texture(Gdx.files.internal("8x8/cliff.png"));
         
         tree    = new Texture("entities/tree.png");
+        birdPeck = new Texture("entities/bird/bird_peck.png");
+        birdWalk = new Texture("entities/bird/bird_walk.png"); 
+        birdFly  = new Texture("entities/bird/bird_fly.png");
+        birdShadow = new Texture("entities/bird/bird_shadow.png");
+        
+        // Texture Regions
+        birdWalkFrames = TextureRegion.split(birdWalk, 10, 9)[0];
+        birdPeckFrames = TextureRegion.split(birdPeck, 10, 9)[0];
+        birdFlyFrames = TextureRegion.split(birdFly, 10, 9)[0];
+
+        birdWalkAnim = new Animation<TextureRegion>(.1f, birdWalkFrames);
+        birdPeckAnim = new Animation<TextureRegion>(.1f, birdPeckFrames);
+        birdFlyAnim = new Animation<TextureRegion>(.1f, birdFlyFrames);
     }
     
     public void dispose(){

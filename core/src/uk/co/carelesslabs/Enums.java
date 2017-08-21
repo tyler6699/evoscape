@@ -12,5 +12,13 @@ public class Enums {
         HERO, 
         TREE
     }
+    
+    public enum EnityState {
+        NONE,
+        IDLE,
+        FEEDING,
+        WALKING,
+        FLYING
+    }
 
 }

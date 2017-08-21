@@ -2,11 +2,14 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import uk.co.carelesslabs.box2d.Box2DWorld;
+import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,6 +31,9 @@ public class gameclass extends ApplicationAdapter {
     
     // Island
     Island island;
+    
+    // TIME
+    float time;
         
     @Override
     public void create() {
@@ -61,6 +67,9 @@ public class gameclass extends ApplicationAdapter {
         
         // HashMap of Entities for collisions
         box2D.populateEntityMap(island.entities);
+        
+        // Bird
+        island.entities.add(new Bird(island.centreTile.pos, box2D));
     }
 
     @Override
@@ -92,6 +101,11 @@ public class gameclass extends ApplicationAdapter {
             camera.position.lerp(hero.pos, .2f);
         }
         
+        // Draw all entities
+        for(Entity e: island.entities){
+            e.tick(Gdx.graphics.getDeltaTime());
+        }
+        
         camera.update();
         
         Collections.sort(island.entities);
@@ -113,10 +127,28 @@ public class gameclass extends ApplicationAdapter {
         for(Entity e: island.entities){
             e.draw(batch);
         }
+        
+//        // Hero Shadow
+//        batch.draw(Media.birdShadow, hero.pos.x-1, hero.pos.y-1);
+//        
+//        // FLying
+//        batch.draw(Media.birdShadow, hero.pos.x + 10, hero.pos.y + 10);
+//        batch.draw(Media.birdFlyAnim.getKeyFrame(time, true), hero.pos.x + 10, hero.pos.y + 25);
+//        
+//        // Pecking
+//        batch.draw(Media.birdPeckAnim.getKeyFrame(time, true), hero.pos.x - 15, hero.pos.y - 15);
+//        batch.draw(Media.birdShadow, hero.pos.x - 15, hero.pos.y - 15);
+//        
+//        // Walk
+//        batch.draw(Media.birdShadow, hero.pos.x - 10, hero.pos.y + 5);
+//        batch.draw(Media.birdWalkAnim.getKeyFrame(time, true), hero.pos.x - 10, hero.pos.y + 5);
+        
         batch.end();
         
         box2D.tick(camera, control);
         island.clearRemovedEntities(box2D);
+        
+        time += Gdx.graphics.getDeltaTime();
     }
 	
     @Override
