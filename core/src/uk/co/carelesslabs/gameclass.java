@@ -69,7 +69,7 @@ public class gameclass extends ApplicationAdapter {
         box2D.populateEntityMap(island.entities);
         
         // Bird
-        island.entities.add(new Bird(island.centreTile.pos, box2D));
+        island.entities.add(new Bird(island.centreTile.pos, box2D, Enums.EnityState.FLYING));
     }
 
     @Override
@@ -127,21 +127,6 @@ public class gameclass extends ApplicationAdapter {
         for(Entity e: island.entities){
             e.draw(batch);
         }
-        
-//        // Hero Shadow
-//        batch.draw(Media.birdShadow, hero.pos.x-1, hero.pos.y-1);
-//        
-//        // FLying
-//        batch.draw(Media.birdShadow, hero.pos.x + 10, hero.pos.y + 10);
-//        batch.draw(Media.birdFlyAnim.getKeyFrame(time, true), hero.pos.x + 10, hero.pos.y + 25);
-//        
-//        // Pecking
-//        batch.draw(Media.birdPeckAnim.getKeyFrame(time, true), hero.pos.x - 15, hero.pos.y - 15);
-//        batch.draw(Media.birdShadow, hero.pos.x - 15, hero.pos.y - 15);
-//        
-//        // Walk
-//        batch.draw(Media.birdShadow, hero.pos.x - 10, hero.pos.y + 5);
-//        batch.draw(Media.birdWalkAnim.getKeyFrame(time, true), hero.pos.x - 10, hero.pos.y + 5);
         
         batch.end();
         

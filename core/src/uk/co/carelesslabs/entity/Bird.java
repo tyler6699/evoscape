@@ -6,26 +6,24 @@ import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Rumble;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Bird extends Entity{
     
-    public Bird(Vector3 pos, Box2DWorld box2d){
+    public Bird(Vector3 pos, Box2DWorld box2d, Enums.EnityState state){
         super();
         type = EntityType.TREE;
         width = 8;
         height = 8;
-        this.pos = pos;
+        this.pos.set(pos);
         texture = Media.tree;
         shadow = Media.birdShadow;
-        body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyDef.BodyType.StaticBody);
+        //body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyDef.BodyType.StaticBody);
         sensor = Box2DHelper.createSensor(box2d.world, width, height*.85f, width/2, height/3, pos, BodyDef.BodyType.DynamicBody);     
         hashcode = sensor.getFixtureList().get(0).hashCode();
-        state = Enums.EnityState.WALKING;
+        this.state = state;
         ticks = true;
     }
     
