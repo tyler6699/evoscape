@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Bird extends Entity{
-    
+    public float flightY = 0;
     public Bird(Vector3 pos, Box2DWorld box2d, Enums.EnityState state){
         super();
         type = EntityType.TREE;
@@ -20,7 +20,7 @@ public class Bird extends Entity{
         this.pos.set(pos);
         texture = Media.tree;
         shadow = Media.birdShadow;
-        //body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyDef.BodyType.StaticBody);
+        body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyDef.BodyType.StaticBody);
         sensor = Box2DHelper.createSensor(box2d.world, width, height*.85f, width/2, height/3, pos, BodyDef.BodyType.DynamicBody);     
         hashcode = sensor.getFixtureList().get(0).hashCode();
         this.state = state;
@@ -31,13 +31,17 @@ public class Bird extends Entity{
     public void draw(SpriteBatch batch){
         if(state == Enums.EnityState.FLYING){
             batch.draw(Media.birdShadow, pos.x, pos.y);
-            batch.draw(Media.birdFlyAnim.getKeyFrame(time, true), pos.x, pos.y + 10);
+            batch.draw(Media.birdFlyAnim.getKeyFrame(time, true), pos.x, pos.y + flightY);
         } else if(state == Enums.EnityState.WALKING){
             batch.draw(Media.birdShadow, pos.x, pos.y);
-            batch.draw(Media.birdWalkAnim.getKeyFrame(time, true), pos.x, pos.y);
+            batch.draw(Media.birdWalkAnim.getKeyFrame(time, true), pos.x, pos.y + flightY);
         } else if(state == Enums.EnityState.FEEDING){
-            batch.draw(Media.birdShadow, pos.x, pos.y);
-            batch.draw(Media.birdPeckAnim.getKeyFrame(time, true), pos.x, pos.y);
+        	 batch.draw(Media.birdShadow, pos.x, pos.y);
+        	if(isAirBorn()){
+        		batch.draw(Media.birdFlyAnim.getKeyFrame(time, true), pos.x, pos.y + flightY);
+        	} else {
+        		batch.draw(Media.birdPeckAnim.getKeyFrame(time, true), pos.x, pos.y + flightY);
+        	}
         }
         
     }
@@ -45,6 +49,25 @@ public class Bird extends Entity{
     @Override
     public void tick(float delta){
         time += delta;
+        
+        //Temp state changer
+        if(time > 5){
+        	state = Enums.EnityState.FEEDING;
+        }
+        
+        if(state == Enums.EnityState.FLYING){
+        	if (flightY < 10){
+        		flightY += 0.1;	
+        	}
+        	
+        	body.setActive(false);	
+        } else {
+        	if ( isAirBorn() ){
+        		flightY -= 0.1;	
+        	}
+        	body.setActive(true);
+        }
+        
     }
     
     @Override
@@ -54,6 +77,10 @@ public class Bird extends Entity{
             remove = true;
             Rumble.rumble(1, .2f);
         }
+    }
+    
+    public boolean isAirBorn(){
+    	return flightY > 0;
     }
     
 
