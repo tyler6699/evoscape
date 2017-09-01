@@ -3,18 +3,19 @@ package uk.co.carelesslabs;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
@@ -49,7 +50,7 @@ public class gameclass extends ApplicationAdapter {
         int w = (int) (displayW/(displayH/ (displayH/Math.floor(displayH/160))));
         
         camera = new OrthographicCamera(w,h);
-        camera.zoom = .4f;
+        camera.zoom = .6f;
         
         // Used to capture Keyboard Input
         control = new Control(displayW, displayH, camera);
@@ -69,7 +70,7 @@ public class gameclass extends ApplicationAdapter {
         box2D.populateEntityMap(island.entities);
         
         // Bird
-        island.entities.add(new Bird(island.centreTile.pos, box2D, Enums.EnityState.FLYING));
+        island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
     }
 
     @Override
@@ -84,6 +85,8 @@ public class gameclass extends ApplicationAdapter {
             island.entities.add(hero);
             box2D.populateEntityMap(island.entities);
             control.reset = false;
+            // Bird
+            island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
         }
         
         if(control.inventory){
@@ -104,6 +107,11 @@ public class gameclass extends ApplicationAdapter {
         // Draw all entities
         for(Entity e: island.entities){
             e.tick(Gdx.graphics.getDeltaTime());
+            
+            if(e.type == EntityType.BIRD){
+                e.currentTile = island.chunk.getTile(e.body.getPosition());
+                e.tick(Gdx.graphics.getDeltaTime(), island.chunk);
+            }
         }
         
         camera.update();

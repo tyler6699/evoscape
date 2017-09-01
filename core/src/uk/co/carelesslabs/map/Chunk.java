@@ -1,6 +1,7 @@
 package uk.co.carelesslabs.map;
 
 import java.util.ArrayList;
+import com.badlogic.gdx.math.Vector2;
 
 public class Chunk {
     int numberRows;
@@ -41,6 +42,20 @@ public class Chunk {
             }
         }
         return "0";
+    }
+
+    public Tile getTile(Vector2 vector2) {
+        ArrayList<Tile> chunk_row;
+        int row = (int) ((vector2.y*tileSize/2) / numberRows);
+        int col = (int) ((vector2.x*tileSize/2) / numberCols);
+        if(tiles.size() > row && row >= 0){
+            chunk_row = tiles.get(row);
+        
+            if(chunk_row != null && chunk_row.size() > col && col >= 0){
+                return chunk_row.get(col);
+            }
+        }
+        return null;
     }
 
 }

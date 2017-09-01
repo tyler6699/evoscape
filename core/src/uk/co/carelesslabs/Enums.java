@@ -10,7 +10,8 @@ public class Enums {
     
     public enum EntityType {
         HERO, 
-        TREE
+        TREE, 
+        BIRD
     }
     
     public enum EnityState {
@@ -18,7 +19,8 @@ public class Enums {
         IDLE,
         FEEDING,
         WALKING,
-        FLYING
+        FLYING,
+        HOVERING
     }
 
 }
