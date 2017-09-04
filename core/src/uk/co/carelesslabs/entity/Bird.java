@@ -3,7 +3,6 @@ package uk.co.carelesslabs.entity;
 import java.util.ArrayList;
 import uk.co.carelesslabs.Enums;
 import uk.co.carelesslabs.Enums.EntityType;
-import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Rumble;
 import uk.co.carelesslabs.box2d.Box2DHelper;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Bird extends Entity{
-    public float flightY = 0;
+    // pos.z is the height off the floor
     private float maxHeight;
     public Tile destTile;
     private TextureRegion tRegion;
@@ -47,72 +46,96 @@ public class Bird extends Entity{
         setFlipped();
         
         batch.draw(Media.birdShadow, pos.x, pos.y);
-        batch.draw(tRegion, pos.x, pos.y + flightY);
+        batch.draw(tRegion, pos.x, pos.y + pos.z);
     }
     
     @Override
     public void tick(float delta, Chunk chunk){ 
-        // Reached destination ?
-        if(needsDestination()){
-            if(MathUtils.randomBoolean(.85f) || currentTile.isWater()){
-                setDestination(delta, chunk);
-                maxHeight = setHeight();    
-            } else {
-                state = Enums.EnityState.HOVERING;
-            }
-            
-        } else if (hasDestination()) {
+        if(isHovering()){
+            hoverOrLand();
+        } else if(needsDestination()){
+            newDestinationOrHover(delta, chunk);
+        } else if(hasDestination()) {
             moveToDestination(delta);
-            if(atDestination()){
-                destVec = null;
-                destTile = null;
-            }
+            clearDestination();
         } else if(isNotAirBorn()){
-            if(MathUtils.randomBoolean(.02f)){
+            setNewState(delta);
+        }
+
+        if(isFlying()){
+            checkFlyHeight();
+            toggleHitboxes(false);
+        } else if(isHovering()){
+            setLanding();
+        } else if(isLanding()){
+            land();
+        }
+    }
+    
+
+
+
+    @Override
+    public void interact(Entity entity){
+        if(entity.inventory != null){
+            entity.inventory.addEntity(this);
+            remove = true;
+            Rumble.rumble(1, .2f);
+        }
+    }
+    
+    private void toggleHitboxes(boolean b) {
+        body.setActive(b);
+        sensor.setActive(b);
+    }
+
+    // SETTERS
+    private void setNewState(float delta) {
+        if(coolDown > 0){
+            coolDown -= delta;
+            if(isWalking()){
+                if(tRegion.isFlipX()){
+                    body.setTransform(body.getPosition().x - speed / 4 * delta, body.getPosition().y,0);
+                } else {
+                    body.setTransform(body.getPosition().x + speed / 4 * delta, body.getPosition().y,0);
+                }
+                updatePositions();
+            }
+        } else {
+            if(MathUtils.randomBoolean(.2f)){
                 state = Enums.EnityState.FLYING;
             } else if(MathUtils.randomBoolean(.5f)) {
                 state = Enums.EnityState.FEEDING;
-            }  
-        }
+                coolDown = .5f;
+            } else if(MathUtils.randomBoolean(.3f)) {
+                state = Enums.EnityState.WALKING;
+                coolDown = 1f;
+            }      
+        }     
+    }
 
-        // If flying check height
-        if(isFLying()){
-            if (isNotHigh()) flightY += 0.1; 
-            if (isTooHigh()) flightY -= 0.1;
-            
-            body.setActive(false);
-        } else {
-            if (isAirBorn()) flightY -= 0.5; 
-            if(flightY < 0) flightY = 0;
-            body.setActive(true);
-        }
-        
+    private void clearDestination() {
+        if(isAtDestination()){
+            destVec = null;
+            destTile = null;
+        } 
+    }
 
+    private void updatePositions() {
+        sensor.setTransform(body.getPosition(),0);
+        pos.x = body.getPosition().x - width/2;
+        pos.y = body.getPosition().y - height/4;    
     }
     
-    private boolean atDestination() {
-        return currentTile.pos.epsilonEquals(destTile.pos, 20);
-    }
-
-    private boolean needsDestination() {
-        return destVec == null && isFLying();
-    }
-    
-    private boolean hasDestination() {
-        return destVec != null;
-    }
-
     private void setTextureRegion(){
-        if(state == Enums.EnityState.FLYING){
+        if(isFlying() || isLanding()){
             tRegion = Media.birdFlyAnim.getKeyFrame(time, true);
-        } else if(state == Enums.EnityState.WALKING){
+        } else if(isWalking()){
             tRegion = Media.birdWalkAnim.getKeyFrame(time, true);
-        } else if(state == Enums.EnityState.FEEDING){
-            if(isAirBorn()){
-                tRegion = Media.birdFlyAnim.getKeyFrame(time, true);
-            } else {
-                tRegion = Media.birdPeckAnim.getKeyFrame(time, true);
-            }
+        } else if(isFeeding()){
+            tRegion = Media.birdPeckAnim.getKeyFrame(time, true);
+        } else if(isWalking()){
+            tRegion = Media.birdWalkAnim.getKeyFrame(time, true);
         }
     }
     
@@ -138,15 +161,54 @@ public class Bird extends Entity{
         
         updatePositions();
     }
+    
+    private float setHeight() {
+        return MathUtils.random(10) + 10;
+    }
+    
+    private void checkFlyHeight() {
+        if (isNotHigh()) pos.z += 0.1; 
+        if (isTooHigh()) pos.z -= 0.1;     
+    }
+
+    private void land() {
+        if (isAirBorn()) pos.z -= 0.5; 
+        if(pos.z <= 0){ 
+            // Landed
+            pos.z = 0;
+            state = Enums.EnityState.NONE;
+            toggleHitboxes(true);
+        }
+    }
+    
+    private void setLanding() {
+        if(MathUtils.randomBoolean(.2f)){
+            state = Enums.EnityState.LANDING;  
+        }
+    }
+    
+    // LOGIC
+    private void newDestinationOrHover(float delta, Chunk chunk) {
+     // 15% chance a new destination is set, unless over water then always
+        // get a new destination
+        if(MathUtils.randomBoolean(.85f) || currentTile.isWater()){
+            setDestination(delta, chunk);
+            maxHeight = setHeight(); 
+        } else {
+            state = Enums.EnityState.HOVERING;
+        }
+    }
+
+    private void hoverOrLand() {
+        // TODO Auto-generated method stub   
+    }
 
     private void setDestination(float delta, Chunk chunk){    
-        System.out.println("Find land"); 
         for(ArrayList<Tile> row : chunk.tiles){
             if(destTile != null) break;
             
             for(Tile tile : row){
-                if (tile.type == TileType.GRASS && MathUtils.random(100) > 99 && tile != currentTile){
-                    System.out.println("Found Land & set destination.");
+                if (tile.isGrass() && MathUtils.random(100) > 99 && tile != currentTile){
                     destTile = tile;
                     getVector(destTile.pos);
                     break;
@@ -155,47 +217,58 @@ public class Bird extends Entity{
         }
         
     }
-    
-    private void updatePositions() {
-        sensor.setTransform(body.getPosition(),0);
-        pos.x = body.getPosition().x - width/2;
-        pos.y = body.getPosition().y - height/4;    
+   
+    // STATES 
+    private boolean hasDestination() {
+        return destVec != null;
     }
-
-    @Override
-    public void interact(Entity entity){
-        if(entity.inventory != null){
-            entity.inventory.addEntity(this);
-            remove = true;
-            Rumble.rumble(1, .2f);
-        }
+    
+    private boolean isAtDestination() {
+        return currentTile.pos.epsilonEquals(destTile.pos, 20);
+    }
+    
+    private boolean needsDestination() {
+        return destVec == null && isFlying();
     }
     
     public boolean isAirBorn(){
-        return flightY > 0;
+        return pos.z > 0;
     }
     
     public boolean isNotAirBorn(){
-        return flightY == 0;
+        return pos.z == 0;
     }
     
     public boolean isHigh(){
-        return flightY == maxHeight;
+        return pos.z == maxHeight;
     }
     
     public boolean isNotHigh(){
-        return flightY < maxHeight;
+        return pos.z < maxHeight;
     }
     
     public boolean isTooHigh(){
-        return flightY > maxHeight;
+        return pos.z > maxHeight;
     }
     
-    private float setHeight() {
-        return MathUtils.random(10) + 10;
-    }
-    
-    private boolean isFLying() {
+    private boolean isFlying() {
         return state == Enums.EnityState.FLYING;
     }
+    
+    private boolean isHovering(){
+        return state == Enums.EnityState.HOVERING;
+    }
+    
+    private boolean isLanding(){
+        return state == Enums.EnityState.LANDING;
+    }
+
+    private boolean isFeeding(){
+        return state == Enums.EnityState.FEEDING;
+    }
+    
+    private boolean isWalking(){
+        return state == Enums.EnityState.WALKING;
+    }
+    
 }

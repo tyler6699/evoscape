@@ -2,7 +2,6 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
@@ -66,11 +65,11 @@ public class gameclass extends ApplicationAdapter {
         hero = new Hero(island.centreTile.pos, box2D);
         island.entities.add(hero);
         
-        // HashMap of Entities for collisions
-        box2D.populateEntityMap(island.entities);
-        
         // Bird
         island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
+        
+        // HashMap of Entities for collisions
+        box2D.populateEntityMap(island.entities);  
     }
 
     @Override
@@ -83,10 +82,10 @@ public class gameclass extends ApplicationAdapter {
             island.reset(box2D);
             hero.reset(box2D,island.getCentrePosition());
             island.entities.add(hero);
+            island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
+            
             box2D.populateEntityMap(island.entities);
             control.reset = false;
-            // Bird
-            island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
         }
         
         if(control.inventory){

@@ -20,7 +20,8 @@ public class Enums {
         FEEDING,
         WALKING,
         FLYING,
-        HOVERING
+        HOVERING, 
+        LANDING
     }
 
 }

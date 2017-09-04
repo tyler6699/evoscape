@@ -28,6 +28,7 @@ public class Entity implements Comparable<Entity> {
     public Inventory inventory;
     public Boolean ticks;
     public float time;
+    public float coolDown;
     public Tile currentTile;
     
     float dirX = 0;
@@ -73,8 +74,6 @@ public class Entity implements Comparable<Entity> {
         float dn = (float)(h / 1.4142135623730951);
               
         destVec = new Vector3(dx / dn, dy / dn, 0);
-
-        System.out.println("Start x: " + pos.x + " Dest x: " + dest.x + " x vector: " + destVec.x);
     }
 
 }
