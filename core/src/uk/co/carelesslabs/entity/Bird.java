@@ -69,9 +69,6 @@ public class Bird extends Entity{
             toggleHitboxes(false);
         }
     }
-    
-
-
 
     @Override
     public void interact(Entity entity){
@@ -87,17 +84,11 @@ public class Bird extends Entity{
         sensor.setActive(b);
     }
 
-    // SETTERS
     private void setNewState(float delta) {
         if(coolDown > 0){
             coolDown -= delta;
             if(isWalking()){
-                if(tRegion.isFlipX()){
-                    body.setTransform(body.getPosition().x - speed / 4 * delta, body.getPosition().y,0);
-                } else {
-                    body.setTransform(body.getPosition().x + speed / 4 * delta, body.getPosition().y,0);
-                }
-                updatePositions();
+                walk(delta);
             }
         } else {
             if(MathUtils.randomBoolean(.2f)){
@@ -112,7 +103,7 @@ public class Bird extends Entity{
         }     
     }
 
-    private void clearDestination() {
+	private void clearDestination() {
         if(isAtDestination()){
             destVec = null;
             destTile = null;
@@ -147,15 +138,9 @@ public class Bird extends Entity{
         }
     }
     
-    private void moveToDestination(float delta) {
-        // Using own lerp function
-        // body.setTransform(body.getPosition().x + (destVec.x * speed * delta), body.getPosition().y + (destVec.y * speed * delta), 0);
-        
+    private void moveToDestination(float delta) { 
         // https://github.com/libgdx/libgdx/wiki/Interpolation
-        body.setTransform(body.getPosition().interpolate(new Vector2(destTile.pos.x + width, destTile.pos.y + height), delta * speed / 4, Interpolation.circle),0);
-        
-        // Lerp - Standard Lineer movement
-        //body.setTransform(body.getPosition().lerp(new Vector2(destTile.pos.x + width, destTile.pos.y + height), delta * speed/10),0);
+        body.setTransform(body.getPosition().interpolate(new Vector2(destTile.pos.x + width, destTile.pos.y + height), delta * speed / 4, Interpolation.circle), 0);
         
         updatePositions();
     }
@@ -185,7 +170,6 @@ public class Bird extends Entity{
         }
     }
     
-    // LOGIC
     private void newDestinationOrHover(float delta, Chunk chunk) {
      // 15% chance a new destination is set, unless over water then always
         // get a new destination
@@ -212,7 +196,17 @@ public class Bird extends Entity{
         
     }
    
-    // STATES 
+    private void walk(float delta) {
+    	if(currentTile.isPassable()){
+    		if(tRegion.isFlipX()){
+                body.setTransform(body.getPosition().x - speed / 4 * delta, body.getPosition().y,0);
+            } else {
+                body.setTransform(body.getPosition().x + speed / 4 * delta, body.getPosition().y,0);
+            }
+            updatePositions();		
+    	}
+	}
+    
     private boolean hasDestination() {
         return destVec != null;
     }
