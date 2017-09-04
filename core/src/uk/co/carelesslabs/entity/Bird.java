@@ -52,7 +52,9 @@ public class Bird extends Entity{
     @Override
     public void tick(float delta, Chunk chunk){ 
         if(isHovering()){
-            hoverOrLand();
+            setLanding();
+        } else if(isLanding()){
+            land(); 
         } else if(needsDestination()){
             newDestinationOrHover(delta, chunk);
         } else if(hasDestination()) {
@@ -65,10 +67,6 @@ public class Bird extends Entity{
         if(isFlying()){
             checkFlyHeight();
             toggleHitboxes(false);
-        } else if(isHovering()){
-            setLanding();
-        } else if(isLanding()){
-            land();
         }
     }
     
@@ -197,10 +195,6 @@ public class Bird extends Entity{
         } else {
             state = Enums.EnityState.HOVERING;
         }
-    }
-
-    private void hoverOrLand() {
-        // TODO Auto-generated method stub   
     }
 
     private void setDestination(float delta, Chunk chunk){    
