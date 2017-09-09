@@ -2,7 +2,6 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
