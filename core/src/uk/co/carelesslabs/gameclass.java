@@ -103,14 +103,11 @@ public class gameclass extends ApplicationAdapter {
             camera.position.lerp(hero.pos, .2f);
         }
         
-        // Draw all entities
+        // Tick all entities
         for(Entity e: island.entities){
             e.tick(Gdx.graphics.getDeltaTime());
-            
-            if(e.type == EntityType.BIRD){
-                e.currentTile = island.chunk.getTile(e.body.getPosition());
-                e.tick(Gdx.graphics.getDeltaTime(), island.chunk);
-            }
+            e.currentTile = island.chunk.getTile(e.body.getPosition());
+            e.tick(Gdx.graphics.getDeltaTime(), island.chunk);
         }
         
         camera.update();
