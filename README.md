@@ -19,3 +19,5 @@ LIBGDX Tutorial - Rogue like survival game
 [08 - Collisions and Interaction](https://github.com/tyler6699/evoscape/tree/tutorial_008)
 
 [09 - Screen Shake and Inventory](https://github.com/tyler6699/evoscape/tree/tutorial_009)
+
+[10 - Basic AI](https://github.com/tyler6699/evoscape/tree/tutorial_010)
