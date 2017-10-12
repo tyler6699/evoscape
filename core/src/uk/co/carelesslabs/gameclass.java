@@ -6,6 +6,7 @@ import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
+import uk.co.carelesslabs.entity.Inventory;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 public class gameclass extends ApplicationAdapter {
@@ -63,12 +65,11 @@ public class gameclass extends ApplicationAdapter {
         // Hero
         hero = new Hero(island.centreTile.pos, box2D);
         island.entities.add(hero);
-        
-        // Bird
-        island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
-        
+       
         // HashMap of Entities for collisions
         box2D.populateEntityMap(island.entities);  
+        
+        control.reset = true;
     }
 
     @Override
@@ -78,18 +79,16 @@ public class gameclass extends ApplicationAdapter {
         
         // GAME LOGIC
         if(control.reset){
-            island.reset(box2D);
-            hero.reset(box2D,island.getCentrePosition());
-            island.entities.add(hero);
-            island.entities.add(new Bird(new Vector3(10,10,0), box2D, Enums.EnityState.FLYING));
-            
-            box2D.populateEntityMap(island.entities);
-            control.reset = false;
+            resetGameState();
         }
         
         if(control.inventory){
             hero.inventory.print();
             control.inventory = false;
+        }
+        
+        if(!control.processedClick){
+            System.out.println("Clicked: " + control.mapClickPos + " " + hero.inventory.hasWood());
         }
         
         hero.update(control);
@@ -137,8 +136,26 @@ public class gameclass extends ApplicationAdapter {
         island.clearRemovedEntities(box2D);
         
         time += Gdx.graphics.getDeltaTime();
+        if(time > 3){
+            System.out.println(Gdx.graphics.getFramesPerSecond());    
+            time = 0;
+        }
+        control.processedClick = true;
     }
 	
+    private void resetGameState() {     
+        island.reset(box2D);
+        hero.reset(box2D,island.getCentrePosition());
+        island.entities.add(hero);
+        
+        for(int i = 0; i < MathUtils.random(20); i++){
+            island.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
+        }
+       
+        box2D.populateEntityMap(island.entities);
+        control.reset = false;   
+    }
+
     @Override
     public void dispose () {
         batch.dispose();

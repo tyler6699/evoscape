@@ -24,7 +24,7 @@ public class Control extends InputAdapter implements InputProcessor {
     // MOUSE
     public boolean  leftMouseBtn;
     public boolean  rightMouseBtn;
-    public boolean  processedClick;
+    public boolean  processedClick = true;
     public Vector2  mouseClickPos = new Vector2();
     public Vector2  mapClickPos = new Vector2();
     

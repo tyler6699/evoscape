@@ -27,7 +27,7 @@ public class Bird extends Entity{
         super();
         maxHeight = setHeight();
         type = EntityType.BIRD;
-        speed = 30;
+        speed = MathUtils.random(20) + 5;
         width = 8;
         height = 8;
         texture = Media.tree;
@@ -46,7 +46,9 @@ public class Bird extends Entity{
         setFlipped();
         
         batch.draw(Media.birdShadow, pos.x, pos.y);
-        batch.draw(tRegion, pos.x, pos.y + pos.z);
+        if(tRegion != null){
+            batch.draw(tRegion, pos.x, pos.y + pos.z);
+        }
     }
     
     @Override
@@ -165,13 +167,13 @@ public class Bird extends Entity{
     }
     
     private void setLanding() {
-        if(MathUtils.randomBoolean(.2f)){
+        if(MathUtils.randomBoolean(.05f)){
             state = Enums.EnityState.LANDING;  
         }
     }
     
     private void newDestinationOrHover(float delta, Chunk chunk) {
-     // 15% chance a new destination is set, unless over water then always
+        // 15% chance a new destination is set, unless over water then always
         // get a new destination
         if(MathUtils.randomBoolean(.85f) || currentTile.isWater()){
             setDestination(delta, chunk);

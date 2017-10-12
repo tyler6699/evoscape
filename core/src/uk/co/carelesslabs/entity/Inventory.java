@@ -2,6 +2,8 @@ package uk.co.carelesslabs.entity;
 
 import java.util.HashMap;
 
+import uk.co.carelesslabs.Enums.EntityType;
+
 public class Inventory {
     HashMap<Integer, Entity> entities;
     
@@ -32,5 +34,15 @@ public class Inventory {
     
     public void reset() {
         entities = new HashMap<Integer, Entity>();
+    }
+    
+    public boolean hasWood(){
+        for(int i = 0 ; i < entities.size(); i++){
+            Entity e = entities.get(i);
+            if( e.type == EntityType.TREE){
+                return true;
+            }
+        }      
+        return false;
     }
 }
