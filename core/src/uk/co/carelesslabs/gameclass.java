@@ -6,7 +6,6 @@ import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
-import uk.co.carelesslabs.entity.Inventory;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -15,12 +14,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
     Control control;
-    SpriteBatch batch;
+    SpriteBatch batch, hudBatch;
+    Matrix4 screenMatrix;
     Box2DWorld box2D;
 
     // Display Size
@@ -55,6 +56,9 @@ public class gameclass extends ApplicationAdapter {
         // Used to capture Keyboard Input
         control = new Control(displayW, displayH, camera);
         Gdx.input.setInputProcessor(control);
+        
+        // Setup Matrix4 for HUD
+        screenMatrix = new Matrix4(batch.getProjectionMatrix().setToOrtho2D(0, 0, control.screenWidth, control.screenHeight));
         
         // Box2D
         box2D = new Box2DWorld();
@@ -131,6 +135,37 @@ public class gameclass extends ApplicationAdapter {
         }
         
         batch.end();
+        
+        // TEST DRAW GUI
+        // TODO Move into entities / classes
+        // Reset batch projection for screen size
+        batch.setProjectionMatrix(screenMatrix);
+        batch.begin();
+        
+        float scale = control.screenWidth / (Media.squareMenu.getWidth() + Media.mainBack.getWidth());
+        batch.draw(Media.squareMenu, 0,0, Media.squareMenu.getHeight()*scale, Media.squareMenu.getWidth()*scale);
+        batch.draw(Media.mainBack, Media.squareMenu.getWidth()*scale,0, Media.mainBack.getWidth()*scale, Media.mainBack.getHeight()*scale);
+        
+        // Main menu
+        // Create new entities for each
+        float offset = 3;
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 2; j++){
+                batch.draw(Media.pinkButton, (offset + ((i+1)*offset) + (i * Media.pinkButton.getWidth())) * scale, (offset + ((j+1)*offset) + (j * Media.pinkButton.getHeight())) * scale, Media.pinkButton.getWidth()*scale, Media.pinkButton.getHeight()*scale);
+            }
+        }
+        
+        // Main menu
+        // Create new entities for each
+        for(int i = 0; i < 14; i++){
+            for(int j = 0; j < 2; j++){
+                batch.draw(Media.pinkButton, (Media.squareMenu.getWidth() + offset + ((i+1)*offset) + (i * Media.pinkButton.getWidth())) * scale, (offset + ((j+1)*offset) + (j * Media.pinkButton.getHeight())) * scale, Media.pinkButton.getWidth()*scale, Media.pinkButton.getHeight()*scale);
+            }
+        }
+        
+        batch.end();
+        
+        // END MENU TEST
         
         box2D.tick(camera, control);
         island.clearRemovedEntities(box2D);

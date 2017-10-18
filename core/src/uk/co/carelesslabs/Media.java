@@ -27,6 +27,9 @@ public class Media {
     // Animations
     public static Animation<TextureRegion> birdWalkAnim, birdPeckAnim, birdFlyAnim;
     
+    //GUI
+    public static Texture squareMenu, mainBack, pinkButton;
+    
     public static void load_assets(){
         // HERO
         hero  = new Texture("entities/hero/hero.png");
@@ -68,6 +71,11 @@ public class Media {
         birdWalkAnim = new Animation<TextureRegion>(.1f, birdWalkFrames);
         birdPeckAnim = new Animation<TextureRegion>(.1f, birdPeckFrames);
         birdFlyAnim = new Animation<TextureRegion>(.1f, birdFlyFrames);
+        
+        // GUI
+        squareMenu = new Texture(Gdx.files.internal("gui/square_menu.png"));
+        mainBack = new Texture(Gdx.files.internal("gui/main_background.png"));
+        pinkButton = new Texture(Gdx.files.internal("gui/pink_button.png"));
     }
     
     public void dispose(){
