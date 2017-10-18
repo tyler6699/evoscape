@@ -8,6 +8,7 @@ import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
+import uk.co.carelesslabs.ui.SquareMenu;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,6 +37,9 @@ public class gameclass extends ApplicationAdapter {
     
     // TIME
     float time;
+    
+    // Menu test
+    SquareMenu squareMenu;
         
     @Override
     public void create() {
@@ -74,6 +78,9 @@ public class gameclass extends ApplicationAdapter {
         box2D.populateEntityMap(island.entities);  
         
         control.reset = true;
+        
+        //Menu
+        squareMenu = new SquareMenu();
     }
 
     @Override
@@ -91,9 +98,7 @@ public class gameclass extends ApplicationAdapter {
             control.inventory = false;
         }
         
-        if(!control.processedClick){
-            System.out.println("Clicked: " + control.mapClickPos + " " + hero.inventory.hasWood());
-        }
+        control.processedClick = squareMenu.checkClick(control.mouseClickPos, control.processedClick);
         
         hero.update(control);
         
@@ -136,36 +141,12 @@ public class gameclass extends ApplicationAdapter {
         
         batch.end();
         
-        // TEST DRAW GUI
-        // TODO Move into entities / classes
-        // Reset batch projection for screen size
+        // GUI
         batch.setProjectionMatrix(screenMatrix);
-        batch.begin();
         
-        float scale = control.screenWidth / (Media.squareMenu.getWidth() + Media.mainBack.getWidth());
-        batch.draw(Media.squareMenu, 0,0, Media.squareMenu.getHeight()*scale, Media.squareMenu.getWidth()*scale);
-        batch.draw(Media.mainBack, Media.squareMenu.getWidth()*scale,0, Media.mainBack.getWidth()*scale, Media.mainBack.getHeight()*scale);
-        
-        // Main menu
-        // Create new entities for each
-        float offset = 3;
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 2; j++){
-                batch.draw(Media.pinkButton, (offset + ((i+1)*offset) + (i * Media.pinkButton.getWidth())) * scale, (offset + ((j+1)*offset) + (j * Media.pinkButton.getHeight())) * scale, Media.pinkButton.getWidth()*scale, Media.pinkButton.getHeight()*scale);
-            }
-        }
-        
-        // Main menu
-        // Create new entities for each
-        for(int i = 0; i < 14; i++){
-            for(int j = 0; j < 2; j++){
-                batch.draw(Media.pinkButton, (Media.squareMenu.getWidth() + offset + ((i+1)*offset) + (i * Media.pinkButton.getWidth())) * scale, (offset + ((j+1)*offset) + (j * Media.pinkButton.getHeight())) * scale, Media.pinkButton.getWidth()*scale, Media.pinkButton.getHeight()*scale);
-            }
-        }
-        
+        batch.begin(); 
+        squareMenu.draw(batch);
         batch.end();
-        
-        // END MENU TEST
         
         box2D.tick(camera, control);
         island.clearRemovedEntities(box2D);

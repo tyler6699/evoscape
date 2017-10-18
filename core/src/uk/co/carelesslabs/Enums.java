@@ -23,5 +23,12 @@ public class Enums {
         HOVERING, 
         LANDING
     }
+    
+    public enum MenuState {
+        ACTIVE,
+        DISABLED,
+        HOVEROVER,
+        CLICKED
+    }
 
 }
