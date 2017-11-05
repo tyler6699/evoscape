@@ -26,6 +26,7 @@ public class Control extends InputAdapter implements InputProcessor {
     public boolean  rightMouseBtn;
     public boolean  processedClick = true;
     public Vector2  mouseClickPos = new Vector2();
+    public Vector2  mousePos = new Vector2();
     public Vector2  mapClickPos = new Vector2();
     
     // DEBUG
@@ -170,6 +171,7 @@ public class Control extends InputAdapter implements InputProcessor {
     
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        mousePos.set(screenX, screenHeight - screenY);
         return false;
     }
     

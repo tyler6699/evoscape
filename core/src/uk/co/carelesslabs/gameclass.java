@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
-    Control control;
+    public Control control;
     SpriteBatch batch, hudBatch;
     Matrix4 screenMatrix;
     Box2DWorld box2D;
@@ -80,7 +80,7 @@ public class gameclass extends ApplicationAdapter {
         control.reset = true;
         
         //Menu
-        squareMenu = new SquareMenu();
+        squareMenu = new SquareMenu(this);
     }
 
     @Override
@@ -98,7 +98,10 @@ public class gameclass extends ApplicationAdapter {
             control.inventory = false;
         }
         
+        // Menu Logic
         control.processedClick = squareMenu.checkClick(control.mouseClickPos, control.processedClick);
+        control.processedClick = squareMenu.build.checkClick(control.mouseClickPos, control.processedClick);
+        squareMenu.checkHover(control.mousePos);
         
         hero.update(control);
         

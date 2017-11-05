@@ -3,60 +3,74 @@ package uk.co.carelesslabs.ui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import uk.co.carelesslabs.Media;
+import uk.co.carelesslabs.gameclass;
 
 public class SquareMenu {
     public Menu menu;
-    BuildMenu build;
+    public BuildMenu build;
     
-    public SquareMenu(){
+    public SquareMenu(final gameclass game){ 
         // MAIN MENU
+        int scale = 2;
         menu = new Menu(0, 0, 2, Media.squareMenu);
-        menu.addButtons(3, 2, 2, Media.pinkButton, 2);
-        menu.buttons.get(0).setOnClickListener(
+        menu.addButtons(3, 2, 2, Media.pinkButton, Media.selector, scale);
+        
+        Button btn = menu.buttons.get(0);
+        btn.setOnClickListener(
+                new OnClickListener(){
+                    @Override
+                    public void onClick(Button b) {
+                        
+                    }
+                });
+        
+        btn = menu.buttons.get(1);
+        btn.icon = Media.iconSettings;
+        btn.setOnClickListener(
+                new OnClickListener(){
+                    @Override
+                    public void onClick(Button b) {
+                        System.out.println("Settings.");
+                    }
+                });
+        
+        btn = menu.buttons.get(2);
+        btn.icon = Media.iconResources;
+        btn.setOnClickListener(
+                new OnClickListener(){
+                    @Override
+                    public void onClick(Button b) {
+                        game.control.inventory = true;
+                    }
+                });
+        
+        btn = menu.buttons.get(3);
+        btn.icon = Media.iconBuild;
+        menu.buttons.get(3).setOnClickListener(
                 new OnClickListener(){
                     @Override
                     public void onClick(Button b) {
                         build.menu.toggleActive();
                     }
                 });
-        menu.buttons.get(1).setOnClickListener(
-                new OnClickListener(){
-                    @Override
-                    public void onClick(Button b) {
-                        System.out.println("Boop 1!");
-                    }
-                });
-        
-        menu.buttons.get(2).setOnClickListener(
-                new OnClickListener(){
-                    @Override
-                    public void onClick(Button b) {
-                        System.out.println("Boop 2!");
-                    }
-                });
-        
-        menu.buttons.get(3).setOnClickListener(
-                new OnClickListener(){
-                    @Override
-                    public void onClick(Button b) {
-                        System.out.println("Boop 3!");
-                    }
-                });
         
         // BUILDING
-        build = new BuildMenu();
-        build.menu = new Menu(menu.pos.x + menu.width, 0, 2, Media.mainBack);
-        build.menu.addButtons(3, 14, 2, Media.pinkButton, 2);
-        build.menu.setInactive();
+        build = new BuildMenu(menu.pos.x + menu.width, 0, 2, Media.mainBack);
         
     }
     
     public void draw(SpriteBatch batch){
         menu.draw(batch);
-        build.menu.draw(batch);
+        build.draw(batch);
     }
 
     public boolean checkClick(Vector2 pos, boolean processedClick) {
-         return menu.checkClick(pos, processedClick);
+        return menu.checkClick(pos, processedClick);
     }
+    
+    public void checkHover(Vector2 pos) {
+        menu.checkHover(pos);
+        build.menu.checkHover(pos);
+    }
+    
 }

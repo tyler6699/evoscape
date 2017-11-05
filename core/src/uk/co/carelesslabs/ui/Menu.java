@@ -3,6 +3,7 @@ package uk.co.carelesslabs.ui;
 import java.util.ArrayList;
 import uk.co.carelesslabs.Enums;
 import uk.co.carelesslabs.Enums.MenuState;
+import uk.co.carelesslabs.entity.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -23,22 +24,21 @@ public class Menu {
 
     public Menu(float x, float y, float scale, Texture texture){
         pos = new Vector2(x,y);
-        hitbox = new Rectangle(x,y,width,height);
         this.texture = texture;
         width = texture.getWidth() * scale;
         height = texture.getHeight() * scale;
         buttons = new ArrayList<Button>();
+        hitbox = new Rectangle(x,y,width,height);
         setActive();
     }
     
     public void draw(SpriteBatch batch){
-        if(isActive()){
+        //if(isActive()){
             if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
             for(Button b : buttons){
                 b.draw(batch);
             }
-        }
-        
+        //}
     }
     
     public boolean checkClick(Vector2 pos, boolean processedClick){
@@ -48,6 +48,7 @@ public class Menu {
                 System.out.println("Hit: " + name);
             }
             
+            // Check if a button has been clicked
             for(Button b : buttons){
                 if(b.hitbox.contains(pos)){
                     if (b.listener != null) b.listener.onClick(b);
@@ -61,15 +62,40 @@ public class Menu {
         
         return processed;
     }
+    
+    public void checkHover(Vector2 pos){
+        if(hitbox.contains(pos)){
+            // Check if a button is being hovered over  
+            for(Button b : buttons){
+                if(b.hitbox.contains(pos)){
+                    b.state = Enums.EnityState.HOVERING;
+                } else {
+                    b.state = Enums.EnityState.IDLE;
+                }
+            }
+        } else {
+            for(Button b : buttons){
+              b.state = Enums.EnityState.IDLE;  
+            }
+        }     
+    }
 
-    public void addButtons(float offset, int columns, int rows, Texture texture, int scale) {
+    public void addButtons(float offset, int columns, int rows, Texture texture, Texture select, int scale) {
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows; j++){
                 float bx = pos.x + (offset + ((i+1)*offset) + (i * texture.getWidth())) * 2;
                 float by = pos.y + (offset + ((j+1)*offset) + (j * texture.getHeight())) * 2;
                 float width = texture.getWidth() * 2;
                 float height = texture.getHeight() * 2;
-                buttons.add(new Button(bx, by, width, height, texture));
+                
+                Entity selector = new Entity();
+                selector.texture = select;
+                selector.width = selector.texture.getWidth() * scale;
+                selector.height = selector.texture.getHeight() * scale;
+                selector.pos.x = bx - ((selector.width - width) / 2);
+                selector.pos.y = by - ((selector.height - height) / 2);
+                
+                buttons.add(new Button(bx, by, width, height, texture, selector));
             }
         }    
     }
