@@ -2,7 +2,6 @@ package uk.co.carelesslabs.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.gameclass;
 
