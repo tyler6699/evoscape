@@ -21,7 +21,7 @@ import com.badlogic.gdx.math.Vector3;
 public class gameclass extends ApplicationAdapter {
     OrthographicCamera camera;
     public Control control;
-    SpriteBatch batch, hudBatch;
+    SpriteBatch batch;
     Matrix4 screenMatrix;
     Box2DWorld box2D;
 
