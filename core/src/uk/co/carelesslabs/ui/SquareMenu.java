@@ -2,20 +2,20 @@ package uk.co.carelesslabs.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.gameclass;
 
-public class SquareMenu {
-    public Menu menu;
+public class SquareMenu extends Menu {
     public BuildMenu build;
     
-    public SquareMenu(final gameclass game){ 
-        // MAIN MENU
-        int scale = 2;
-        menu = new Menu(0, 0, 2, Media.squareMenu);
-        menu.addButtons(3, 2, 2, Media.pinkButton, Media.selector, scale);
+    public SquareMenu(final gameclass game){
+        super(0, 0, 2, Media.squareMenu);
         
-        Button btn = menu.buttons.get(0);
+        int scale = 2;
+        addButtons(3, 2, 2, Media.pinkButton, Media.selector, scale);
+        
+        Button btn = buttons.get(0);
         btn.setOnClickListener(
                 new OnClickListener(){
                     @Override
@@ -24,7 +24,7 @@ public class SquareMenu {
                     }
                 });
         
-        btn = menu.buttons.get(1);
+        btn = buttons.get(1);
         btn.icon = Media.iconSettings;
         btn.setOnClickListener(
                 new OnClickListener(){
@@ -34,7 +34,7 @@ public class SquareMenu {
                     }
                 });
         
-        btn = menu.buttons.get(2);
+        btn = buttons.get(2);
         btn.icon = Media.iconResources;
         btn.setOnClickListener(
                 new OnClickListener(){
@@ -44,33 +44,30 @@ public class SquareMenu {
                     }
                 });
         
-        btn = menu.buttons.get(3);
+        btn = buttons.get(3);
         btn.icon = Media.iconBuild;
-        menu.buttons.get(3).setOnClickListener(
+        buttons.get(3).setOnClickListener(
                 new OnClickListener(){
                     @Override
                     public void onClick(Button b) {
-                        build.menu.toggleActive();
+                        build.toggleActive();
                     }
                 });
         
         // BUILDING
-        build = new BuildMenu(menu.pos.x + menu.width, 0, 2, Media.mainBack);
-        
+        build = new BuildMenu(pos.x + width, 0, 2, Media.mainBack);  
     }
     
+    @Override
     public void draw(SpriteBatch batch){
-        menu.draw(batch);
+        super.draw(batch);
         build.draw(batch);
     }
-
-    public boolean checkClick(Vector2 pos, boolean processedClick) {
-        return menu.checkClick(pos, processedClick);
-    }
     
+    @Override
     public void checkHover(Vector2 pos) {
-        menu.checkHover(pos);
-        build.menu.checkHover(pos);
+        super.checkHover(pos);
+        build.  checkHover(pos);
     }
     
 }
