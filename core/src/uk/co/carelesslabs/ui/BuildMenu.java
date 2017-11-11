@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BuildMenu extends Menu {
-    Button close;
     
     public BuildMenu(float x, int y, int scale, Texture mainBack){
         super(x, y, 2, Media.mainBack);
         addButtons(3, 14, 2, Media.pinkButton, Media.selector, 2);
         setInactive();
         
-        close = new Button(0, 0, Media.close_menu.getWidth() * scale, Media.close_menu.getHeight() * scale, Media.close_menu, null);
+        Button close = new Button(0, 0, Media.close_menu.getWidth() * scale, Media.close_menu.getHeight() * scale, Media.close_menu, null);
         close.pos.x = x + width - (Media.close_menu.getWidth() * scale) - (6 * scale);
         close.pos.y = height - (Media.close_menu.getHeight() * scale) - (6 * scale);
         close.updateHitbox();
