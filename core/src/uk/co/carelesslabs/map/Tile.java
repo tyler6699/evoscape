@@ -9,9 +9,8 @@ public class Tile extends Entity {
     public int row;
     public int col;
     public String code;
-    public Texture secondaryTexture;
-    public Texture texture;
-    public TileType type;
+    transient public Texture secondaryTexture;
+    public TileType tileType;
     
     public Tile(float x, float y, int size, TileType type, Texture texture){
         super();
@@ -21,7 +20,7 @@ public class Tile extends Entity {
         this.texture = texture;
         this.col = (int) x;
         this.row = (int) y;
-        this.type = type;
+        this.tileType = type;
         this.code = "";
     }
 
@@ -30,15 +29,15 @@ public class Tile extends Entity {
     }
 
     public boolean isGrass() {
-        return type == TileType.GRASS;
+        return tileType == TileType.GRASS;
     }
     
     public boolean isWater() {
-        return type == TileType.WATER;
+        return tileType == TileType.WATER;
     }
     
     public boolean isCliff() {
-        return type == TileType.CLIFF;
+        return tileType == TileType.CLIFF;
     }
     
     public boolean isPassable() {

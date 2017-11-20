@@ -3,12 +3,15 @@ package uk.co.carelesslabs.map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+
 import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Tree;
+import uk.co.carelesslabs.managers.ObjectManager;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -18,12 +21,9 @@ public class Island {
     public Tile centreTile;
     Tile clickedTile;
     
-    // CHUNKS TODO: Add multiple chunks
-    // public Map<Integer, ArrayList<Chunk> chunks = new Map<Integer, ArrayList<Chunk>();
-    
-    // ONE CHUNK
-    public Chunk chunk;
-    public ArrayList<Entity> entities = new ArrayList<Entity>();
+    // Stores Entities and Chunk data
+    // Will allow all game objects to be converted to JSON in one conversion
+    public ObjectManager objectManager;
     
     // TRACK CLICK
     int currentTileNo;
@@ -40,11 +40,12 @@ public class Island {
     String[] aGrassTopLeft = {"000000001"};
     
     public Island(Box2DWorld box2D){
+        objectManager = new ObjectManager();
         reset(box2D);
     }
     
     public void reset(Box2DWorld box2D) {
-        entities.clear();
+        objectManager.entities.clear();
         box2D.clearAllBodies();
         setupTiles();
         codeTiles();
@@ -53,17 +54,37 @@ public class Island {
     }
     
     private void generateHitboxes(Box2DWorld box2D) {
-        for(ArrayList<Tile> row : chunk.tiles){
-            for(Tile tile : row){ 
-                if(tile.isNotPassable() && tile.notIsAllWater()){
-                    Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, 0, 0, tile.pos, BodyType.StaticBody);
-                }
+        // Loop all of the rows of chunks
+        for (Integer key : objectManager.chunks.descendingKeySet()) {
+            // One row of chunks
+            ArrayList<Chunk> rowChunks = objectManager.chunks.get(key);
+            
+            for(Chunk chunk : rowChunks){
+                for(ArrayList<Tile> row : chunk.tiles){
+                    for(Tile tile : row){ 
+                        if(tile.isNotPassable() && tile.notIsAllWater()){
+                            Box2DHelper.createBody(box2D.world, chunk.tileSize, chunk.tileSize, 0, 0, tile.pos, BodyType.StaticBody);
+                        }
+                    }
+                }   
             }
-        }	
+
+            
+        }
+        
+        
     }
 
     private void setupTiles(){
-        chunk = new Chunk(33,33, 8);
+        // Array of chunks, one row of chunks
+        ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+        
+        // Single Chunk
+        Chunk chunk = new Chunk(33,33, 8);
+        chunks.add(chunk);
+        
+        // Add the first array of chunks
+        objectManager.chunks.put(0, chunks);
         
         int currentRow = 0;
         int rngW = MathUtils.random(5,8);
@@ -92,11 +113,11 @@ public class Island {
                 // Make a small island
                 if(row > minRow && row < maxRow && col > minCol && col < maxCol){
                     tile.texture = randomGrass();
-                    tile.type = TileType.GRASS;
+                    tile.tileType = TileType.GRASS;
                     
                     if(row == firstTileRow + 1){
                         tile.texture = Media.cliff;
-                        tile.type = TileType.CLIFF;
+                        tile.tileType = TileType.CLIFF;
                     } else {
                         // Chance to add trees etc
                     }
@@ -129,6 +150,9 @@ public class Island {
         
         // Set centre tile for camera positioning
         centreTile = chunk.getTile(centreTileRow, centreTileCol);
+        
+        // Set the current Chunk
+        objectManager.currentChunk = chunk;
     }
     
     private void updateImage(Tile tile) {
@@ -194,35 +218,50 @@ public class Island {
     private void codeTiles() {
         // Loop all tiles and set the initial code
      
-        // 1 CHUNK ONLY ATM
-        for(ArrayList<Tile> row : chunk.tiles){
-            for(Tile tile : row){ 
-                // Check all surrounding tiles and set 1 for pass 0 for non pass
-                // 0 0 0
-                // 0 X 0
-                // 0 0 0
-                
-                int[] rows = {1,0,-1};
-                int[] cols = {-1,0,1};
-                
-                for(int r: rows){
-                    for(int c: cols){
-                        tile.code += chunk.getTileCode(tile.row + r, tile.col + c);
-                        updateImage(tile);
+     // Loop all of the rows of chunks
+        for (Integer key : objectManager.chunks.descendingKeySet()) {
+            // One row of chunks
+            ArrayList<Chunk> rowChunks = objectManager.chunks.get(key);
+            
+            for(Chunk chunk : rowChunks){
+                for(ArrayList<Tile> row : chunk.tiles){
+                    for(Tile tile : row){ 
+                        // Check all surrounding tiles and set 1 for pass 0 for non pass
+                        // 0 0 0
+                        // 0 X 0
+                        // 0 0 0
+                        
+                        int[] rows = {1,0,-1};
+                        int[] cols = {-1,0,1};
+                        
+                        for(int r: rows){
+                            for(int c: cols){
+                                tile.code += chunk.getTileCode(tile.row + r, tile.col + c);
+                                updateImage(tile);
+                            }
+                        }    
                     }
-                }    
+                }
             }
         }
     }
     
     private void addEntities(Box2DWorld box2D) {
         // Loop all tiles and add random trees
-        for(ArrayList<Tile> row : chunk.tiles){
-            for(Tile tile : row){ 
-                if (tile.isGrass()){
-                    if(MathUtils.random(100) > 90){
-                        entities.add(new Tree(tile.pos, box2D));
-                    }    
+     // Loop all of the rows of chunks
+        for (Integer key : objectManager.chunks.descendingKeySet()) {
+            // One row of chunks
+            ArrayList<Chunk> rowChunks = objectManager.chunks.get(key);
+            
+            for(Chunk chunk : rowChunks){
+                for(ArrayList<Tile> row : chunk.tiles){
+                    for(Tile tile : row){ 
+                        if (tile.isGrass()){
+                            if(MathUtils.random(100) > 90){
+                                objectManager.entities.add(new Tree(tile.pos, box2D));
+                            }    
+                        }   
+                    }
                 }
             }
         }
@@ -237,7 +276,7 @@ public class Island {
     }
 
     public void clearRemovedEntities(Box2DWorld box2D) {
-        Iterator<Entity> it = entities.iterator();
+        Iterator<Entity> it = objectManager.entities.iterator();
         while(it.hasNext()) {
             Entity e = it.next();
             if(e.remove){
@@ -247,6 +286,6 @@ public class Island {
                 it.remove();
             }
         }
-    }
+    } 
 
 }

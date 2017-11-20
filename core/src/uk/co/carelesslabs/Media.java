@@ -29,7 +29,7 @@ public class Media {
     
     //GUI
     public static Texture squareMenu, mainBack, pinkButton;
-    public static Texture iconBuild, iconSettings, iconResources;
+    public static Texture iconBuild, iconSettings, iconResources, iconSave;
     public static Texture selector;
     public static Texture close_menu;
     
@@ -85,6 +85,7 @@ public class Media {
         iconBuild = new Texture(Gdx.files.internal("gui/icons/build.png"));
         iconSettings = new Texture(Gdx.files.internal("gui/icons/settings.png"));
         iconResources = new Texture(Gdx.files.internal("gui/icons/resources.png"));
+        iconSave = new Texture(Gdx.files.internal("gui/icons/save.png"));
         close_menu = new Texture(Gdx.files.internal("gui/icons/close_menu.png"));
     }
     

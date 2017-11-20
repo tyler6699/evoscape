@@ -23,6 +23,7 @@ public class Menu {
     public ArrayList<Button> buttons;
 
     public Menu(float x, float y, float scale, Texture texture){
+        name = "Main Menu";
         pos = new Vector2(x,y);
         this.texture = texture;
         width = texture.getWidth() * scale;
@@ -33,21 +34,15 @@ public class Menu {
     }
     
     public void draw(SpriteBatch batch){
-        //if(isActive()){
-            if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
-            for(Button b : buttons){
-                b.draw(batch);
-            }
-        //}
+        if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
+        for(Button b : buttons){
+            b.draw(batch);
+        }
     }
     
     public boolean checkClick(Vector2 pos, boolean processedClick){
         boolean processed = false;
-        if(!processedClick){
-            if(hitbox.contains(pos)){
-                System.out.println("Hit: " + name);
-            }
-            
+        if(!processedClick){            
             // Check if a button has been clicked
             for(Button b : buttons){
                 if(b.hitbox.contains(pos)){

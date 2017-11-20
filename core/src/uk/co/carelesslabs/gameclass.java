@@ -2,13 +2,17 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
+import uk.co.carelesslabs.io.SaveGame;
+import uk.co.carelesslabs.managers.ObjectManager;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import uk.co.carelesslabs.ui.SquareMenu;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,6 +28,7 @@ public class gameclass extends ApplicationAdapter {
     SpriteBatch batch;
     Matrix4 screenMatrix;
     Box2DWorld box2D;
+    public SaveGame saveGame;
 
     // Display Size
     private int displayW;
@@ -72,19 +77,23 @@ public class gameclass extends ApplicationAdapter {
         
         // Hero
         hero = new Hero(island.centreTile.pos, box2D);
-        island.entities.add(hero);
+        island.objectManager.entities.add(hero);
        
         // HashMap of Entities for collisions
-        box2D.populateEntityMap(island.entities);  
+        box2D.populateEntityMap(island.objectManager.entities);  
         
         control.reset = true;
         
         //Menu
         squareMenu = new SquareMenu(this);
+        
+        // Game Saving
+        saveGame = new SaveGame();
+        
     }
 
     @Override
-    public void render () {
+    public void render () { 
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
@@ -114,15 +123,17 @@ public class gameclass extends ApplicationAdapter {
         }
         
         // Tick all entities
-        for(Entity e: island.entities){
+        for(Entity e: island.objectManager.entities){
             e.tick(Gdx.graphics.getDeltaTime());
-            e.currentTile = island.chunk.getTile(e.body.getPosition());
-            e.tick(Gdx.graphics.getDeltaTime(), island.chunk);
+            e.currentTile = island.objectManager.currentChunk.getTile(e.body.getPosition());
+            e.tick(Gdx.graphics.getDeltaTime(), island.objectManager.currentChunk);
         }
         
         camera.update();
         
-        Collections.sort(island.entities);
+        Collections.sort(island.objectManager.entities);
+        
+        if(island.objectManager.isSaving) System.out.println("Saving ...");
                 
         // GAME DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -130,7 +141,8 @@ public class gameclass extends ApplicationAdapter {
         
         batch.begin();
         // Draw all tiles in the chunk / chunk rows
-        for(ArrayList<Tile> row : island.chunk.tiles){
+        // TODO: Only the current chunk is rendered at present.
+        for(ArrayList<Tile> row : island.objectManager.currentChunk.tiles){
             for(Tile tile : row){
                 batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);                
                 if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
@@ -138,7 +150,8 @@ public class gameclass extends ApplicationAdapter {
         }
         
         // Draw all entities
-        for(Entity e: island.entities){
+        // TODO: Only tick / Draw entities in the current chunk?
+        for(Entity e: island.objectManager.entities){
             e.draw(batch);
         }
         
@@ -155,7 +168,7 @@ public class gameclass extends ApplicationAdapter {
         island.clearRemovedEntities(box2D);
         
         time += Gdx.graphics.getDeltaTime();
-        if(time > 3){
+        if(time > 3 && control.debug){
             System.out.println(Gdx.graphics.getFramesPerSecond());    
             time = 0;
         }
@@ -165,18 +178,26 @@ public class gameclass extends ApplicationAdapter {
     private void resetGameState() {     
         island.reset(box2D);
         hero.reset(box2D,island.getCentrePosition());
-        island.entities.add(hero);
+        island.objectManager.entities.add(hero);
         
-        for(int i = 0; i < MathUtils.random(20); i++){
-            island.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
+        for(int i = 0; i < MathUtils.random(20) + 10; i++){
+            island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
         }
        
-        box2D.populateEntityMap(island.entities);
+        box2D.populateEntityMap(island.objectManager.entities);
         control.reset = false;   
     }
 
     @Override
     public void dispose () {
         batch.dispose();
+    }
+
+    public ArrayList<Entity> getEntities() {
+        return island.objectManager.entities;
+    }
+
+    public ObjectManager getObjectManager() {
+        return island.objectManager;
     }
 }

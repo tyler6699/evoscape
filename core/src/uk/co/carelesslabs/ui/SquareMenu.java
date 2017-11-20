@@ -15,11 +15,13 @@ public class SquareMenu extends Menu {
         addButtons(3, 2, 2, Media.pinkButton, Media.selector, scale);
         
         Button btn = buttons.get(0);
+        
+        btn.icon = Media.iconSave;
         btn.setOnClickListener(
                 new OnClickListener(){
                     @Override
                     public void onClick(Button b) {
-                        
+                        game.saveGame.save(game.getObjectManager());
                     }
                 });
         
