@@ -2,12 +2,10 @@ package uk.co.carelesslabs.io;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.google.gson.Gson;
-
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.managers.ObjectManager;
 
