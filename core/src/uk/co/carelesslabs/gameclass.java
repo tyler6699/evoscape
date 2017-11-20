@@ -2,7 +2,6 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
@@ -12,7 +11,6 @@ import uk.co.carelesslabs.managers.ObjectManager;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import uk.co.carelesslabs.ui.SquareMenu;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -89,7 +87,6 @@ public class gameclass extends ApplicationAdapter {
         
         // Game Saving
         saveGame = new SaveGame();
-        
     }
 
     @Override
@@ -131,9 +128,10 @@ public class gameclass extends ApplicationAdapter {
         
         camera.update();
         
-        Collections.sort(island.objectManager.entities);
-        
-        if(island.objectManager.isSaving) System.out.println("Saving ...");
+        // While saving do not sort entities, causes java.util.ConcurrentModificationException
+        if(!saveGame.threadAlive()){
+            Collections.sort(island.objectManager.entities);
+        }
                 
         // GAME DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -168,8 +166,8 @@ public class gameclass extends ApplicationAdapter {
         island.clearRemovedEntities(box2D);
         
         time += Gdx.graphics.getDeltaTime();
-        if(time > 3 && control.debug){
-            System.out.println(Gdx.graphics.getFramesPerSecond());    
+        if(time > 3){
+            if(control.debug) System.out.println(Gdx.graphics.getFramesPerSecond());    
             time = 0;
         }
         control.processedClick = true;

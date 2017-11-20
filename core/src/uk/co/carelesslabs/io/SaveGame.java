@@ -11,51 +11,56 @@ import uk.co.carelesslabs.managers.ObjectManager;
 
 public class SaveGame {
     Gson gson;
-    String dir = "/data/save/";
+    String dir;
+    Thread t;
     
     public SaveGame(){
-       gson = new Gson();       
+       gson = new Gson();  
+       dir = "/data/save/";
     }
     
-    public boolean save(final ObjectManager objectManager){
-        Runnable r = new Runnable() {
-            public void run() {
-                objectManager.isSaving = true;
-                String gameEntities = gson.toJson(objectManager);
-                String compress = "";
-                
-                try {
-                    compress = Zipper.compressString(gameEntities);   
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
+    public void save(final ObjectManager objectManager){
+        if(threadAlive()){
+            System.out.println("Save already in progress.");
+        } else {
+            Runnable r = new Runnable() {
+                public void run() {
+                    String gameEntities = gson.toJson(objectManager);
+                    String compress = "";
+                    
+                    try {
+                        compress = Zipper.compressString(gameEntities);   
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                           
+                    FileHandle file = Gdx.files.local(dir + "entities.json");
+                    file.writeString(compress, false);
                 }
-                       
-                FileHandle file = Gdx.files.local(dir + "entities.json");
-                file.writeString(compress, false);
-                
-                objectManager.isSaving = false;
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
+            };
+            t = new Thread(r);
+            t.start();
+        }
+    }
+    
+    public boolean threadAlive(){
+        if(t == null) return false;
+        if(t.isAlive()) return true;
         
-        return true;
+        t = null;
+        return false;
     }
     
     public boolean load(final ObjectManager objectManager){
         Runnable r = new Runnable() {
             public void run() {
-                objectManager.isLoading = true;
-
                 FileHandle file = Gdx.files.local(dir + "entities.json");
                 String json = file.readString();
-                  try {
-                      System.out.println(Zipper.uncompressString(json));
-                  } catch (IOException e) {
-                      System.out.println(e.getMessage());
-                  }
-                
-                objectManager.isLoading = false;
+                try {
+                    System.out.println(Zipper.uncompressString(json));
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         };
         Thread t = new Thread(r);
