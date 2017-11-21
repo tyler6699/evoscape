@@ -1,6 +1,7 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.ArrayList;
+
 import uk.co.carelesslabs.Enums;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.Media;
@@ -16,27 +17,50 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class Bird extends Entity{
     // pos.z is the height off the floor
     private float maxHeight;
     public Tile destTile;
-    private TextureRegion tRegion;
+    transient private TextureRegion tRegion;
     
     public Bird(Vector3 pos, Box2DWorld box2d, Enums.EnityState state){
         super();
         maxHeight = setHeight();
-        type = EntityType.BIRD;
         speed = MathUtils.random(20) + 5;
         width = 8;
         height = 8;
-        texture = Media.tree;
         shadow = Media.birdShadow;
         this.pos.set(pos);
+        this.state = state;
+        setup(box2d);
+    }
+
+    public Bird(JsonObject e, Box2DWorld box2d) {
+        super();
+        maxHeight = e.get("maxHeight").getAsInt();
+        speed = e.get("speed").getAsFloat();
+        width = e.get("width").getAsInt();
+        height = e.get("height").getAsInt();
+        texture = Media.tree;
+        shadow = Media.birdShadow;
+        this.state = Enums.EnityState.valueOf(e.get("state").getAsString());
+        
+        // Positions
+        Gson gson = new Gson();
+        this.pos.set(gson.fromJson(e.get("pos"), Vector3.class));
+        
+        setup(box2d);
+    }
+    
+    private void setup(Box2DWorld box2d){
+        type = EntityType.BIRD;
+        texture = Media.tree; // Will be replaced 
         body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyDef.BodyType.StaticBody);
         sensor = Box2DHelper.createSensor(box2d.world, width, height*.85f, width/2, height/3, pos, BodyDef.BodyType.DynamicBody);     
         hashcode = sensor.getFixtureList().get(0).hashCode();
-        this.state = state;
         ticks = true;
     }
 
@@ -52,7 +76,7 @@ public class Bird extends Entity{
     }
     
     @Override
-    public void tick(float delta, Chunk chunk){ 
+    public void tick(float delta, Chunk chunk){
         if(isHovering()){
             setLanding();
         } else if(isLanding()){
@@ -195,7 +219,6 @@ public class Bird extends Entity{
                 }
             }
         }
-        
     }
    
     private void walk(float delta) {
@@ -214,6 +237,7 @@ public class Bird extends Entity{
     }
     
     private boolean isAtDestination() {
+        System.out.println(currentTile.row + " " + currentTile.col + " - " + destTile.row + " " + destTile.col);
         return currentTile.pos.epsilonEquals(destTile.pos, 20);
     }
     

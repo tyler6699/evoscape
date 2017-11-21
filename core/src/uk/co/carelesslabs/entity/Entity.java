@@ -15,7 +15,7 @@ public class Entity implements Comparable<Entity> {
     public Vector3 pos;
     public Vector3 destVec;
     transient public Texture texture;
-    public Texture shadow;
+    transient public Texture shadow;
     public float width;
     public float height;
     public EntityType type;
@@ -28,7 +28,7 @@ public class Entity implements Comparable<Entity> {
     public Boolean ticks;
     public float time;
     public float coolDown;
-    public Tile currentTile;
+    transient public Tile currentTile;
     
     float dirX = 0;
     float dirY = 0;

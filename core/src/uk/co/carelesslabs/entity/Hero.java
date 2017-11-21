@@ -1,8 +1,11 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.google.gson.JsonObject;
+
 import uk.co.carelesslabs.Control;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Enums.EntityType;
@@ -13,6 +16,7 @@ public class Hero extends Entity{
     ArrayList<Entity> interactEntities;
     
     public Hero(Vector3 pos, Box2DWorld box2d){
+        super();
         type = EntityType.HERO;
         width = 8;
         height = 8;
@@ -22,6 +26,21 @@ public class Hero extends Entity{
         reset(box2d, pos);
     }
     
+    public Hero(JsonObject e, Box2DWorld box2d) {
+        super();
+        type = EntityType.HERO;
+        width = e.get("width").getAsInt();
+        height = e.get("height").getAsInt();
+        texture = Media.hero;
+        speed = e.get("speed").getAsFloat();
+        inventory = new Inventory();
+        float jX = e.get("pos").getAsJsonObject().get("x").getAsFloat();
+        float jY = e.get("pos").getAsJsonObject().get("y").getAsFloat();
+        float jZ = e.get("pos").getAsJsonObject().get("z").getAsFloat();
+        this.pos.set(jX, jY, jZ);
+        reset(box2d, pos);
+    }
+
     public void reset(Box2DWorld box2d, Vector3 pos) {
         this.pos.set(pos);
         body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyType.DynamicBody);  

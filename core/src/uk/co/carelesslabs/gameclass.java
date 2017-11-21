@@ -2,7 +2,6 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
@@ -12,7 +11,6 @@ import uk.co.carelesslabs.managers.ObjectManager;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import uk.co.carelesslabs.ui.SquareMenu;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,12 +20,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
-public class gameclass extends ApplicationAdapter {
+public class GameClass extends ApplicationAdapter {
     OrthographicCamera camera;
     public Control control;
     SpriteBatch batch;
     Matrix4 screenMatrix;
-    Box2DWorld box2D;
+    public Box2DWorld box2D;
     public SaveGame saveGame;
 
     // Display Size
@@ -35,7 +33,7 @@ public class gameclass extends ApplicationAdapter {
     private int displayH;
 
     // Hero
-    Hero hero;
+    public Hero hero;
     
     // Island
     Island island;
@@ -89,7 +87,6 @@ public class gameclass extends ApplicationAdapter {
         
         // Game Saving
         saveGame = new SaveGame();
-        
     }
 
     @Override
@@ -131,9 +128,10 @@ public class gameclass extends ApplicationAdapter {
         
         camera.update();
         
-        Collections.sort(island.objectManager.entities);
-        
-        if(island.objectManager.isSaving) System.out.println("Saving ...");
+        // While load / saving do not sort entities
+        if(island.hasEntities() && !saveGame.threadAlive() && !saveGame.isLoading()){
+            Collections.sort(island.objectManager.entities);
+        }
                 
         // GAME DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -168,8 +166,8 @@ public class gameclass extends ApplicationAdapter {
         island.clearRemovedEntities(box2D);
         
         time += Gdx.graphics.getDeltaTime();
-        if(time > 3 && control.debug){
-            System.out.println(Gdx.graphics.getFramesPerSecond());    
+        if(time > 3){
+            if(control.debug) System.out.println(Gdx.graphics.getFramesPerSecond());    
             time = 0;
         }
         control.processedClick = true;
@@ -180,10 +178,12 @@ public class gameclass extends ApplicationAdapter {
         hero.reset(box2D,island.getCentrePosition());
         island.objectManager.entities.add(hero);
         
-        for(int i = 0; i < MathUtils.random(20) + 10; i++){
-            island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
-        }
-       
+        //for(int i = 0; i < MathUtils.random(10) + 10; i++){
+        //    island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
+        //}
+        
+        island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
+
         box2D.populateEntityMap(island.objectManager.entities);
         control.reset = false;   
     }

@@ -5,6 +5,7 @@ import uk.co.carelesslabs.entity.Entity;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Tile extends Entity {
+    public int chunk;
     public int size;
     public int row;
     public int col;
@@ -12,7 +13,7 @@ public class Tile extends Entity {
     transient public Texture secondaryTexture;
     public TileType tileType;
     
-    public Tile(float x, float y, int size, TileType type, Texture texture){
+    public Tile(float x, float y, int size, TileType type, Texture texture, int chunk){
         super();
         pos.x = x*size;
         pos.y = y*size;
@@ -22,6 +23,7 @@ public class Tile extends Entity {
         this.row = (int) y;
         this.tileType = type;
         this.code = "";
+        this.chunk = chunk;
     }
 
     public String details(){

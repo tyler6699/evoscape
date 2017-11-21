@@ -54,12 +54,8 @@ public class Island {
                         }
                     }
                 }   
-            }
-
-            
+            }   
         }
-        
-        
     }
 
     private void setupTiles(){
@@ -67,8 +63,11 @@ public class Island {
         ArrayList<Chunk> chunks = new ArrayList<Chunk>();
         
         // Single Chunk
-        Chunk chunk = new Chunk(33,33, 8);
+        Chunk chunk = new Chunk(64,64, 8);
         chunks.add(chunk);
+        
+        // Chunk size
+        // int chunkNo = ((row / 33) * 18) + ( col / 33);
         
         // Add the first array of chunks
         objectManager.chunks.put(0, chunks);
@@ -95,7 +94,7 @@ public class Island {
         for(int row = 0; row < chunk.numberRows; row ++){
             for(int col = 0; col < chunk.numberCols; col ++){
                 // Create TILE
-                Tile tile = new Tile(col, row, chunk.tileSize, TileType.WATER, MapGenerator.randomWater());
+                Tile tile = new Tile(col, row, chunk.tileSize, TileType.WATER, MapGenerator.randomWater(), 0);
 
                 // Make a small island
                 if(row > minRow && row < maxRow && col > minCol && col < maxCol){
@@ -217,6 +216,10 @@ public class Island {
                 it.remove();
             }
         }
+    }
+
+    public boolean hasEntities() {
+        return  objectManager.entities != null && objectManager.entities.size() > 0;
     } 
 
 }
