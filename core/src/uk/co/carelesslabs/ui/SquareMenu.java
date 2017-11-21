@@ -21,7 +21,7 @@ public class SquareMenu extends Menu {
                 new OnClickListener(){
                     @Override
                     public void onClick(Button b) {
-                        game.saveGame.save(game.getObjectManager());
+                        game.saveGame.load(game.getObjectManager());
                     }
                 });
         

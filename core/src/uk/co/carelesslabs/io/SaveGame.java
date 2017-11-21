@@ -42,24 +42,26 @@ public class SaveGame {
         return true;
     }
     
-    public boolean load(final ObjectManager objectManager){
-        Runnable r = new Runnable() {
-            public void run() {
+    public boolean load(ObjectManager objectManager){
+        //Runnable r = new Runnable() {
+        //    public void run() {
                 objectManager.isLoading = true;
 
                 FileHandle file = Gdx.files.local(dir + "entities.json");
                 String json = file.readString();
-                  try {
-                      System.out.println(Zipper.uncompressString(json));
-                  } catch (IOException e) {
-                      System.out.println(e.getMessage());
-                  }
-                
+                try {
+                    json = Zipper.uncompressString(json);
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+                Gson gson = new Gson();
+                String gameObjects = gson.toJson(json);
+                ObjectManager om = gson.fromJson(json, ObjectManager.class);
                 objectManager.isLoading = false;
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
+        //    }
+        //};
+        //Thread t = new Thread(r);
+        //t.start();
         
         return true;
     }
