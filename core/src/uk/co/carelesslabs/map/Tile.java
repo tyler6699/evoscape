@@ -13,17 +13,19 @@ public class Tile extends Entity {
     transient public Texture secondaryTexture;
     public TileType tileType;
     
-    public Tile(float x, float y, int size, TileType type, Texture texture, int chunk){
+    public Tile(float x, float y, int size, TileType type, Texture texture, Chunk chunk){
         super();
-        pos.x = x*size;
-        pos.y = y*size;
+        this.chunk = chunk.chunkNumber;
+        pos.x = (x*size) + (chunk.col * (chunk.numberCols * chunk.tileSize));
+        pos.y = (y*size) + (chunk.row * (chunk.numberRows * chunk.tileSize));
+        
         this.size = size;
         this.texture = texture;
         this.col = (int) x;
         this.row = (int) y;
         this.tileType = type;
         this.code = "";
-        this.chunk = chunk;
+        this.chunk = chunk.chunkNumber;
     }
 
     public String details(){

@@ -1,7 +1,6 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.ArrayList;
-
 import uk.co.carelesslabs.Enums;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.Media;
@@ -51,6 +50,8 @@ public class Bird extends Entity{
         // Positions
         Gson gson = new Gson();
         this.pos.set(gson.fromJson(e.get("pos"), Vector3.class));
+        
+        // TODO Set current and destination tiles
         
         setup(box2d);
     }
@@ -237,7 +238,8 @@ public class Bird extends Entity{
     }
     
     private boolean isAtDestination() {
-        System.out.println(currentTile.row + " " + currentTile.col + " - " + destTile.row + " " + destTile.col);
+        // TODO This is a temp fix as dest and current tiles are not loaded from JSON
+        if (currentTile == null || destTile == null) return false;
         return currentTile.pos.epsilonEquals(destTile.pos, 20);
     }
     

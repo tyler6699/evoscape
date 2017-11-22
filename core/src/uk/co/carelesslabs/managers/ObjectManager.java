@@ -7,6 +7,6 @@ import uk.co.carelesslabs.map.Chunk;
 
 public class ObjectManager {
     public ArrayList<Entity> entities = new ArrayList<Entity>();
-    public TreeMap<Integer, ArrayList<Chunk>> chunks = new TreeMap<Integer, ArrayList<Chunk>>();
+    public TreeMap<Integer, Chunk> chunks = new TreeMap<Integer, Chunk>();
     transient public Chunk currentChunk;
 }

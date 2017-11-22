@@ -8,6 +8,7 @@ import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
 import uk.co.carelesslabs.io.SaveGame;
 import uk.co.carelesslabs.managers.ObjectManager;
+import uk.co.carelesslabs.map.Chunk;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import uk.co.carelesslabs.ui.SquareMenu;
@@ -74,7 +75,9 @@ public class GameClass extends ApplicationAdapter {
         island = new Island(box2D);
         
         // Hero
-        hero = new Hero(island.centreTile.pos, box2D);
+        // TODO: Set hero position after island has been reset
+        // Currently it is reset twice.
+        hero = new Hero(new Vector3(200,200,0), box2D);
         island.objectManager.entities.add(hero);
        
         // HashMap of Entities for collisions
@@ -90,7 +93,7 @@ public class GameClass extends ApplicationAdapter {
     }
 
     @Override
-    public void render () { 
+    public void render() { 
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
@@ -111,9 +114,8 @@ public class GameClass extends ApplicationAdapter {
         
         hero.update(control);
         
-        // Hero Position
+        // Heo Position
         if (Rumble.getRumbleTimeLeft() > 0){
-            Rumble.tick(Gdx.graphics.getDeltaTime());
             camera.translate(Rumble.getPos());
         } else {
             camera.position.lerp(hero.pos, .2f);
@@ -122,7 +124,8 @@ public class GameClass extends ApplicationAdapter {
         // Tick all entities
         for(Entity e: island.objectManager.entities){
             e.tick(Gdx.graphics.getDeltaTime());
-            e.currentTile = island.objectManager.currentChunk.getTile(e.body.getPosition());
+            Chunk chunk = island.chunkAt(e.body.getPosition());
+            e.currentTile = chunk.getTile(e.body.getPosition());
             e.tick(Gdx.graphics.getDeltaTime(), island.objectManager.currentChunk);
         }
         
@@ -138,13 +141,20 @@ public class GameClass extends ApplicationAdapter {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         
         batch.begin();
-        // Draw all tiles in the chunk / chunk rows
-        // TODO: Only the current chunk is rendered at present.
-        for(ArrayList<Tile> row : island.objectManager.currentChunk.tiles){
-            for(Tile tile : row){
-                batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);                
-                if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
+        // Draw all tiles in the hero chunk only
+        // TODO: Improve tiles rendered.
+        for (Integer key : island.objectManager.chunks.descendingKeySet()) {
+            if(key == hero.currentTile.chunk){
+                Chunk chunk = island.objectManager.chunks.get(key);
+                
+                for(ArrayList<Tile> row : chunk.tiles){
+                    for(Tile tile : row){
+                        batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);                
+                        if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
+                    }
+                }       
             }
+            
         }
         
         // Draw all entities
@@ -178,12 +188,10 @@ public class GameClass extends ApplicationAdapter {
         hero.reset(box2D,island.getCentrePosition());
         island.objectManager.entities.add(hero);
         
-        //for(int i = 0; i < MathUtils.random(10) + 10; i++){
-        //    island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
-        //}
+        for(int i = 0; i < MathUtils.random(10) + 10; i++){
+            island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(300),MathUtils.random(300),0), box2D, Enums.EnityState.FLYING));
+        }
         
-        island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(100),MathUtils.random(100),0), box2D, Enums.EnityState.FLYING));
-
         box2D.populateEntityMap(island.objectManager.entities);
         control.reset = false;   
     }
