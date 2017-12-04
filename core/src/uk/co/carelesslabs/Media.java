@@ -13,6 +13,7 @@ public class Media {
     public static Texture grassTop, grassTopRight, grassTopLeft;
     public static Texture water01, water02, water03, water04;
     public static Texture cliff, water;
+    public static Texture watering, feed, percent, watercan, foodcan, foodT, waterT;
     
     // HERO
     public static Texture hero;
@@ -87,6 +88,15 @@ public class Media {
         iconResources = new Texture(Gdx.files.internal("gui/icons/resources.png"));
         iconSave = new Texture(Gdx.files.internal("gui/icons/save.png"));
         close_menu = new Texture(Gdx.files.internal("gui/icons/close_menu.png"));
+        watering = new Texture(Gdx.files.internal("gui/icons/water.png"));
+        feed = new Texture(Gdx.files.internal("gui/icons/feed.png"));
+        percent = new Texture(Gdx.files.internal("gui/icons/percent.png"));
+        
+        watercan = new Texture(Gdx.files.internal("gui/icons/water_get.png"));
+        foodcan = new Texture(Gdx.files.internal("gui/icons/food_get.png"));
+        
+        foodT = new Texture(Gdx.files.internal("gui/icons/food_text.png"));
+        waterT = new Texture(Gdx.files.internal("gui/icons/water_text.png"));
     }
     
     public void dispose(){

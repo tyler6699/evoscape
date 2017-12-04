@@ -1,9 +1,11 @@
 package uk.co.carelesslabs.ui;
 
 import java.util.ArrayList;
+
 import uk.co.carelesslabs.Enums;
 import uk.co.carelesslabs.Enums.MenuState;
 import uk.co.carelesslabs.entity.Entity;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -26,8 +28,8 @@ public class Menu {
         name = "Main Menu";
         pos = new Vector2(x,y);
         this.texture = texture;
-        width = texture.getWidth() * scale;
-        height = texture.getHeight() * scale;
+        width = texture.getWidth()/4 * scale;
+        height = texture.getHeight()/4 * scale;
         buttons = new ArrayList<Button>();
         hitbox = new Rectangle(x,y,width,height);
         setActive();
@@ -78,15 +80,15 @@ public class Menu {
     public void addButtons(float offset, int columns, int rows, Texture texture, Texture select, int scale) {
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows; j++){
-                float bx = pos.x + (offset + ((i+1)*offset) + (i * texture.getWidth())) * 2;
-                float by = pos.y + (offset + ((j+1)*offset) + (j * texture.getHeight())) * 2;
-                float width = texture.getWidth() * 2;
-                float height = texture.getHeight() * 2;
+                float bx = pos.x + (offset + ((i+1)*offset) + (i * (texture.getWidth()/4))) * 2;
+                float by = pos.y + (offset + ((j+1)*offset) + (j * (texture.getHeight()/4))) * 2;
+                float width = (texture.getWidth()/4) * 2;
+                float height = (texture.getHeight()/4) * 2;
                 
                 Entity selector = new Entity();
                 selector.texture = select;
-                selector.width = selector.texture.getWidth() * scale;
-                selector.height = selector.texture.getHeight() * scale;
+                selector.width = (selector.texture.getWidth()/2) * scale;
+                selector.height = (selector.texture.getHeight()/2) * scale;
                 selector.pos.x = bx - ((selector.width - width) / 2);
                 selector.pos.y = by - ((selector.height - height) / 2);
                 

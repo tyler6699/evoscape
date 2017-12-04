@@ -2,6 +2,7 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
@@ -12,6 +13,7 @@ import uk.co.carelesslabs.map.Chunk;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import uk.co.carelesslabs.ui.SquareMenu;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -44,6 +46,8 @@ public class GameClass extends ApplicationAdapter {
     
     // Menu test
     SquareMenu squareMenu;
+    
+    int removed;
         
     @Override
     public void create() {
@@ -72,7 +76,7 @@ public class GameClass extends ApplicationAdapter {
         box2D = new Box2DWorld();
         
         // Island
-        island = new Island(box2D);
+        island = new Island(box2D, hero);
         
         // Hero
         // TODO: Set hero position after island has been reset
@@ -86,10 +90,10 @@ public class GameClass extends ApplicationAdapter {
         control.reset = true;
         
         //Menu
-        squareMenu = new SquareMenu(this);
+        //squareMenu = new SquareMenu(this);
         
         // Game Saving
-        saveGame = new SaveGame();
+        //saveGame = new SaveGame();
     }
 
     @Override
@@ -108,9 +112,9 @@ public class GameClass extends ApplicationAdapter {
         }
         
         // Menu Logic
-        control.processedClick = squareMenu.checkClick(control.mouseClickPos, control.processedClick);
-        control.processedClick = squareMenu.build.checkClick(control.mouseClickPos, control.processedClick);
-        squareMenu.checkHover(control.mousePos);
+        //control.processedClick = squareMenu.checkClick(control.mouseClickPos, control.processedClick);
+        //control.processedClick = squareMenu.build.checkClick(control.mouseClickPos, control.processedClick);
+        //squareMenu.checkHover(control.mousePos);
         
         hero.update(control);
         
@@ -127,14 +131,19 @@ public class GameClass extends ApplicationAdapter {
             Chunk chunk = island.chunkAt(e.body.getPosition());
             e.currentTile = chunk.getTile(e.body.getPosition());
             e.tick(Gdx.graphics.getDeltaTime(), island.objectManager.currentChunk);
+            
+            if(control.mousePos != null && e.popupMenu != null){
+                e.popupMenu.checkHover(control.mouseMapPos);
+                control.processedClick = e.popupMenu.checkClick(control.mapClickPos, control.processedClick);
+            }
         }
         
         camera.update();
         
         // While load / saving do not sort entities
-        if(island.hasEntities() && !saveGame.threadAlive() && !saveGame.isLoading()){
+        //if(island.hasEntities() && !saveGame.threadAlive() && !saveGame.isLoading()){
             Collections.sort(island.objectManager.entities);
-        }
+        //}
                 
         // GAME DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -168,27 +177,37 @@ public class GameClass extends ApplicationAdapter {
         // GUI
         batch.setProjectionMatrix(screenMatrix);
         
-        batch.begin(); 
-        squareMenu.draw(batch);
+        batch.begin();  
+        batch.draw(Media.foodT, 10, control.screenHeight - 40, 100, 20);
+        batch.draw(Media.percent, 120, control.screenHeight - 40, hero.foodLevel, 20);
+        batch.draw(Media.waterT, 10, control.screenHeight - 60, 100, 20);
+        batch.draw(Media.percent, 120, control.screenHeight - 60, hero.waterLevel, 20);
+        //squareMenu.draw(batch);
         batch.end();
         
         box2D.tick(camera, control);
-        island.clearRemovedEntities(box2D);
+        removed += island.clearRemovedEntities(box2D);
         
         time += Gdx.graphics.getDeltaTime();
-        if(time > 3){
-            if(control.debug) System.out.println(Gdx.graphics.getFramesPerSecond());    
+        
+        if(time > 5){
             time = 0;
+            island.AddTree(box2D, hero);
+            box2D.populateEntityMap(island.objectManager.entities);
         }
         control.processedClick = true;
+        System.out.println(removed);
+        if(removed > 10){
+            island.reset(box2D, hero);
+        }
     }
 	
     private void resetGameState() {     
-        island.reset(box2D);
+        island.reset(box2D, hero);
         hero.reset(box2D,island.getCentrePosition());
         island.objectManager.entities.add(hero);
         
-        for(int i = 0; i < MathUtils.random(10) + 10; i++){
+        for(int i = 0; i < MathUtils.random(10) + 2; i++){
             island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(300),MathUtils.random(300),0), box2D, Enums.EnityState.FLYING));
         }
         

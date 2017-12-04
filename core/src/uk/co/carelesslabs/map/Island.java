@@ -2,13 +2,18 @@ package uk.co.carelesslabs.map;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import uk.co.carelesslabs.Enums.TileType;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Entity;
+import uk.co.carelesslabs.entity.FoodCan;
+import uk.co.carelesslabs.entity.Hero;
 import uk.co.carelesslabs.entity.Tree;
+import uk.co.carelesslabs.entity.WaterCan;
 import uk.co.carelesslabs.managers.ObjectManager;
+
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -31,21 +36,25 @@ public class Island {
     int currentCol;
     int currentRow;
     
-    public Island(Box2DWorld box2D){
+    public Island(Box2DWorld box2D, Hero hero){
         objectManager = new ObjectManager();
-        reset(box2D);
+        reset(box2D, hero);
     }
     
-    public void reset(Box2DWorld box2D) {
+    public void reset(Box2DWorld box2D, Hero hero) {
         objectManager.entities.clear();
         box2D.clearAllBodies();
         setupTiles();
         codeTiles();
         generateHitboxes(box2D);
-        addEntities(box2D);
+        addEntities(box2D, hero);
+        boolean setupRefils = false;
+        while(setupRefils == false){
+            setupRefils = AddWaterFood(box2D);
+        }
+        
     }
-    
-    
+     
     private void generateHitboxes(Box2DWorld box2D) {
         // Loop all of the rows of chunks
         for (Integer key : objectManager.chunks.descendingKeySet()) {
@@ -183,23 +192,93 @@ public class Island {
     }
     
     
-    private void addEntities(Box2DWorld box2D) {
+    public void addEntities(Box2DWorld box2D, Hero hero) {
         // Loop all of the rows of chunks
+        boolean hasTree = false;
         for (Integer key : objectManager.chunks.descendingKeySet()) {
             // One chunk
             Chunk chunk = objectManager.chunks.get(key);
 
             for(ArrayList<Tile> row : chunk.tiles){
                 // Loop all tiles and add random trees
+                if(hasTree){
+                    break;
+                }
                 for(Tile tile : row){ 
                     if (tile.isGrass()){
                         if(MathUtils.random(100) > 90){
-                            objectManager.entities.add(new Tree(tile.pos, box2D));
+                            objectManager.entities.add(new Tree(tile.pos, box2D, hero));
+                            tile.hasEntity = true;
+                            hasTree = true;
+                            break;
                         }    
                     }   
                 }
             }
         }
+    }
+    
+    public Entity AddTree(Box2DWorld box2D, Hero hero) {
+        // Loop all of the rows of chunks
+        boolean hasTree = false;
+        Entity entity = null;
+        for (Integer key : objectManager.chunks.descendingKeySet()) {
+            // One chunk
+            Chunk chunk = objectManager.chunks.get(key);
+
+            for(ArrayList<Tile> row : chunk.tiles){
+                // Loop all tiles and add random trees
+                if(hasTree){
+                    break;
+                }
+                for(Tile tile : row){ 
+                    if (tile.isGrass() && tile.hasEntity == false){
+                        if(MathUtils.random(100) > 98){
+                            objectManager.entities.add(new Tree(tile.pos, box2D, hero));
+                            tile.hasEntity = true;
+                            hasTree = true;
+                            break;
+                        }    
+                    }   
+                }
+            }
+        }
+        return entity;
+    }
+    
+    public boolean AddWaterFood(Box2DWorld box2D) {
+        // Loop all of the rows of chunks
+        boolean hasFeed = false;
+        boolean hasWater = false;
+        
+        for (Integer key : objectManager.chunks.descendingKeySet()) {
+            // One chunk
+            Chunk chunk = objectManager.chunks.get(key);
+
+            for(ArrayList<Tile> row : chunk.tiles){
+                // Loop all tiles and add random trees
+                if(hasFeed && hasWater){
+                    break;
+                }
+                for(Tile tile : row){ 
+                    if (tile.isGrass() && tile.hasEntity == false){
+                        if(MathUtils.random(100) > 98){
+                            if(!hasWater){
+                                objectManager.entities.add(new WaterCan(tile.pos, box2D));
+                                tile.hasEntity = true;
+                                hasWater = true;  
+                            } else if(!hasFeed){
+                                objectManager.entities.add(new FoodCan(tile.pos, box2D));
+                                tile.hasEntity = true;
+                                hasFeed = true;  
+                            }
+                           
+                        }    
+                    }   
+                }
+            }
+        }
+        return hasFeed && hasWater;
     }
     
     public Vector3 getCentrePosition(){
@@ -212,17 +291,20 @@ public class Island {
     }
 
     
-    public void clearRemovedEntities(Box2DWorld box2D) {
+    public int clearRemovedEntities(Box2DWorld box2D) {
+        int removed = 0;
         Iterator<Entity> it = objectManager.entities.iterator();
         while(it.hasNext()) {
             Entity e = it.next();
             if(e.remove){
+                removed ++;
                 e.removeBodies(box2D);
                 box2D.removeEntityToMap(e);
        	
                 it.remove();
             }
         }
+        return removed;
     }
 
     public boolean hasEntities() {

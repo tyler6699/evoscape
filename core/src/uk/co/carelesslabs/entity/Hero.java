@@ -67,6 +67,10 @@ public class Hero extends Entity{
         	interactEntities.get(0).interact(this);
         }
         
+        // Hover
+        if(interactEntities.size() > 0){
+            interactEntities.get(0).hover(this);
+        }
         // Reset interact
         control.interact = false;
     }
@@ -79,6 +83,7 @@ public class Hero extends Entity{
     	} else {
     		// Hero Left hitbox
     		interactEntities.remove(entity);
+    		entity.showMenu = false;
     	}    	
     }
  

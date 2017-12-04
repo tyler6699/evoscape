@@ -15,7 +15,6 @@ import uk.co.carelesslabs.GameClass;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
 import uk.co.carelesslabs.entity.Hero;
-import uk.co.carelesslabs.entity.Tree;
 import uk.co.carelesslabs.managers.ObjectManager;
 
 public class SaveGame {
@@ -90,7 +89,7 @@ public class SaveGame {
                     game.hero = hero;
                     break;
                 case TREE:
-                    game.getEntities().add(new Tree(e, game.box2D));
+                    //game.getEntities().add(new Tree(e, game.box2D));
                     break;
                 default:
                     System.out.println(eType);

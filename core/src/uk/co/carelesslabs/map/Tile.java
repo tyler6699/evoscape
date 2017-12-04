@@ -12,6 +12,7 @@ public class Tile extends Entity {
     public String code;
     transient public Texture secondaryTexture;
     public TileType tileType;
+    public boolean hasEntity;
     
     public Tile(float x, float y, int size, TileType type, Texture texture, Chunk chunk){
         super();

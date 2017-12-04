@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import uk.co.carelesslabs.Enums;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.Media;
-import uk.co.carelesslabs.Rumble;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.map.Chunk;
@@ -102,7 +101,7 @@ public class Bird extends Entity{
         if(entity.inventory != null){
             entity.inventory.addEntity(this);
             remove = true;
-            Rumble.rumble(1, .2f);
+            //Rumble.rumble(1, .2f);
         }
     }
     
@@ -231,7 +230,7 @@ public class Bird extends Entity{
             }
             updatePositions();		
     	}
-	}
+    }
     
     private boolean hasDestination() {
         return destVec != null;
