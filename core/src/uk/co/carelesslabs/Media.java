@@ -19,7 +19,7 @@ public class Media {
     public static Texture hero;
     
     // Entity
-    public static Texture tree;
+    public static Texture tree, treeDie;
     public static Texture birdWalk, birdFly, birdPeck, birdShadow;
     
     // Texture Regions
@@ -62,6 +62,7 @@ public class Media {
         cliff   = new Texture(Gdx.files.internal("8x8/cliff.png"));
         
         tree    = new Texture("entities/tree.png");
+        treeDie = new Texture("entities/treeDie.png");
         birdPeck = new Texture("entities/bird/bird_peck.png");
         birdWalk = new Texture("entities/bird/bird_walk.png"); 
         birdFly  = new Texture("entities/bird/bird_fly.png");

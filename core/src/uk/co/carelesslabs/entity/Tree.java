@@ -33,11 +33,7 @@ public class Tree extends Entity{
 
     @Override
     public void interact(Entity entity){
-        if(entity.inventory != null){
-            entity.inventory.addEntity(this);
-            remove = true;
-            //Rumble.rumble(1, .2f);
-        }
+       
     }
     
     @Override
@@ -48,7 +44,12 @@ public class Tree extends Entity{
     @Override
     public void draw(SpriteBatch batch){
         if(shadow != null) batch.draw(shadow, pos.x, pos.y, width, height);
-        if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
+        if(popupMenu.feedPercent.width < 3 || popupMenu.waterPercent.width < 3){
+            batch.draw(Media.treeDie, pos.x, pos.y, width, height);    
+        } else {
+            if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
+        }
+        
         if(showMenu) popupMenu.draw(batch);
         
         // FOOD AND WAER

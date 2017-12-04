@@ -78,8 +78,8 @@ public class Island {
         ArrayList<Tile> tileArray;
         
         // ISLAND VARS
-        int rngW = MathUtils.random(5,8);
-        int rngH = MathUtils.random(5,8);
+        int rngW = MathUtils.random(5,6);
+        int rngH = MathUtils.random(5,6);
         
         int centreTileRow = chunk.numberRows / 2;
         int centreTileCol = chunk.numberCols /2;

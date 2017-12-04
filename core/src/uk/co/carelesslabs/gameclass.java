@@ -30,6 +30,7 @@ public class GameClass extends ApplicationAdapter {
     Matrix4 screenMatrix;
     public Box2DWorld box2D;
     public SaveGame saveGame;
+    int numTree;
 
     // Display Size
     private int displayW;
@@ -47,7 +48,7 @@ public class GameClass extends ApplicationAdapter {
     // Menu test
     SquareMenu squareMenu;
     
-    int removed;
+    int removed, remove;
         
     @Override
     public void create() {
@@ -186,17 +187,22 @@ public class GameClass extends ApplicationAdapter {
         batch.end();
         
         box2D.tick(camera, control);
-        removed += island.clearRemovedEntities(box2D);
+        remove = island.clearRemovedEntities(box2D);
+        if(remove > 0){
+            numTree -= remove;
+            removed += remove;    
+        }
         
         time += Gdx.graphics.getDeltaTime();
         
-        if(time > 5){
+        if(time > (5 + numTree) && numTree < 15){
             time = 0;
             island.AddTree(box2D, hero);
+            numTree ++;
             box2D.populateEntityMap(island.objectManager.entities);
         }
         control.processedClick = true;
-        System.out.println(removed);
+        //System.out.println(removed);
         if(removed > 10){
             island.reset(box2D, hero);
         }
