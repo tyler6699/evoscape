@@ -46,6 +46,7 @@ public class SaveGame {
                            
                     FileHandle file = Gdx.files.local(dir + "entities.json");
                     file.writeString(compress, false);
+                    System.out.println("Save Complete.");
                 }
             };
             t = new Thread(r);
@@ -111,7 +112,7 @@ public class SaveGame {
         entities.clear();
     }
 
-    public boolean isLoading() {
+    public boolean isLoading(){
         return loading;
     }
     

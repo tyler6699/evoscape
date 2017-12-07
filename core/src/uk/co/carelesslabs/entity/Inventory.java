@@ -1,7 +1,6 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.HashMap;
-
 import uk.co.carelesslabs.Enums.EntityType;
 
 public class Inventory {

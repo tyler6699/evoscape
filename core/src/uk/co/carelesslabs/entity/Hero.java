@@ -1,11 +1,9 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.google.gson.JsonObject;
-
 import uk.co.carelesslabs.Control;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Enums.EntityType;
