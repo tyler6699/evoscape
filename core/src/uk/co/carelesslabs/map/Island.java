@@ -33,19 +33,18 @@ public class Island {
     
     public Island(Box2DWorld box2D){
         objectManager = new ObjectManager();
-        reset(box2D);
     }
     
     public void reset(Box2DWorld box2D) {
-        objectManager.entities.clear();
+        System.out.println("Reset");
+        objectManager.clearAll(box2D);
         box2D.clearAllBodies();
         setupTiles();
         codeTiles();
         generateHitboxes(box2D);
         addEntities(box2D);
     }
-    
-    
+     
     private void generateHitboxes(Box2DWorld box2D) {
         // Loop all of the rows of chunks
         for (Integer key : objectManager.chunks.descendingKeySet()) {
@@ -60,8 +59,7 @@ public class Island {
             }     
         }
     }
-
-    
+  
     private void setupTiles(){
         // 3 x 3 chunks
         int currentRow = 0;
@@ -152,8 +150,7 @@ public class Island {
     private void updateImage(Tile tile) {
        MapGenerator.setTileSecondaryTexture(tile);        
     }
-    
-    
+      
     private void codeTiles() {
         // Loop all tiles and set the initial code
         // Loop all of the rows of chunks
@@ -181,8 +178,7 @@ public class Island {
             }      
         }
     }
-    
-    
+       
     private void addEntities(Box2DWorld box2D) {
         // Loop all of the rows of chunks
         for (Integer key : objectManager.chunks.descendingKeySet()) {
@@ -205,12 +201,10 @@ public class Island {
     public Vector3 getCentrePosition(){
         return centreTile.pos;
     }
-
-    
+ 
     public void dispose() {
         
     }
-
     
     public void clearRemovedEntities(Box2DWorld box2D) {
         Iterator<Entity> it = objectManager.entities.iterator();
@@ -234,6 +228,7 @@ public class Island {
         int row = (int) pos.y / chunkTileWidth;
         int col = (int) pos.x / chunkTileWidth;
         int chunkNumber =  (row * chunkSize) + (int) col;
+
         return objectManager.chunks.get(chunkNumber);    
     }
 

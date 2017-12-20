@@ -69,7 +69,7 @@ public class Box2DWorld {
         for (Body b : bodies) {
             world.destroyBody(b);
         }
-
+        
         entityMap.clear();
     }
 

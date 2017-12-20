@@ -2,11 +2,12 @@ package uk.co.carelesslabs.map;
 
 import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.JsonObject;
 
 public class Chunk {
     public int chunkNumber;
-    int row;
-    int col;
+    public int row;
+    public int col;
     int numberRows;
     int numberCols;
     int tileSize;
@@ -21,6 +22,16 @@ public class Chunk {
         this.tileSize = tile_size;
     }
     
+    public Chunk(JsonObject chunk) {
+        tiles = new ArrayList<ArrayList<Tile>>();
+        numberRows = chunk.get("numberRows").getAsInt();
+        numberCols = chunk.get("numberCols").getAsInt();;
+        tileSize = chunk.get("tileSize").getAsInt();
+        chunkNumber = chunk.get("chunkNumber").getAsInt();
+        row = chunk.get("row").getAsInt();
+        col = chunk.get("col").getAsInt();
+    }
+
     public Tile getTile(int row, int col){
         ArrayList<Tile> chunk_row;
         if(tiles.size() > row && row >= 0){

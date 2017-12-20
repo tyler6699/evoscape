@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Entity implements Comparable<Entity> {
     public int hashcode;
     public Vector3 pos;
-    public Vector3 destVec;
+    transient public Vector3 destVec;
     transient public Texture texture;
     transient public Texture shadow;
     public float width;
@@ -28,7 +28,7 @@ public class Entity implements Comparable<Entity> {
     public Boolean ticks;
     public float time;
     public float coolDown;
-    transient public Tile currentTile;
+    public Tile currentTile;
     
     float dirX = 0;
     float dirY = 0;

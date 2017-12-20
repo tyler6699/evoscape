@@ -126,7 +126,8 @@ public class GameClass extends ApplicationAdapter {
         for(Entity e: island.objectManager.entities){
             e.tick(Gdx.graphics.getDeltaTime());
             Chunk chunk = island.chunkAt(e.body.getPosition());
-            e.currentTile = chunk.getTile(e.body.getPosition());
+            if(chunk != null) e.currentTile = chunk.getTile(e.body.getPosition());
+            
             e.tick(Gdx.graphics.getDeltaTime(), island.objectManager.currentChunk);
         }
         
@@ -142,25 +143,22 @@ public class GameClass extends ApplicationAdapter {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         
         batch.begin();
-        // Draw all tiles in the hero chunk only
+        // TODO: Draw all tiles in the hero chunk only
         // TODO: Improve tiles rendered.
         for (Integer key : island.objectManager.chunks.descendingKeySet()) {
-            if(key == hero.currentTile.chunk){
-                Chunk chunk = island.objectManager.chunks.get(key);
-                
-                for(ArrayList<Tile> row : chunk.tiles){
-                    for(Tile tile : row){
-                        batch.draw(tile.texture, tile.pos.x, tile.pos.y, tile.size, tile.size);                
-                        if (tile.secondaryTexture != null) batch.draw(tile.secondaryTexture, tile.pos.x, tile.pos.y, tile.size, tile.size);
-                    }
-                }       
-            }
+            Chunk chunk = island.objectManager.chunks.get(key);
             
+            for(ArrayList<Tile> row : chunk.tiles){
+                for(Tile tile : row){
+                    tile.draw(batch);
+                }
+            }    
         }
         
         // Draw all entities
         // TODO: Only tick / Draw entities in the current chunk?
         for(Entity e: island.objectManager.entities){
+            //e.draw(btach, currentChunk) Use current chunk to determine if render occurs
             e.draw(batch);
         }
         
@@ -189,7 +187,7 @@ public class GameClass extends ApplicationAdapter {
         hero.reset(box2D,island.getCentrePosition());
         island.objectManager.entities.add(hero);
         
-        for(int i = 0; i < MathUtils.random(10) + 10; i++){
+        for(int i = 0; i < MathUtils.random(10) + 1; i++){
             island.objectManager.entities.add(new Bird(new Vector3(MathUtils.random(300),MathUtils.random(300),0), box2D, Enums.EnityState.FLYING));
         }
         

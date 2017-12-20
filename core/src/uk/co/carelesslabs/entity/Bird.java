@@ -7,13 +7,12 @@ import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Rumble;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
+import uk.co.carelesslabs.managers.ObjectManager;
 import uk.co.carelesslabs.map.Chunk;
 import uk.co.carelesslabs.map.Tile;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.google.gson.Gson;
@@ -33,27 +32,45 @@ public class Bird extends Entity{
         height = 8;
         shadow = Media.birdShadow;
         this.pos.set(pos);
+        
         this.state = state;
         setup(box2d);
     }
 
-    public Bird(JsonObject e, Box2DWorld box2d) {
+    public Bird(JsonObject e, Box2DWorld box2d, ObjectManager objectManager) {
         super();
         maxHeight = e.get("maxHeight").getAsInt();
         speed = e.get("speed").getAsFloat();
         width = e.get("width").getAsInt();
         height = e.get("height").getAsInt();
+        time = e.get("time").getAsFloat();
         texture = Media.tree;
         shadow = Media.birdShadow;
-        this.state = Enums.EnityState.valueOf(e.get("state").getAsString());
+        state = Enums.EnityState.valueOf(e.get("state").getAsString());
         
-        // Positions
         Gson gson = new Gson();
         this.pos.set(gson.fromJson(e.get("pos"), Vector3.class));
         
-        // TODO Set current and destination tiles
+        if(e.get("destTile") != null){
+            JsonObject JSONtile = e.get("destTile").getAsJsonObject();
+            destTile = getTile(JSONtile, objectManager);
+            getVector(destTile.pos);
+        }
         
+        if(e.get("currentTile") != null){ 
+            JsonObject JSONtile = e.get("currentTile").getAsJsonObject();          
+            currentTile = getTile(JSONtile, objectManager);
+        }
+                
         setup(box2d);
+    } 
+    
+    private Tile getTile(JsonObject json, ObjectManager objectManager){
+        int chunkNumber = json.get("chunk").getAsInt();
+        int tileRow = json.get("row").getAsInt();
+        int tileCol = json.get("col").getAsInt();
+        
+        return objectManager.chunks.get(chunkNumber).tiles.get(tileRow).get(tileCol);
     }
     
     private void setup(Box2DWorld box2d){
@@ -67,6 +84,7 @@ public class Bird extends Entity{
 
     @Override
     public void draw(SpriteBatch batch){
+        //System.out.println(pos);
         setTextureRegion();
         setFlipped();
         
@@ -77,7 +95,7 @@ public class Bird extends Entity{
     }
     
     @Override
-    public void tick(float delta, Chunk chunk){
+    public void tick(float delta, Chunk chunk){  
         if(isHovering()){
             setLanding();
         } else if(isLanding()){
@@ -167,7 +185,9 @@ public class Bird extends Entity{
     
     private void moveToDestination(float delta) { 
         // https://github.com/libgdx/libgdx/wiki/Interpolation
-        body.setTransform(body.getPosition().interpolate(new Vector2(destTile.pos.x + width, destTile.pos.y + height), delta * speed / 4, Interpolation.circle), 0);
+        // BUG: Interpolation after loading BIRD.
+        //body.setTransform(body.getPosition().interpolate(new Vector2(destTile.pos.x + width, destTile.pos.y + height), delta * speed / 4, Interpolation.smooth), 0);      
+        body.setTransform(body.getPosition().x + (destVec.x * speed * delta), body.getPosition().y + (destVec.y * speed * delta), 0);
         
         updatePositions();
     }
@@ -200,7 +220,7 @@ public class Bird extends Entity{
     private void newDestinationOrHover(float delta, Chunk chunk) {
         // 15% chance a new destination is set, unless over water then always
         // get a new destination
-        if(MathUtils.randomBoolean(.85f) || currentTile.isWater()){
+        if(MathUtils.randomBoolean(.85f) || (currentTile != null && currentTile.isWater())){
             setDestination(delta, chunk);
             maxHeight = setHeight(); 
         } else {
@@ -208,7 +228,7 @@ public class Bird extends Entity{
         }
     }
 
-    private void setDestination(float delta, Chunk chunk){    
+    private void setDestination(float delta, Chunk chunk){
         for(ArrayList<Tile> row : chunk.tiles){
             if(destTile != null) break;
             
@@ -223,7 +243,7 @@ public class Bird extends Entity{
     }
    
     private void walk(float delta) {
-    	if(currentTile.isPassable()){
+    	if(currentTile != null && currentTile.isPassable()){
     		if(tRegion.isFlipX()){
                 body.setTransform(body.getPosition().x - speed / 4 * delta, body.getPosition().y,0);
             } else {

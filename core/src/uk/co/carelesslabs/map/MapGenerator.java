@@ -3,7 +3,6 @@ package uk.co.carelesslabs.map;
 import java.util.Arrays;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-
 import uk.co.carelesslabs.Media;
 
 public class MapGenerator {
