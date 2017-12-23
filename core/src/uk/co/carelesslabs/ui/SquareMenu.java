@@ -3,23 +3,25 @@ package uk.co.carelesslabs.ui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import uk.co.carelesslabs.Media;
-import uk.co.carelesslabs.gameclass;
+import uk.co.carelesslabs.GameClass;;
 
 public class SquareMenu extends Menu {
     public BuildMenu build;
     
-    public SquareMenu(final gameclass game){
+    public SquareMenu(final GameClass game){
         super(0, 0, 2, Media.squareMenu);
         
         int scale = 2;
         addButtons(3, 2, 2, Media.pinkButton, Media.selector, scale);
         
         Button btn = buttons.get(0);
+        
+        btn.icon = Media.iconSave;
         btn.setOnClickListener(
                 new OnClickListener(){
                     @Override
                     public void onClick(Button b) {
-                        
+                        game.saveGame.save(game.getObjectManager());
                     }
                 });
         
@@ -29,7 +31,9 @@ public class SquareMenu extends Menu {
                 new OnClickListener(){
                     @Override
                     public void onClick(Button b) {
-                        System.out.println("Settings.");
+                        System.out.println("LOAD.");
+                        game.saveGame.load(game);
+
                     }
                 });
         

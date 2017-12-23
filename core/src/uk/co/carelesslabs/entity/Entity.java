@@ -5,7 +5,6 @@ import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.map.Chunk;
 import uk.co.carelesslabs.map.Tile;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -14,16 +13,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Entity implements Comparable<Entity> {
     public int hashcode;
     public Vector3 pos;
-    public Vector3 destVec;
-    public Texture texture;
-    public Texture shadow;
+    transient public Vector3 destVec;
+    transient public Texture texture;
+    transient public Texture shadow;
     public float width;
     public float height;
     public EntityType type;
     public EnityState state;
     public float speed;
-    public Body body;
-    public Body sensor;
+    transient public Body body;
+    transient public Body sensor;
     public boolean remove;
     public Inventory inventory;
     public Boolean ticks;
@@ -52,10 +51,13 @@ public class Entity implements Comparable<Entity> {
     }
     
     public int compareTo(Entity e) {
-        float tempY =  e.pos.y;
-        float compareY = pos.y;
-        
-        return (tempY < compareY ) ? -1: (tempY > compareY) ? 1:0 ;
+        try{
+            float tempY =  e.pos.y;
+            float compareY = pos.y;
+            return (tempY < compareY ) ? -1: (tempY > compareY) ? 1:0 ;
+        } catch (Exception exc){
+            return 0;
+        }
     }
     
     public void collision(Entity entity, boolean begin){}

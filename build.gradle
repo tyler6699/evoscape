@@ -38,27 +38,29 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
-
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        
+        compile group: 'com.google.code.gson', name: 'gson', version: '2.7' 
+        compile "commons-codec:commons-codec:1.9"
+        compile "commons-io:commons-io:+"
     }
 }
 
 project(":core") {
     apply plugin: "java"
 
-
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        
+        compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+        compile "commons-codec:commons-codec:1.9"
+        compile "commons-io:commons-io:+" 
     }
 }
 

@@ -8,6 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * Class to handle all player inputs
+ * extends InputAdapter and implements InputProcessor
+ */
 public class Control extends InputAdapter implements InputProcessor {
     // CAMERA
     OrthographicCamera camera;
