@@ -47,34 +47,7 @@ public class Entity implements Comparable<Entity> {
     }
     
     public void drawRotated(SpriteBatch batch){
-    	float xOffset = 3;
-    	float xRight = -1;
-    	
-    	if(angle > 90 && angle < 270){
-    		flipY = true;
-    	} else {
-    		flipY = false;
-    		xRight = 7;
-    	}
-    	
-    	if(shadow != null) batch.draw(shadow, pos.x, pos.y, width, height);
-    	batch.draw(texture, pos.x + xRight, pos.y, width/2 - xOffset, height/2, width, height, 1, 1, angle, 0, 0, (int)width, (int)height, flipX, flipY);
 
-		//    	x the x-coordinate in screen space
-		//    	y the y-coordinate in screen space
-		//    	originX the x-coordinate of the scaling and rotation origin relative to the screen space coordinates
-		//    	originY the y-coordinate of the scaling and rotation origin relative to the screen space coordinates
-		//    	width the width in pixels
-		//    	height the height in pixels
-		//    	scaleX the scale of the rectangle around originX/originY in x
-		//    	scaleY the scale of the rectangle around originX/originY in y
-		//    	rotation the angle of counter clockwise rotation of the rectangle around originX/originY
-		//    	srcX the x-coordinate in texel space
-		//    	srcY the y-coordinate in texel space
-		//    	srcWidth the source with in texels
-		//    	srcHeight the source height in texels
-		//    	flipX whether to flip the sprite horizontally
-		//    	flipY whether to flip the sprite vertically
     }
     
     public void tick(float delta){

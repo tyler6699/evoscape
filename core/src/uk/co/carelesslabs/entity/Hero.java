@@ -12,7 +12,7 @@ import uk.co.carelesslabs.box2d.Box2DWorld;
 
 public class Hero extends Entity{
     ArrayList<Entity> interactEntities;
-    public Entity gun;
+    public Gun gun;
     
     public Hero(Vector3 pos, Box2DWorld box2d){
         super();
@@ -25,11 +25,7 @@ public class Hero extends Entity{
         reset(box2d, pos);
         
         // Weapon
-        gun = new Entity();
-        gun.texture = Media.gun;
-        gun.width = gun.texture.getWidth();
-        gun.height = gun.texture.getHeight();
-        gun.active = true;
+        gun = new Gun();
     }
     
     public Hero(JsonObject e, Box2DWorld box2d) {
