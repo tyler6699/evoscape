@@ -46,7 +46,7 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile group: 'com.google.code.gson', name: 'gson', version: '2.7' 
         compile "commons-codec:commons-codec:1.9"
-        compile "commons-io:commons-io:+"
+        compile "commons-io:commons-io:2.6"
     }
 }
 
@@ -60,7 +60,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
         compile "commons-codec:commons-codec:1.9"
-        compile "commons-io:commons-io:+" 
+        compile "commons-io:commons-io:2.6" 
     }
 }
 

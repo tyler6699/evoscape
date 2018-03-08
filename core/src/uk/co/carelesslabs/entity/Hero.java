@@ -12,6 +12,7 @@ import uk.co.carelesslabs.box2d.Box2DWorld;
 
 public class Hero extends Entity{
     ArrayList<Entity> interactEntities;
+    public Entity gun;
     
     public Hero(Vector3 pos, Box2DWorld box2d){
         super();
@@ -22,6 +23,13 @@ public class Hero extends Entity{
         speed = 30;
         inventory = new Inventory();
         reset(box2d, pos);
+        
+        // Weapon
+        gun = new Entity();
+        gun.texture = Media.gun;
+        gun.width = gun.texture.getWidth();
+        gun.height = gun.texture.getHeight();
+        gun.active = true;
     }
     
     public Hero(JsonObject e, Box2DWorld box2d) {
@@ -65,6 +73,12 @@ public class Hero extends Entity{
         	interactEntities.get(0).interact(this);
         }
         
+        // Weapon
+        if(gun != null){
+        	gun.pos.x = pos.x;
+            gun.pos.y = pos.y;
+        }
+        
         // Reset interact
         control.interact = false;
     }
@@ -79,5 +93,9 @@ public class Hero extends Entity{
     		interactEntities.remove(entity);
     	}    	
     }
+
+	public boolean weaponActive() {
+		return gun != null && gun.active;
+	}
  
 }
