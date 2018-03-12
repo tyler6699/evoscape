@@ -15,11 +15,11 @@ public class Hero extends Entity{
     public Gun gun;
     
     public Hero(Vector3 pos, Box2DWorld box2d){
-        super();
-        type = EntityType.HERO;
-        width = 8;
-        height = 8;
-        texture = Media.hero;
+    	super();
+    	type = EntityType.HERO;
+    	width = 8;
+    	height = 8;
+    	texture = Media.hero;
         speed = 30;
         inventory = new Inventory();
         reset(box2d, pos);

@@ -12,12 +12,12 @@ public class Gun extends Entity {
 	
 	public Gun(float xSetOffset, float xMinRight, float xMaxRight){
 		texture = Media.gun;
-        width = texture.getWidth();
-        height = texture.getHeight();
-        active = true;
-        this.xSetOffset = xSetOffset;
-        this.xMinRight = xMinRight;
-        this.xMaxRight = xMaxRight;
+		width = texture.getWidth();
+		height = texture.getHeight();
+		active = true;
+		this.xSetOffset = xSetOffset;
+		this.xMinRight = xMinRight;
+		this.xMaxRight = xMaxRight;
 	}
 	
 	public void drawRotated(SpriteBatch batch){
