@@ -20,6 +20,7 @@ public class Media {
     // Entity
     public static Texture tree;
     public static Texture birdWalk, birdFly, birdPeck, birdShadow;
+	public static Texture gun;
     
     // Texture Regions
     public static TextureRegion[] birdWalkFrames, birdFlyFrames, birdPeckFrames;
@@ -36,6 +37,7 @@ public class Media {
     public static void load_assets(){
         // HERO
         hero  = new Texture("entities/hero/hero.png");
+        gun = new Texture("entities/gun.png");
         
         // Source https://opengameart.org/content/micro-tileset-overworld-and-dungeon
         // Example Map: http://opengameart.org/sites/default/files/styles/watermarked/public/Render_0.png

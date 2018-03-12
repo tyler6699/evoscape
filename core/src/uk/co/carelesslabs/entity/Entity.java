@@ -29,6 +29,10 @@ public class Entity implements Comparable<Entity> {
     public float time;
     public float coolDown;
     public Tile currentTile;
+    public float angle;
+    Boolean flipX = false;
+	Boolean flipY = false;
+	public boolean active;
     
     float dirX = 0;
     float dirY = 0;
@@ -40,6 +44,10 @@ public class Entity implements Comparable<Entity> {
     public void draw(SpriteBatch batch){
         if(shadow != null) batch.draw(shadow, pos.x, pos.y, width, height);
         if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
+    }
+    
+    public void drawRotated(SpriteBatch batch){
+
     }
     
     public void tick(float delta){
@@ -78,4 +86,10 @@ public class Entity implements Comparable<Entity> {
         destVec = new Vector3(dx / dn, dy / dn, 0);
     }
 
+	public void updatePos(float x, float y) {
+		if(pos != null){
+			pos.x = x;
+			pos.y = y;
+		}
+	}
 }

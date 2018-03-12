@@ -24,6 +24,7 @@ public class Control extends InputAdapter implements InputProcessor {
     
     // ACTIONS
     public boolean interact;
+    public float   angle;
 
     // MOUSE
     public boolean  leftMouseBtn;
@@ -175,7 +176,13 @@ public class Control extends InputAdapter implements InputProcessor {
     
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        mousePos.set(screenX, screenHeight - screenY);
+    	float flippedY = screenHeight - screenY;
+        mousePos.set(screenX, flippedY);
+        
+    	// Set angle of mouse
+    	angle = (float) Math.toDegrees(Math.atan2(screenX - (screenWidth/2), screenY - (screenHeight/2)));
+	    angle = angle < 0 ? angle += 360: angle;
+	    angle = angle - 90;
         return false;
     }
     

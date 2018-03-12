@@ -162,6 +162,11 @@ public class GameClass extends ApplicationAdapter {
             e.draw(batch);
         }
         
+        if(hero.weaponActive()){
+        	hero.gun.angle = control.angle;
+            hero.gun.drawRotated(batch);
+        }
+        
         batch.end();
         
         // GUI
