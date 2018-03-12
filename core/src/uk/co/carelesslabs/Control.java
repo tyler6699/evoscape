@@ -25,6 +25,9 @@ public class Control extends InputAdapter implements InputProcessor {
     // ACTIONS
     public boolean interact;
     public float   angle;
+    public int     direction;
+    String[] arr = {"S","SE","E", "NE","N","NW","W","SW"};
+   
 
     // MOUSE
     public boolean  leftMouseBtn;
@@ -182,7 +185,10 @@ public class Control extends InputAdapter implements InputProcessor {
     	// Set angle of mouse
     	angle = (float) Math.toDegrees(Math.atan2(screenX - (screenWidth/2), screenY - (screenHeight/2)));
 	    angle = angle < 0 ? angle += 360: angle;
-	    angle = angle - 90;
+	    
+	    direction = (int) Math.floor((angle / 45) + 0.5) & 7;
+	    System.out.println(arr[direction]);
+	    	
         return false;
     }
     
