@@ -86,4 +86,10 @@ public class Entity implements Comparable<Entity> {
         destVec = new Vector3(dx / dn, dy / dn, 0);
     }
 
+	public void updatePos(float x, float y) {
+		if(pos != null){
+			pos.x = x;
+			pos.y = y;
+		}
+	}
 }

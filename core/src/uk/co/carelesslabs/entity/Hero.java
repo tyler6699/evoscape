@@ -25,7 +25,7 @@ public class Hero extends Entity{
         reset(box2d, pos);
         
         // Weapon
-        gun = new Gun();
+        gun = new Gun(3, -1, 7);
     }
     
     public Hero(JsonObject e, Box2DWorld box2d) {
@@ -71,8 +71,7 @@ public class Hero extends Entity{
         
         // Weapon
         if(gun != null){
-        	gun.pos.x = pos.x;
-            gun.pos.y = pos.y;
+        	gun.updatePos(pos.x, pos.y);
         }
         
         // Reset interact
