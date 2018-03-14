@@ -1,5 +1,6 @@
 package uk.co.carelesslabs;
 
+import uk.co.carelesslabs.Enums.Compass;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -26,9 +27,8 @@ public class Control extends InputAdapter implements InputProcessor {
     public boolean interact;
     public float   angle;
     public int     direction;
-    String[] arr = {"S","SE","E", "NE","N","NW","W","SW"};
+    public Compass facing;
    
-
     // MOUSE
     public boolean  leftMouseBtn;
     public boolean  rightMouseBtn;
@@ -186,8 +186,9 @@ public class Control extends InputAdapter implements InputProcessor {
     	angle = (float) Math.toDegrees(Math.atan2(screenX - (screenWidth/2), screenY - (screenHeight/2)));
 	    angle = angle < 0 ? angle += 360: angle;
 	    
+	    // Set the COMPAS direction of the mouse cursor
 	    direction = (int) Math.floor((angle / 45) + 0.5) & 7;
-	    System.out.println(arr[direction]);
+	    facing = Compass.values()[direction];
 	    	
         return false;
     }

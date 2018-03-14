@@ -119,7 +119,7 @@ public class GameClass extends ApplicationAdapter {
             Rumble.tick(Gdx.graphics.getDeltaTime());
             camera.translate(Rumble.getPos());
         } else {
-            camera.position.lerp(hero.pos, .2f);
+            camera.position.lerp(hero.cameraPos, .2f);
         }
         
         // Tick all entities
@@ -160,11 +160,6 @@ public class GameClass extends ApplicationAdapter {
         for(Entity e: island.objectManager.entities){
             //e.draw(btach, currentChunk) Use current chunk to determine if render occurs
             e.draw(batch);
-        }
-        
-        if(hero.weaponActive()){
-        	hero.gun.angle = control.angle;
-            hero.gun.drawRotated(batch);
         }
         
         batch.end();

@@ -1,10 +1,14 @@
 package uk.co.carelesslabs.entity;
 
+import java.util.ArrayList;
+
 import uk.co.carelesslabs.Enums.EnityState;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.map.Chunk;
 import uk.co.carelesslabs.map.Tile;
+import uk.co.carelesslabs.weapons.Gun;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -30,10 +34,11 @@ public class Entity implements Comparable<Entity> {
     public float coolDown;
     public Tile currentTile;
     public float angle;
-    Boolean flipX = false;
-	Boolean flipY = false;
+    public Boolean flipX = false;
+	public Boolean flipY = false;
 	public boolean active;
-    
+	public ArrayList<Gun> weapons;
+	
     float dirX = 0;
     float dirY = 0;
     

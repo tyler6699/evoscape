@@ -45,5 +45,20 @@ public class Enums {
         HOVEROVER,
         CLICKED
     }
+    
+    /**
+     * Compass directions
+     */
+    public enum Compass {
+        S,
+        SE,
+        E,
+        NE,
+        N,
+        NW,
+        W,
+        SW
+    }
+    
 
 }
