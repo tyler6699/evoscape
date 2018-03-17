@@ -52,7 +52,7 @@ public class Entity implements Comparable<Entity> {
     }
     
     public void drawRotated(SpriteBatch batch){
-
+    	if(texture != null) batch.draw(texture, pos.x, pos.y, 0, 0, width, height, 1, 1, angle, 0, 0, (int)width, (int)height, flipX, flipY);
     }
     
     public void tick(float delta){

@@ -86,8 +86,10 @@ public class Hero extends Entity{
         
         // Update weapons
         for(Gun g : weapons){
-        	g.updatePos(pos.x, pos.y);
-        	g.angle = control.angle - 90;
+        	if(g.active){
+        		g.updatePos(pos.x, pos.y);
+            	g.angle = control.angle - 90;	
+        	}
         }
        
         // Reset interact

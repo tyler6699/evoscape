@@ -1,7 +1,6 @@
 package uk.co.carelesslabs.weapons;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.entity.Entity;
 
@@ -24,10 +23,10 @@ public class Gun extends Entity {
 	}
 	
 	public void drawRotated(SpriteBatch batch){
-    	if(angle > 90 && angle < 270){
+    	if(angle > 90 && angle < 270){ // 6 to 12 Clockwise or LEFT
     		xPos = xMinPos;
     		flipY = true;
-    	} else {
+    	} else { // 12 to 6 clockwise or RIGHT
     		xPos = xMaxPos;
     		flipY = false;
     	}
