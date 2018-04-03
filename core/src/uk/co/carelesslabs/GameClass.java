@@ -114,7 +114,7 @@ public class GameClass extends ApplicationAdapter {
         
         hero.update(control);
         
-        // Heo Position
+        // Hero Position
         if (Rumble.getRumbleTimeLeft() > 0){
             Rumble.tick(Gdx.graphics.getDeltaTime());
             camera.translate(Rumble.getPos());
