@@ -1,6 +1,7 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.ArrayList;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.google.gson.JsonObject;
@@ -9,19 +10,26 @@ import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
+import uk.co.carelesslabs.weapons.Gun;
 
 public class Hero extends Entity{
     ArrayList<Entity> interactEntities;
+	public Vector3 cameraPos;
     
     public Hero(Vector3 pos, Box2DWorld box2d){
-        super();
-        type = EntityType.HERO;
-        width = 8;
-        height = 8;
-        texture = Media.hero;
+    	super();
+    	cameraPos = new Vector3();
+    	type = EntityType.HERO;
+    	width = 8;
+    	height = 8;
+    	texture = Media.hero;
         speed = 30;
         inventory = new Inventory();
         reset(box2d, pos);
+        
+        // Weapon
+        weapons = new ArrayList<Gun>();
+        weapons.add(new Gun(1, -1, 7));
     }
     
     public Hero(JsonObject e, Box2DWorld box2d) {
@@ -39,6 +47,17 @@ public class Hero extends Entity{
         reset(box2d, pos);
     }
 
+    @Override
+    public void draw(SpriteBatch batch){
+        if(shadow != null) batch.draw(shadow, pos.x, pos.y, width, height);
+        if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
+        for(Gun g : weapons){
+			if(g.active){
+				g.drawRotated(batch);
+			}	
+		}
+    }
+    
     public void reset(Box2DWorld box2d, Vector3 pos) {
         this.pos.set(pos);
         body = Box2DHelper.createBody(box2d.world, width/2, height/2, width/4, 0, pos, BodyType.DynamicBody);  
@@ -65,8 +84,20 @@ public class Hero extends Entity{
         	interactEntities.get(0).interact(this);
         }
         
+        // Update weapons
+        for(Gun g : weapons){
+        	if(g.active){
+        		g.updatePos(pos.x, pos.y);
+            	g.angle = control.angle - 90;	
+        	}
+        }
+       
         // Reset interact
         control.interact = false;
+        
+        // Update Camera Position
+        cameraPos.set(pos);
+        cameraPos.x += width / 2;
     }
     
     @Override
@@ -79,5 +110,14 @@ public class Hero extends Entity{
     		interactEntities.remove(entity);
     	}    	
     }
+
+	public boolean weaponActive() {
+		for(Gun g : weapons){
+			if(g.active){
+				return true;
+			}	
+		}
+		return false;
+	}
  
 }
