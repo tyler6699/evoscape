@@ -23,3 +23,7 @@ LIBGDX Tutorial - Rogue like survival game
 [10 - Basic AI](https://github.com/tyler6699/evoscape/tree/tutorial_010)
 
 [11 - Menu & Buttons](https://github.com/tyler6699/evoscape/tree/tutorial_011)
+
+[12 - Chunk & Save/Loading ](https://github.com/tyler6699/evoscape/tree/tutorial_012)
+
+[13 - Weapons](https://github.com/tyler6699/evoscape/tree/tutorial_013)
