@@ -2,6 +2,7 @@ package uk.co.carelesslabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import uk.co.carelesslabs.box2d.Box2DWorld;
 import uk.co.carelesslabs.entity.Bird;
 import uk.co.carelesslabs.entity.Entity;
@@ -12,6 +13,8 @@ import uk.co.carelesslabs.map.Chunk;
 import uk.co.carelesslabs.map.Tile;
 import uk.co.carelesslabs.map.Island;
 import uk.co.carelesslabs.ui.SquareMenu;
+import uk.co.carelesslabs.weapons.Gun;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -112,7 +115,7 @@ public class GameClass extends ApplicationAdapter {
         control.processedClick = squareMenu.build.checkClick(control.mouseClickPos, control.processedClick);
         squareMenu.checkHover(control.mousePos);
         
-        hero.update(control);
+        hero.update(control, box2D);
         
         // Hero Position
         if (Rumble.getRumbleTimeLeft() > 0){
@@ -173,6 +176,9 @@ public class GameClass extends ApplicationAdapter {
         
         box2D.tick(camera, control);
         island.clearRemovedEntities(box2D);
+        
+        // Clear travelled bullets
+        hero.clearAmmo(box2D);
         
         time += Gdx.graphics.getDeltaTime();
         if(time > 3){
