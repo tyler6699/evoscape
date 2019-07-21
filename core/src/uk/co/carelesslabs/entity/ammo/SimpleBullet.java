@@ -16,14 +16,14 @@ public class SimpleBullet extends Ammo {
 		super();
 		this.gun = gun;
 		type = EntityType.BULLET;
-        texture = Media.close_menu;
+		texture = Media.close_menu;
 		range = 50;
 		damage = 1;
-        width = 8;
-        height = 8;
-        speed = 60;
-        active = true;
-        setupBullet(box2d);
+		width = 8;
+		height = 8;
+		speed = 60;
+		active = true;
+		setupBullet(box2d);
 	}
 	
 	public void tick(float delta){
@@ -43,7 +43,6 @@ public class SimpleBullet extends Ammo {
 				active = false;
 			}		
 		}
-
 	}
 	
 	public void setupBullet(Box2DWorld box2d){
@@ -54,10 +53,10 @@ public class SimpleBullet extends Ammo {
 		
 		// Move bullet toward end of gun
 		pos.x = gun.pos.x + (vector.x * 10);
-        pos.y = gun.pos.y + (vector.y * 10);
-        
+		pos.y = gun.pos.y + (vector.y * 10);
+		
 		// Physics
-        sensor = Box2DHelper.createSensor(box2d.world, width, height*.85f, width/2, height/3, pos, BodyDef.BodyType.DynamicBody);     
-        hashcode = sensor.getFixtureList().get(0).hashCode(); 
+		sensor = Box2DHelper.createSensor(box2d.world, width, height*.85f, width/2, height/3, pos, BodyDef.BodyType.DynamicBody);     
+		hashcode = sensor.getFixtureList().get(0).hashCode(); 
 	}
 }
