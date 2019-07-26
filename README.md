@@ -27,3 +27,5 @@ LIBGDX Tutorial - Rogue like survival game
 [12 - Chunk & Save/Loading ](https://github.com/tyler6699/evoscape/tree/tutorial_012)
 
 [13 - Weapons](https://github.com/tyler6699/evoscape/tree/tutorial_013)
+
+[14 - Bullet Firing](https://github.com/tyler6699/evoscape/tree/tutorial_014)
