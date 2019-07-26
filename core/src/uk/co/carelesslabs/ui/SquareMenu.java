@@ -70,7 +70,7 @@ public class SquareMenu extends Menu {
     @Override
     public void checkHover(Vector2 pos) {
         super.checkHover(pos);
-        build.  checkHover(pos);
+        build.checkHover(pos);
     }
     
 }

@@ -20,7 +20,8 @@ public class Enums {
     public enum EntityType {
         HERO, 
         TREE, 
-        BIRD
+        BIRD, 
+        BULLET
     }
     
     /**

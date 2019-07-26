@@ -112,7 +112,7 @@ public class GameClass extends ApplicationAdapter {
         control.processedClick = squareMenu.build.checkClick(control.mouseClickPos, control.processedClick);
         squareMenu.checkHover(control.mousePos);
         
-        hero.update(control);
+        hero.update(control, box2D);
         
         // Hero Position
         if (Rumble.getRumbleTimeLeft() > 0){
@@ -173,6 +173,9 @@ public class GameClass extends ApplicationAdapter {
         
         box2D.tick(camera, control);
         island.clearRemovedEntities(box2D);
+        
+        // Clear travelled bullets
+        hero.clearAmmo(box2D);
         
         time += Gdx.graphics.getDeltaTime();
         if(time > 3){

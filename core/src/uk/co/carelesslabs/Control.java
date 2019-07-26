@@ -28,6 +28,7 @@ public class Control extends InputAdapter implements InputProcessor {
     public float   angle;
     public int     direction;
     public Compass facing;
+    public boolean spacePressed;
    
     // MOUSE
     public boolean  leftMouseBtn;
@@ -91,6 +92,9 @@ public class Control extends InputAdapter implements InputProcessor {
             case Keys.D:
                 right = true;
                 break;
+            case Keys.SPACE:
+            	spacePressed = true;
+            	break;
         }
         return false;
     }

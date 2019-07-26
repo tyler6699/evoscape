@@ -1,15 +1,19 @@
 package uk.co.carelesslabs.entity;
 
 import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.google.gson.JsonObject;
+
 import uk.co.carelesslabs.Control;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Enums.EntityType;
 import uk.co.carelesslabs.box2d.Box2DHelper;
 import uk.co.carelesslabs.box2d.Box2DWorld;
+import uk.co.carelesslabs.entity.ammo.SimpleBullet;
 import uk.co.carelesslabs.weapons.Gun;
 
 public class Hero extends Entity{
@@ -28,8 +32,11 @@ public class Hero extends Entity{
         reset(box2d, pos);
         
         // Weapon
+        Gun gun = new Gun(1, -1, 7);
+        gun.addAmmo(10);
         weapons = new ArrayList<Gun>();
-        weapons.add(new Gun(1, -1, 7));
+        weapons.add(gun);
+        
     }
     
     public Hero(JsonObject e, Box2DWorld box2d) {
@@ -53,6 +60,7 @@ public class Hero extends Entity{
         if(texture != null) batch.draw(texture, pos.x, pos.y, width, height);
         for(Gun g : weapons){
 			if(g.active){
+				g.tick(Gdx.graphics.getDeltaTime());
 				g.drawRotated(batch);
 			}	
 		}
@@ -66,7 +74,7 @@ public class Hero extends Entity{
         inventory.reset();
     }
 
-    public void update(Control control) {
+    public void update(Control control, Box2DWorld box2D) {
         dirX = 0;
         dirY = 0;
         
@@ -78,7 +86,7 @@ public class Hero extends Entity{
         body.setLinearVelocity(dirX * speed, dirY * speed);
         pos.x = body.getPosition().x - width/2;
         pos.y = body.getPosition().y - height/4;
-        
+
         // If interact key pressed and interactEntities present interact with first in list.
         if(control.interact && interactEntities.size() > 0){
         	interactEntities.get(0).interact(this);
@@ -88,7 +96,19 @@ public class Hero extends Entity{
         for(Gun g : weapons){
         	if(g.active){
         		g.updatePos(pos.x, pos.y);
-            	g.angle = control.angle - 90;	
+            	g.angle = control.angle - 90;
+            	
+            	if(control.spacePressed){
+            		if(g.hasAmmo()){
+            			SimpleBullet bullet = new SimpleBullet(g, box2D);
+                		g.addActiveAmmo(bullet);
+            		} else {
+            			System.out.println("Clink");
+            		}
+            		
+            		// Set to false
+            		control.spacePressed = false;
+            	}
         	}
         }
        
@@ -118,6 +138,12 @@ public class Hero extends Entity{
 			}	
 		}
 		return false;
+	}
+
+	public void clearAmmo(Box2DWorld box2D) {
+		for(Gun g : weapons){
+			g.clearTravelledAmmo(box2D);
+		}
 	}
  
 }
