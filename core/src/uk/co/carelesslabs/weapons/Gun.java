@@ -36,12 +36,8 @@ public class Gun extends Entity {
 	}
 	
 	public void addActiveAmmo(Ammo a){
-		if(ammoCount > 0){
-			activeAmmo.add(a);
-			ammoCount --;
-		} else {
-			System.out.println("Clink");
-		}
+		activeAmmo.add(a);
+		ammoCount --;
 	}
 	
 	public void drawRotated(SpriteBatch batch){
@@ -76,6 +72,10 @@ public class Gun extends Entity {
                 it.remove();
             }
         }
+	}
+	
+	public boolean hasAmmo(){
+		return ammoCount > 0;
 	}
 
 }

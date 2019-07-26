@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.google.gson.JsonObject;
+
 import uk.co.carelesslabs.Control;
 import uk.co.carelesslabs.Media;
 import uk.co.carelesslabs.Enums.EntityType;
@@ -32,12 +33,10 @@ public class Hero extends Entity{
         
         // Weapon
         Gun gun = new Gun(1, -1, 7);
+        gun.addAmmo(10);
         weapons = new ArrayList<Gun>();
         weapons.add(gun);
         
-        // Add some ammo to the gun
-        weapons.get(0).addAmmo(10);
-
     }
     
     public Hero(JsonObject e, Box2DWorld box2d) {
@@ -100,9 +99,14 @@ public class Hero extends Entity{
             	g.angle = control.angle - 90;
             	
             	if(control.spacePressed){
+            		if(g.hasAmmo()){
+            			SimpleBullet bullet = new SimpleBullet(g, box2D);
+                		g.addActiveAmmo(bullet);
+            		} else {
+            			System.out.println("Clink");
+            		}
             		
-            		SimpleBullet bullet = new SimpleBullet(g, box2D);
-            		g.addActiveAmmo(bullet);
+            		// Set to false
             		control.spacePressed = false;
             	}
         	}
